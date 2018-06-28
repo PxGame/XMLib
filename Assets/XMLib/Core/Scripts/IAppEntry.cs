@@ -47,7 +47,7 @@ namespace XM
             Initialize();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             Terminal();
         }
@@ -115,6 +115,49 @@ namespace XM
             service.InitService();
 
             return service;
+        }
+
+        /// <summary>
+        /// 添加服务
+        /// </summary>
+        /// <param name="serviceTypes"></param>
+        public void Adds(List<Type> serviceTypes)
+        {
+            Type tmpType;
+            IService tmpService;
+            Type[] argsTypes = new Type[] { };
+            object[] args = new object[] { };
+
+            List<IService> services = new List<IService>();
+            int length = serviceTypes.Count;
+            for (int i = 0; i < length; i++)
+            {
+                tmpType = serviceTypes[i];
+
+                //创建对象
+                tmpService = (IService)tmpType.GetConstructor(argsTypes).Invoke(args);
+
+                if (_serviceDict.ContainsKey(tmpType))
+                {//已存在服务
+                    throw new Exception("已存在该服务 " + tmpType.FullName);
+                }
+
+                Debug("添加服务 {0}", tmpType.FullName);
+
+                _serviceDict.Add(tmpType, tmpService);
+
+                //注册
+                tmpService.AddService(this);
+            }
+
+            //初始化
+            length = services.Count;
+            for (int i = 0; i < length; i++)
+            {
+                tmpService = services[i];
+
+                tmpService.InitService();
+            }
         }
 
         /// <summary>
@@ -205,48 +248,15 @@ namespace XM
         private void AddDefaults()
         {
             //获取默认服务
-            List<Type> types = DefaultServices();
+            List<Type> serviceTypes = DefaultServices();
 
-            if (null == types)
+            if (null == serviceTypes)
             {//没有直接返回
                 return;
             }
 
-            Type tmpType;
-            IService tmpService;
-            Type[] argsTypes = new Type[] { };
-            object[] args = new object[] { };
-
-            List<IService> services = new List<IService>();
-            int length = types.Count;
-            for (int i = 0; i < length; i++)
-            {
-                tmpType = types[i];
-
-                //创建对象
-                tmpService = (IService)tmpType.GetConstructor(argsTypes).Invoke(args);
-
-                if (_serviceDict.ContainsKey(tmpType))
-                {//已存在服务
-                    throw new Exception("已存在该服务 " + tmpType.FullName);
-                }
-
-                Debug("添加服务 {0}", tmpType.FullName);
-
-                _serviceDict.Add(tmpType, tmpService);
-
-                //注册
-                tmpService.AddService(this);
-            }
-
-            //初始化
-            length = services.Count;
-            for (int i = 0; i < length; i++)
-            {
-                tmpService = services[i];
-
-                tmpService.InitService();
-            }
+            //添加
+            Adds(serviceTypes);
         }
 
         /// <summary>

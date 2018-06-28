@@ -14,14 +14,8 @@ public class AppEntry : IAppEntry
         {
             typeof(TaskService),
             typeof(EventService),
+            typeof(PoolService),
         };
-    }
-
-    private List<IEventData> eventDatas = new List<IEventData>();
-
-    private void OnTest(string msg)
-    {
-        throw new Exception("hahaha");
     }
 
     protected override void Update()
@@ -30,37 +24,22 @@ public class AppEntry : IAppEntry
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Get<TaskService>().RunOnMainThread(() =>
+            GameObject obj = Get<PoolService>().Pop("123");
+            if (obj == null)
             {
-                Debug("Run !");
-            });
+                obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                obj.AddComponent<PoolTestItem>();
+                obj.name = "123";
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            IEventData eventData = Get<EventService>().Add<string>("Test1", OnTest, 3);
-
-            eventDatas.Add(eventData);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            int length = eventDatas.Count;
-            for (int i = 0; i < length; i++)
+            GameObject obj = GameObject.Find("123");
+            if (obj != null)
             {
-                Get<EventService>().Remove(eventDatas[i]);
+                Get<PoolService>().Push("123", obj);
             }
-            eventDatas.Clear();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Get<EventService>().Remove(this);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Get<EventService>().Call("Test1", "XM");
         }
     }
 }
