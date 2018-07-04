@@ -25,11 +25,17 @@ namespace XM
         /// </summary>
         public Action OnUpdate { get { return _onUpdate; } set { _onUpdate = value; } }
 
+        /// <summary>
+        /// 日志输出
+        /// </summary>
+        public Action<int, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
+
         #region private members
 
         private Action _onFixedUpdate;
         private Action _onLateUpdate;
         private Action _onUpdate;
+        private Action<int, string> _onDebugOut;
 
         private Dictionary<Type, IService> _serviceDict = new Dictionary<Type, IService>();
 
@@ -105,7 +111,7 @@ namespace XM
                 throw new Exception("已存在该服务 " + type.FullName);
             }
 
-            Debug("添加服务 {0}", type.FullName);
+            Debug(0, "添加服务 {0}", type.FullName);
 
             T service = new T();
 
@@ -142,12 +148,15 @@ namespace XM
                     throw new Exception("已存在该服务 " + tmpType.FullName);
                 }
 
-                Debug("添加服务 {0}", tmpType.FullName);
+                Debug(0, "添加服务 {0}", tmpType.FullName);
 
                 _serviceDict.Add(tmpType, tmpService);
 
                 //注册
                 tmpService.AddService(this);
+
+                //添加到初始化列表
+                services.Add(tmpService);
             }
 
             //初始化
@@ -168,7 +177,7 @@ namespace XM
         public bool Remove<T>() where T : IService
         {
             Type type = typeof(T);
-            Debug("移除服务 {0}", type.FullName);
+            Debug(0, "移除服务 {0}", type.FullName);
 
             IService service = null;
             if (!_serviceDict.TryGetValue(typeof(T), out service))
@@ -187,24 +196,23 @@ namespace XM
         /// <param name="level">debug 等级= 0-一般 1-警告 2-错误 3-GG </param>
         /// <param name="format">格式化</param>
         /// <param name="args">参数</param>
-        public void Debug(int level, string format, params object[] args)
+        public virtual void Debug(int level, string format, params object[] args)
         {
             if (level < _debugLevel)
             {
                 return;
             }
 
-            UnityEngine.Debug.LogFormat(format, args);
-        }
+            string msg = string.Format(format, args);
 
-        /// <summary>
-        /// 一般等级debug输出
-        /// </summary>
-        /// <param name="format"></param>
-        /// <param name="args"></param>
-        public void Debug(string format, params object[] args)
-        {
-            Debug(0, format, args);
+            if (null != _onDebugOut)
+            {
+                _onDebugOut(level, msg);
+            }
+
+#if UNITY_EDITOR
+            UnityEngine.Debug.LogFormat("[{0}]{1}", level, msg);
+#endif
         }
 
         /// <summary>
@@ -214,7 +222,7 @@ namespace XM
         {
             foreach (var servicePair in _serviceDict)
             {
-                Debug("移除服务 {0}", servicePair.Key.FullName);
+                Debug(0, "移除服务 {0}", servicePair.Key.FullName);
 
                 //调用移除事件
                 servicePair.Value.RemoveService();
