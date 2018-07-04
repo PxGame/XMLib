@@ -11,7 +11,7 @@ namespace XM.Services
     {
         #region private members
 
-        private Dictionary<string, Stack<GameObject>> _pools = new Dictionary<string, Stack<GameObject>>();
+        private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
 
         private Transform _poolRoot;
 
@@ -53,26 +53,36 @@ namespace XM.Services
         /// <summary>
         /// 压入对象池
         /// </summary>
-        /// <param name="objName">对象名</param>
-        /// <param name="obj">对象</param>
-        public void Push(string objName, GameObject obj)
+        /// <param name="obj"></param>
+        public void Push(GameObject obj)
         {
-            if (null == obj)
+            PoolItem item = obj.GetComponent<PoolItem>();
+            Push(item);
+        }
+
+        /// <summary>
+        /// 压入对象池
+        /// </summary>
+        /// <param name="item"></param>
+        public void Push(PoolItem item)
+        {
+            if (null == item)
             {
-                throw new System.Exception(string.Format("对象池压入对象 {0} 为null。", objName));
+                throw new System.Exception(string.Format("对象池压入对象为null。"));
             }
 
-            obj.transform.parent = _poolRoot;
-            obj.SetActive(false);
-
-            Stack<GameObject> objs = null;
-            if (!_pools.TryGetValue(objName, out objs))
+            Stack<PoolItem> items = null;
+            if (!_pools.TryGetValue(item.PoolName, out items))
             {
-                objs = new Stack<GameObject>(10);
-                _pools.Add(objName, objs);
+                items = new Stack<PoolItem>(10);
+                _pools.Add(item.PoolName, items);
             }
 
-            objs.Push(obj);
+            items.Push(item);
+
+            //先调用EnterPool再改变父节点
+            item.EnterPool();
+            item.transform.parent = _poolRoot;
         }
 
         /// <summary>
@@ -82,24 +92,25 @@ namespace XM.Services
         /// <returns></returns>
         public GameObject Pop(string objName)
         {
-            GameObject obj = null;
-            Stack<GameObject> objs = null;
-            if (!_pools.TryGetValue(objName, out objs))
+            PoolItem item = null;
+            Stack<PoolItem> items = null;
+            if (!_pools.TryGetValue(objName, out items))
             {
-                return obj;
+                return null;
             }
 
-            obj = objs.Pop();
+            item = items.Pop();
 
-            MoveToCurrent(obj);
-            obj.SetActive(true);
-
-            if (0 == objs.Count)
+            if (0 == items.Count)
             {
                 _pools.Remove(objName);
             }
 
-            return obj;
+            //先改变父节点再调用LeavePool
+            MoveToCurrent(item.gameObject);
+            item.LeavePool();
+
+            return item.gameObject;
         }
 
         /// <summary>
@@ -107,16 +118,16 @@ namespace XM.Services
         /// </summary>
         public void Clear()
         {
-            GameObject obj = null;
-            Stack<GameObject> objs = null;
-            foreach (var objsPair in _pools)
+            PoolItem item = null;
+            Stack<PoolItem> items = null;
+            foreach (var itemsPair in _pools)
             {
-                objs = objsPair.Value;
+                items = itemsPair.Value;
 
-                while (objs.Count > 0)
+                while (items.Count > 0)
                 {
-                    obj = objs.Pop();
-                    GameObject.DestroyImmediate(obj);
+                    item = items.Pop();
+                    item.Destory();
                 }
             }
             _pools.Clear();
@@ -125,24 +136,24 @@ namespace XM.Services
         /// <summary>
         /// 清空指定对象
         /// </summary>
-        /// <param name="objName">对象名</param>
-        public void Clear(string objName)
+        /// <param name="poolName">对象名</param>
+        public void Clear(string poolName)
         {
-            GameObject obj = null;
-            Stack<GameObject> objs = null;
+            PoolItem item = null;
+            Stack<PoolItem> items = null;
 
-            if (!_pools.TryGetValue(objName, out objs))
+            if (!_pools.TryGetValue(poolName, out items))
             {
                 return;
             }
 
-            while (objs.Count > 0)
+            while (items.Count > 0)
             {
-                obj = objs.Pop();
-                GameObject.DestroyImmediate(obj);
+                item = items.Pop();
+                item.Destory();
             }
 
-            _pools.Remove(objName);
+            _pools.Remove(poolName);
         }
     }
 }

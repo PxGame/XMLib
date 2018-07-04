@@ -28,8 +28,9 @@ public class AppEntry : IAppEntry
             if (obj == null)
             {
                 obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                obj.AddComponent<PoolTestItem>();
+                PoolItem item = obj.AddComponent<PoolItem>();
                 obj.name = "123";
+                item.PoolName = "123";
             }
         }
 
@@ -38,8 +39,12 @@ public class AppEntry : IAppEntry
             GameObject obj = GameObject.Find("123");
             if (obj != null)
             {
-                Get<PoolService>().Push("123", obj);
+                Get<PoolService>().Push(obj);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Get<PoolService>().Clear();
         }
     }
 }

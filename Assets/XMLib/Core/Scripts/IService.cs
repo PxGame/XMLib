@@ -20,7 +20,7 @@ namespace XM
         /// <summary>
         /// 服务名
         /// </summary>
-        public string ServiceName { get { return GetType().FullName; } }
+        public virtual string ServiceName { get { return GetType().FullName; } }
 
         /// <summary>
         /// 启用Debug
