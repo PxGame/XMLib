@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XM;
@@ -45,6 +44,18 @@ public class AppEntry : IAppEntry
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Get<PoolService>().Clear();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Debug(DebugType.Error, "Error");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Debug(DebugType.Exception, "Exception");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Debug(DebugType.GG, "GG");
         }
     }
 }

@@ -1,26 +1,15 @@
-﻿using System;
-
-namespace XM.Services
+﻿namespace XM.Services
 {
     /// <summary>
-    /// 任务数据接口
+    /// 任务接口
+    /// 可将子类作为一个独立的任务传给TaskService去执行
     /// </summary>
-    public interface ITaskData : IMethodData
+    public interface ITaskData
     {
-        /// <summary>
-        /// 方法参数
-        /// </summary>
-        object[] MethodArgs { get; }
-
-        /// <summary>
-        /// 数据结果返回
-        /// </summary>
-        Action<Object> ResultCallback { get; }
-
         /// <summary>
         /// 执行任务
         /// </summary>
         /// <returns></returns>
-        object Call();
+        void Call();
     }
 }

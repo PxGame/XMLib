@@ -70,12 +70,14 @@ namespace XM.Services
                     }
                     //
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    Debug(DebugType.Exception, "主线程循环任务执行异常:{0}", ex);
                 }
             }
         }
+
+        #region Main Thread
 
         /// <summary>
         /// 主线程执行
@@ -118,31 +120,46 @@ namespace XM.Services
             }
         }
 
+        #endregion Main Thread
+
+        #region New Thread
+
 #if UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 
         /// <summary>
         /// 线程池中执行
         /// </summary>
-        /// <param name="task"></param>
+        /// <param name="task">任务</param>
         /// <returns>是否成功</returns>
         public bool RunOnThreadPool(Action task)
         {
             return ThreadPool.QueueUserWorkItem(RunActionThread, task);
         }
 
-#else
-
         /// <summary>
-        /// 在线程池中执行
+        /// 线程池中执行
         /// </summary>
         /// <param name="task">任务</param>
         /// <returns>是否成功</returns>
-        public bool RunOnThreadPool(Action task)
+        public bool RunOnThreadPool(ITaskData task)
         {
-            throw new NotSupportedException("当前平台不支持RunOnThreadPool。");
+            return ThreadPool.QueueUserWorkItem(RunTaskThread, task);
         }
 
 #endif
+
+        /// <summary>
+        /// 线程池中执行
+        /// </summary>
+        /// <param name="methodTarget">函数目标对象</param>
+        /// <param name="methodInfo">函数信息</param>
+        /// <param name="resultCallback">结果回调函数</param>
+        /// <param name="methodArgs">函数参数</param>
+        public void RunOnThreadPool(object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
+        {
+            TaskData data = new TaskData(methodTarget, methodInfo, resultCallback, methodArgs);
+            RunOnThreadPool(data);
+        }
 
         /// <summary>
         /// 执行
@@ -152,5 +169,16 @@ namespace XM.Services
         {
             ((Action)action)();
         }
+
+        /// <summary>
+        /// 执行
+        /// </summary>
+        /// <param name="task">任务</param>
+        public void RunTaskThread(object task)
+        {
+            ((ITaskData)task).Call();
+        }
+
+        #endregion New Thread
     }
 }

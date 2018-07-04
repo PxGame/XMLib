@@ -6,7 +6,7 @@ namespace XM.Services
     /// <summary>
     /// 任务数据
     /// </summary>
-    public class TaskData : ITaskData
+    public class TaskData : ITaskData, IMethodData
     {
         /// <summary>
         /// 函数参数
@@ -64,10 +64,9 @@ namespace XM.Services
         /// 执行
         /// </summary>
         /// <returns></returns>
-        public object Call()
+        public void Call()
         {
-            object result = null;
-
+            object result;
             try
             {
                 result = _methodInfo.Invoke(_methodTarget, _methodArgs);
@@ -81,8 +80,6 @@ namespace XM.Services
                 string msg = string.Format("事件调用异常 类：{0} 函数：{1}", _methodTarget, _methodInfo);
                 throw new Exception(msg, ex);
             }
-
-            return result;
         }
     }
 }

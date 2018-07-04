@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XM.Tools;
 
 namespace XM
 {
@@ -28,23 +28,23 @@ namespace XM
         /// <summary>
         /// 日志输出
         /// </summary>
-        public Action<int, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
+        public Action<DebugType, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
 
         #region private members
 
         private Action _onFixedUpdate;
         private Action _onLateUpdate;
         private Action _onUpdate;
-        private Action<int, string> _onDebugOut;
+        private Action<DebugType, string> _onDebugOut;
 
         private Dictionary<Type, IService> _serviceDict = new Dictionary<Type, IService>();
 
         /// <summary>
         /// debug 等级
         /// </summary>
-        [Tooltip("0-一般 1-警告 2-错误 3-GG ")]
         [SerializeField]
-        private int _debugLevel = 0;
+        [EnumFlags]
+        private DebugType _debugType;
 
         #endregion private members
 
@@ -193,12 +193,12 @@ namespace XM
         /// <summary>
         /// debug 输出
         /// </summary>
-        /// <param name="level">debug 等级= 0-一般 1-警告 2-错误 3-GG </param>
+        /// <param name="debugType">debug 类型 </param>
         /// <param name="format">格式化</param>
         /// <param name="args">参数</param>
-        public virtual void Debug(int level, string format, params object[] args)
+        public virtual void Debug(DebugType debugType, string format, params object[] args)
         {
-            if (level < _debugLevel)
+            if (0 == (debugType & _debugType))
             {
                 return;
             }
@@ -207,11 +207,11 @@ namespace XM
 
             if (null != _onDebugOut)
             {
-                _onDebugOut(level, msg);
+                _onDebugOut(debugType, msg);
             }
 
 #if UNITY_EDITOR
-            UnityEngine.Debug.LogFormat("[{0}]{1}", level, msg);
+            UnityEngine.Debug.LogFormat("[{0}]{1}", debugType, msg);
 #endif
         }
 

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace XM
+﻿namespace XM
 {
     /// <summary>
     /// 服务接口
@@ -57,10 +53,10 @@ namespace XM
         /// <summary>
         /// debug 输出
         /// </summary>
-        /// <param name="level">debug 等级= 0-一般 1-警告 2-错误 3-GG </param>
+        /// <param name="debugType">debug 类型</param>
         /// <param name="format">格式化</param>
         /// <param name="args">参数</param>
-        public void Debug(int level, string format, params object[] args)
+        public void Debug(DebugType debugType, string format, params object[] args)
         {
             if (!_enableDebug)
             {
@@ -69,7 +65,7 @@ namespace XM
 
             string msg = string.Format(format, args);
             string outLog = string.Format("[{0}]{1}", ServiceName, msg);
-            Entry.Debug(level, outLog);
+            Entry.Debug(debugType, outLog);
         }
 
         /// <summary>

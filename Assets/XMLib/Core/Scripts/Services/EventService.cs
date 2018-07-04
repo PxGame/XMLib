@@ -234,26 +234,34 @@ namespace XM.Services
 
                 for (int i = 0; i < count; i++)
                 {
-                    eventData = eventDatas[i];
+                    try
+                    {
+                        eventData = eventDatas[i];
 
-                    if (!eventData.IsVaild())
-                    {//无效则移除事件
-                        eventDatas.Remove(eventData);
-                        --count;
-                        --i;
-                        continue;
+                        if (!eventData.IsVaild())
+                        {//无效则移除事件
+                            Debug(DebugType.Warning, "发现无效事件，执行移除操作");
+                            eventDatas.Remove(eventData);
+                            --count;
+                            --i;
+                            continue;
+                        }
+
+                        //调用
+                        result = (T)eventData.Call(args);
+                        results.Add(result);
+
+                        if (eventData.CheckRemove())
+                        {//检查是否需要移除该事件
+                            eventDatas.Remove(eventData);
+                            --count;
+                            --i;
+                            continue;
+                        }
                     }
-
-                    //调用
-                    result = (T)eventData.Call(args);
-                    results.Add(result);
-
-                    if (eventData.CheckRemove())
-                    {//检查是否需要移除该事件
-                        eventDatas.Remove(eventData);
-                        --count;
-                        --i;
-                        continue;
+                    catch (Exception ex)
+                    {
+                        Debug(DebugType.Exception, "事件调用异常:", ex);
                     }
                 }
 

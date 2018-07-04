@@ -25,7 +25,7 @@
         /// <summary>
         /// 当前调用次数
         /// </summary>
-        int CurrentInvoleCount { get; }
+        int CurrentInvokeCount { get; }
 
         /// <summary>
         /// 检查是否有效
