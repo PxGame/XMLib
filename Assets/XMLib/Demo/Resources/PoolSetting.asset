@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5aab9b58d559d634e9ee394271eb11a2, type: 3}
-  m_Name: PoolItemSetting
+  m_Name: PoolSetting
   m_EditorClassIdentifier: 
   Items:
   - {fileID: 1144090732615774, guid: cd4f62d8ff22d77428b5b4d2a58f504e, type: 2}

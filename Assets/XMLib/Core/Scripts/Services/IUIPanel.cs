@@ -23,7 +23,18 @@ namespace XM.Services
 
         protected UIPanelStatus _status;
 
+        /// <summary>
+        /// UI服务
+        /// </summary>
+        protected UIService Service { get { return _service; } }
+
         #endregion Protected memebers
+
+        #region Private memebers
+
+        private UIService _service;
+
+        #endregion Private memebers
 
         #region Base
 
@@ -116,6 +127,16 @@ namespace XM.Services
         }
 
         /// <summary>
+        /// 窗口创建
+        /// </summary>
+        /// <param name="service"></param>
+        internal void Create(UIService service)
+        {
+            _service = service;
+            OnCreate();
+        }
+
+        /// <summary>
         /// 销毁
         /// </summary>
         internal void Delete()
@@ -148,6 +169,13 @@ namespace XM.Services
         /// 默认初始化
         /// </summary>
         protected virtual void Initialize()
+        {
+        }
+
+        /// <summary>
+        /// 窗口创建
+        /// </summary>
+        protected virtual void OnCreate()
         {
         }
 
