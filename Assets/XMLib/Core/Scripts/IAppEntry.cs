@@ -9,7 +9,7 @@ namespace XM
     /// <summary>
     /// 应用入口
     /// </summary>
-    public class IAppEntry : MonoBehaviour
+    public abstract class IAppEntry : MonoBehaviour
     {
         #region Public memebers
 
@@ -41,7 +41,7 @@ namespace XM
         /// <summary>
         /// 服务设置集合
         /// </summary>
-        public ServiceSettings ServiceSettings { get { return _serviceSettings; } }
+        public ServiceSettings Settings { get { return _settings; } }
 
         #endregion Public memebers
 
@@ -62,7 +62,7 @@ namespace XM
         private DebugType _debugType;
 
         [SerializeField]
-        private ServiceSettings _serviceSettings;
+        private ServiceSettings _settings;
 
         #endregion private members
 

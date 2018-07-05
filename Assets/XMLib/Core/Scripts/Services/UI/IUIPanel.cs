@@ -22,6 +22,11 @@ namespace XM.Services
         /// </summary>
         public string PanelName { get { return _panelName; } }
 
+        /// <summary>
+        /// 是否显示
+        /// </summary>
+        public bool IsDisplay { get { return (_status != UIPanelStatus.Leave); } }
+
         #endregion Public members
 
         #region Protected memebers
@@ -39,7 +44,7 @@ namespace XM.Services
         private string _panelName;
 
         private UIService _service;
-        private UIPanelStatus _status;
+        private UIPanelStatus _status = UIPanelStatus.Leave;
 
         #endregion Private memebers
 

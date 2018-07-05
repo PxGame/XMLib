@@ -11,19 +11,24 @@ namespace XMEditor
     {
         private string _tip = "每个对象需有或继承于IUIPanel的组件，且PanelName不能相同";
         private string _errorMsg = "";
+        private SerializedProperty Root;
         private SerializedProperty Panels;
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
+            Root = serializedObject.FindProperty("Root");
             Panels = serializedObject.FindProperty("Panels");
 
             EditorGUI.BeginChangeCheck();
 
+            EditorGUILayout.PropertyField(Root, true);
             EditorGUILayout.PropertyField(Panels, true);
 
             if (GUILayout.Button("检查"))
             {
-                CheckData(Panels);
+                CheckData(Root, Panels);
             }
 
             EditorGUILayout.HelpBox(_tip, MessageType.None);
@@ -36,47 +41,68 @@ namespace XMEditor
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                CheckData(Panels);
+                CheckData(Root, Panels);
             }
         }
 
         /// <summary>
         /// 检查数据
         /// </summary>
-        private void CheckData(SerializedProperty panels)
+        private void CheckData(SerializedProperty root, SerializedProperty panels)
         {
             bool isError = false;
-            int length = panels.arraySize;
-            GameObject obj;
-            IUIPanel panel;
-            Dictionary<string, int> panelNames = new Dictionary<string, int>();
-            int existIndex;
-            for (int i = 0; i < length; i++)
+            string tmpMsg = "";
+
+            try
             {
-                obj = (GameObject)panels.GetArrayElementAtIndex(i).objectReferenceValue;
-                if (null == obj)
+                GameObject rootObj = (GameObject)root.objectReferenceValue;
+                if (null == rootObj)
                 {
-                    _errorMsg = string.Format("第{0}条对象为null.", i);
-                    isError = true;
-                    break;
+                    tmpMsg = string.Format("根节点对象为null.");
+                    throw new System.Exception(tmpMsg);
                 }
 
-                panel = obj.GetComponent<IUIPanel>();
-                if (null == panel)
+                UIRoot uiRoot = rootObj.GetComponent<UIRoot>();
+                if (null == uiRoot)
                 {
-                    _errorMsg = string.Format("第{0}条对象没有IUIPanel组件", i);
-                    isError = true;
-                    break;
+                    tmpMsg = string.Format("根节点对象没有UIRoot组件");
+                    throw new System.Exception(tmpMsg);
                 }
 
-                if (panelNames.TryGetValue(panel.PanelName, out existIndex))
+                int length = panels.arraySize;
+                GameObject obj;
+                IUIPanel panel;
+                Dictionary<string, int> panelNames = new Dictionary<string, int>();
+                int existIndex;
+                for (int i = 0; i < length; i++)
                 {
-                    _errorMsg = string.Format("第{0}条与第{1}条对象的PanelName重复.", i, existIndex);
-                    isError = true;
-                    break;
-                }
+                    obj = (GameObject)panels.GetArrayElementAtIndex(i).objectReferenceValue;
+                    if (null == obj)
+                    {
+                        tmpMsg = string.Format("第{0}条对象为null.", i);
+                        throw new System.Exception(tmpMsg);
+                    }
 
-                panelNames.Add(panel.PanelName, i);
+                    panel = obj.GetComponent<IUIPanel>();
+                    if (null == panel)
+                    {
+                        tmpMsg = string.Format("第{0}条对象没有IUIPanel组件", i);
+                        throw new System.Exception(tmpMsg);
+                    }
+
+                    if (panelNames.TryGetValue(panel.PanelName, out existIndex))
+                    {
+                        tmpMsg = string.Format("第{0}条与第{1}条对象的PanelName重复.", i, existIndex);
+                        throw new System.Exception(tmpMsg);
+                    }
+
+                    panelNames.Add(panel.PanelName, i);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                isError = true;
+                _errorMsg = ex.Message;
             }
 
             if (!isError)

@@ -10,8 +10,26 @@ namespace XM.Services
     [CreateAssetMenu]
     public class UISetting : ScriptableObject
     {
+        /// <summary>
+        /// UI根节点
+        /// </summary>
+        [SerializeField]
+        protected GameObject Root;
+
+        /// <summary>
+        /// 面板
+        /// </summary>
         [SerializeField]
         protected List<GameObject> Panels;
+
+        /// <summary>
+        /// 获取根节点
+        /// </summary>
+        /// <returns></returns>
+        public GameObject GetRoot()
+        {
+            return Root;
+        }
 
         /// <summary>
         /// 获取面板字典

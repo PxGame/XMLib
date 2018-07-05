@@ -14,6 +14,7 @@ public class AppEntry : IAppEntry
             typeof(TaskService),
             typeof(EventService),
             typeof(PoolService),
+            typeof(UIService),
         };
     }
 
@@ -37,6 +38,18 @@ public class AppEntry : IAppEntry
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Get<PoolService>().Clear();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Get<UIService>().ShowPanel("Panel1", false, () => { Debug(DebugType.Normal, "show Panel1 complete"); }, "MMP");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Get<UIService>().ShowPanel("Panel2", false, () => { Debug(DebugType.Normal, "show Panel2 complete"); });
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Get<UIService>().HidePanel(false, () => { Debug(DebugType.Normal, "hide Panel complete"); });
         }
     }
 }

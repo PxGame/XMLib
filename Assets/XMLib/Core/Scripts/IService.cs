@@ -11,7 +11,7 @@
         /// <summary>
         /// 应用入口
         /// </summary>
-        protected IAppEntry Entry { get { return _entry; } }
+        public IAppEntry Entry { get { return _entry; } }
 
         /// <summary>
         /// 服务名

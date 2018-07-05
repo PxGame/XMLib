@@ -16,6 +16,7 @@ namespace XMEditor
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
             items = serializedObject.FindProperty("Items");
 
             EditorGUI.BeginChangeCheck();
@@ -47,37 +48,43 @@ namespace XMEditor
         private void CheckData(SerializedProperty items)
         {
             bool isError = false;
-            int length = items.arraySize;
-            GameObject obj;
-            PoolItem item;
-            Dictionary<string, int> poolNames = new Dictionary<string, int>();
-            int existIndex;
-            for (int i = 0; i < length; i++)
+            string tmpMsg = "";
+            try
             {
-                obj = (GameObject)items.GetArrayElementAtIndex(i).objectReferenceValue;
-                if (null == obj)
+                int length = items.arraySize;
+                GameObject obj;
+                PoolItem item;
+                Dictionary<string, int> poolNames = new Dictionary<string, int>();
+                int existIndex;
+                for (int i = 0; i < length; i++)
                 {
-                    _errorMsg = string.Format("第{0}条对象为null.", i);
-                    isError = true;
-                    break;
-                }
+                    obj = (GameObject)items.GetArrayElementAtIndex(i).objectReferenceValue;
+                    if (null == obj)
+                    {
+                        tmpMsg = string.Format("第{0}条对象为null.", i);
+                        throw new System.Exception(tmpMsg);
+                    }
 
-                item = obj.GetComponent<PoolItem>();
-                if (null == item)
-                {
-                    _errorMsg = string.Format("第{0}条对象没有PoolItem组件", i);
-                    isError = true;
-                    break;
-                }
+                    item = obj.GetComponent<PoolItem>();
+                    if (null == item)
+                    {
+                        tmpMsg = string.Format("第{0}条对象没有PoolItem组件", i);
+                        throw new System.Exception(tmpMsg);
+                    }
 
-                if (poolNames.TryGetValue(item.PoolName, out existIndex))
-                {
-                    _errorMsg = string.Format("第{0}条与第{1}条对象的PoolName重复.", i, existIndex);
-                    isError = true;
-                    break;
-                }
+                    if (poolNames.TryGetValue(item.PoolName, out existIndex))
+                    {
+                        tmpMsg = string.Format("第{0}条与第{1}条对象的PoolName重复.", i, existIndex);
+                        throw new System.Exception(tmpMsg);
+                    }
 
-                poolNames.Add(item.PoolName, i);
+                    poolNames.Add(item.PoolName, i);
+                }
+            }
+            catch (Exception ex)
+            {
+                isError = true;
+                _errorMsg = ex.Message;
             }
 
             if (!isError)

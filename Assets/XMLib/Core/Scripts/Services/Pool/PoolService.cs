@@ -11,9 +11,10 @@ namespace XM.Services
     {
         #region private members
 
-        private Dictionary<string, GameObject> _itemDict;
+        private Dictionary<string, GameObject> _preItemDict;
         private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
 
+        private GameObject _poolObj;
         private Transform _poolRoot;
 
         #endregion private members
@@ -22,17 +23,17 @@ namespace XM.Services
 
         protected override void OnAddService()
         {
-            GameObject poolObj = new GameObject("PoolRoot");
-            GameObject.DontDestroyOnLoad(poolObj);
-            _poolRoot = poolObj.transform;
+            _poolObj = new GameObject("PoolRoot");
+            GameObject.DontDestroyOnLoad(_poolObj);
+            _poolRoot = _poolObj.transform;
 
             //获取设置
-            IPoolSettingValue setting = Entry.ServiceSettings as IPoolSettingValue;
+            IPoolSettingValue setting = Entry.Settings as IPoolSettingValue;
             if (null == setting)
             {
                 throw new System.Exception("启用对象池服务后,服务设置机核必须实现IPoolSettingValue接口.");
             }
-            _itemDict = setting.PoolSetting.GetItemDict();
+            _preItemDict = setting.PoolSetting.GetItemDict();
         }
 
         protected override void OnInitService()
@@ -41,9 +42,10 @@ namespace XM.Services
 
         protected override void OnRemoveService()
         {
-            if (null != _poolRoot)
+            if (null != _poolObj)
             {
-                GameObject.Destroy(_poolRoot.gameObject);
+                GameObject.Destroy(_poolObj);
+                _poolObj = null;
                 _poolRoot = null;
             }
 
@@ -116,7 +118,7 @@ namespace XM.Services
             {//没有则创建
                 Debug(DebugType.Normal, "创建对象:{0}", poolName);
                 GameObject preObj = null;
-                if (!_itemDict.TryGetValue(poolName, out preObj))
+                if (!_preItemDict.TryGetValue(poolName, out preObj))
                 {
                     throw new System.Exception("对象池预制中没有该类型对象:" + poolName);
                 }
