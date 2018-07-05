@@ -19,6 +19,22 @@ namespace XM.Services
 
         #endregion protected members
 
+        #region Base
+
+        protected override void OnAddService()
+        {
+        }
+
+        protected override void OnInitService()
+        {
+        }
+
+        protected override void OnRemoveService()
+        {
+        }
+
+        #endregion Base
+
         #region ext opt
 
         /// <summary>

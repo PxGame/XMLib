@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aab9b58d559d634e9ee394271eb11a2, type: 3}
+  m_Name: PoolItemSetting
+  m_EditorClassIdentifier: 
+  Items:
+  - {fileID: 1144090732615774, guid: cd4f62d8ff22d77428b5b4d2a58f504e, type: 2}
+  - {fileID: 1416189297623058, guid: 129caedb687cf1641a216974dbd5cb18, type: 2}
+  - {fileID: 1856681210120664, guid: c28db551e6ba2f44e98775e10bbcbacd, type: 2}

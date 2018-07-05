@@ -21,7 +21,6 @@ namespace XM.Services
         public void EnterPool()
         {
             OnEnterPool();
-            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -29,7 +28,6 @@ namespace XM.Services
         /// </summary>
         public void LeavePool()
         {
-            gameObject.SetActive(true);
             OnLeavePool();
         }
 
@@ -54,5 +52,17 @@ namespace XM.Services
         protected virtual void OnLeavePool()
         {
         }
+
+#if UNITY_EDITOR
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(_poolName))
+            {
+                _poolName = gameObject.name;
+            }
+        }
+
+#endif
     }
 }

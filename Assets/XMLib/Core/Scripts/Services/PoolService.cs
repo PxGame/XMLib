@@ -11,17 +11,30 @@ namespace XM.Services
     {
         #region private members
 
+        private Dictionary<string, GameObject> _objDict;
         private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
 
         private Transform _poolRoot;
 
+        private string _settingPath = "PoolSetting";
+
         #endregion private members
+
+        #region Base
 
         protected override void OnAddService()
         {
             GameObject poolObj = new GameObject("PoolRoot");
             GameObject.DontDestroyOnLoad(poolObj);
             _poolRoot = poolObj.transform;
+
+            //获取资源
+            PoolSetting setting = Resources.Load<PoolSetting>(_settingPath);
+            if (null == setting)
+            {
+                throw new System.Exception("未找到对象池配置资源:" + _settingPath);
+            }
+            _objDict = setting.Get();
         }
 
         protected override void OnInitService()
@@ -38,6 +51,8 @@ namespace XM.Services
 
             _pools.Clear();
         }
+
+        #endregion Base
 
         /// <summary>
         /// 移动对象到当前场景
@@ -71,6 +86,7 @@ namespace XM.Services
                 throw new System.Exception(string.Format("对象池压入对象为null。"));
             }
 
+            string poolName = item.PoolName;
             Stack<PoolItem> items = null;
             if (!_pools.TryGetValue(item.PoolName, out items))
             {
@@ -78,39 +94,58 @@ namespace XM.Services
                 _pools.Add(item.PoolName, items);
             }
 
+            Debug(DebugType.Normal, "压入对象:{0}", poolName);
+            //压入池
             items.Push(item);
 
-            //先调用EnterPool再改变父节点
+            //
             item.EnterPool();
+            item.gameObject.SetActive(false);
             item.transform.parent = _poolRoot;
         }
 
         /// <summary>
         /// 弹出对象
         /// </summary>
-        /// <param name="objName">对象名</param>
+        /// <param name="poolName">对象名</param>
         /// <returns></returns>
-        public GameObject Pop(string objName)
+        public GameObject Pop(string poolName)
         {
+            GameObject obj = null;
             PoolItem item = null;
             Stack<PoolItem> items = null;
-            if (!_pools.TryGetValue(objName, out items))
-            {
-                return null;
+            if (!_pools.TryGetValue(poolName, out items))
+            {//没有则创建
+                Debug(DebugType.Normal, "创建对象:{0}", poolName);
+                GameObject preObj = null;
+                if (!_objDict.TryGetValue(poolName, out preObj))
+                {
+                    throw new System.Exception("对象池预制中没有该类型对象:" + poolName);
+                }
+
+                obj = GameObject.Instantiate(preObj);
+                obj.name = preObj.name;
+                item = obj.GetComponent<PoolItem>();
+            }
+            else
+            {//有则取出
+                Debug(DebugType.Normal, "取出对象:{0}", poolName);
+                item = items.Pop();
+                obj = item.gameObject;
+
+                if (0 == items.Count)
+                {
+                    _pools.Remove(poolName);
+                }
+
+                //移到当前场景
+                MoveToCurrent(obj);
+                obj.SetActive(true);
             }
 
-            item = items.Pop();
-
-            if (0 == items.Count)
-            {
-                _pools.Remove(objName);
-            }
-
-            //先改变父节点再调用LeavePool
-            MoveToCurrent(item.gameObject);
             item.LeavePool();
 
-            return item.gameObject;
+            return obj;
         }
 
         /// <summary>

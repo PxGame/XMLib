@@ -3,7 +3,7 @@
     /// <summary>
     /// 服务接口
     /// </summary>
-    public class IService
+    public abstract class IService
     {
         private IAppEntry _entry;
         private bool _enableDebug = true;
@@ -71,22 +71,16 @@
         /// <summary>
         /// 添加
         /// </summary>
-        protected virtual void OnAddService()
-        {
-        }
+        protected abstract void OnAddService();
 
         /// <summary>
         /// 初始化
         /// </summary>
-        protected virtual void OnInitService()
-        {
-        }
+        protected abstract void OnInitService();
 
         /// <summary>
         /// 移除
         /// </summary>
-        protected virtual void OnRemoveService()
-        {
-        }
+        protected abstract void OnRemoveService();
     }
 }

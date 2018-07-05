@@ -23,19 +23,12 @@ public class AppEntry : IAppEntry
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GameObject obj = Get<PoolService>().Pop("123");
-            if (obj == null)
-            {
-                obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                PoolItem item = obj.AddComponent<PoolItem>();
-                obj.name = "123";
-                item.PoolName = "123";
-            }
+            Get<PoolService>().Pop("Capsule");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GameObject obj = GameObject.Find("123");
+            GameObject obj = GameObject.Find("Capsule");
             if (obj != null)
             {
                 Get<PoolService>().Push(obj);
@@ -44,18 +37,6 @@ public class AppEntry : IAppEntry
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Get<PoolService>().Clear();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Debug(DebugType.Error, "Error");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Debug(DebugType.Exception, "Exception");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            Debug(DebugType.GG, "GG");
         }
     }
 }

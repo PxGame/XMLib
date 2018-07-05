@@ -39,16 +39,24 @@ namespace XM.Services
 
         #endregion protected members
 
+        #region Base
+
         protected override void OnAddService()
         {
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Entry.OnUpdate += Update;
         }
 
+        protected override void OnInitService()
+        {
+        }
+
         protected override void OnRemoveService()
         {
             Entry.OnUpdate -= Update;
         }
+
+        #endregion Base
 
         /// <summary>
         /// 必须在主线程循环中调用
