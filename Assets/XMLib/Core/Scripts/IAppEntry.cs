@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using XM.Services;
 using XM.Tools;
 
 namespace XM
@@ -10,6 +11,8 @@ namespace XM
     /// </summary>
     public class IAppEntry : MonoBehaviour
     {
+        #region Public memebers
+
         /// <summary>
         /// 物理更新
         /// </summary>
@@ -30,6 +33,18 @@ namespace XM
         /// </summary>
         public Action<DebugType, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
 
+        /// <summary>
+        /// Debug类型
+        /// </summary>
+        public DebugType DebugType { get { return _debugType; } set { _debugType = value; } }
+
+        /// <summary>
+        /// 服务设置集合
+        /// </summary>
+        public ServiceSettings ServiceSettings { get { return _serviceSettings; } }
+
+        #endregion Public memebers
+
         #region private members
 
         private Action _onFixedUpdate;
@@ -45,6 +60,9 @@ namespace XM
         [SerializeField]
         [EnumFlags]
         private DebugType _debugType;
+
+        [SerializeField]
+        private ServiceSettings _serviceSettings;
 
         #endregion private members
 

@@ -16,7 +16,7 @@ namespace XM.Services
         /// <summary>
         /// 获取字典
         /// </summary>
-        public Dictionary<string, GameObject> Get()
+        public Dictionary<string, GameObject> GetItemDict()
         {
             //转换成字典
             int length = Items.Count;

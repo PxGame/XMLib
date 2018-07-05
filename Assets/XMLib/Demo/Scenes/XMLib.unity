@@ -142,6 +142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugType: -1
+  _serviceSettings:
+    _uiSetting: {fileID: 11400000, guid: 94b942b62da4c354f81a3b103546be8d, type: 2}
+    _poolSetting: {fileID: 11400000, guid: 38bd658e83fe9a949bcc8773c5677532, type: 2}
 --- !u!4 &385234605
 Transform:
   m_ObjectHideFlags: 0

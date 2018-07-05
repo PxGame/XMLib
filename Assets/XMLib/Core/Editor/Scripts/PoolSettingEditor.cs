@@ -8,7 +8,7 @@ using XM.Services;
 namespace XMEditor
 {
     [CustomEditor(typeof(PoolSetting))]
-    public class PoolItemSettingEditor : Editor
+    public class PoolSettingEditor : Editor
     {
         private string _tip = "每个对象需有或继承于PoolItem的组件，且PoolName不能相同";
         private string _errorMsg = "";

@@ -11,12 +11,10 @@ namespace XM.Services
     {
         #region private members
 
-        private Dictionary<string, GameObject> _objDict;
+        private Dictionary<string, GameObject> _itemDict;
         private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
 
         private Transform _poolRoot;
-
-        private string _settingPath = "PoolSetting";
 
         #endregion private members
 
@@ -28,13 +26,13 @@ namespace XM.Services
             GameObject.DontDestroyOnLoad(poolObj);
             _poolRoot = poolObj.transform;
 
-            //获取资源
-            PoolSetting setting = Resources.Load<PoolSetting>(_settingPath);
+            //获取设置
+            IPoolSettingValue setting = Entry.ServiceSettings as IPoolSettingValue;
             if (null == setting)
             {
-                throw new System.Exception("未找到对象池配置资源:" + _settingPath);
+                throw new System.Exception("启用对象池服务后,服务设置机核必须实现IPoolSettingValue接口.");
             }
-            _objDict = setting.Get();
+            _itemDict = setting.PoolSetting.GetItemDict();
         }
 
         protected override void OnInitService()
@@ -118,7 +116,7 @@ namespace XM.Services
             {//没有则创建
                 Debug(DebugType.Normal, "创建对象:{0}", poolName);
                 GameObject preObj = null;
-                if (!_objDict.TryGetValue(poolName, out preObj))
+                if (!_itemDict.TryGetValue(poolName, out preObj))
                 {
                     throw new System.Exception("对象池预制中没有该类型对象:" + poolName);
                 }

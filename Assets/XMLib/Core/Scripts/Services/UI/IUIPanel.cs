@@ -17,11 +17,14 @@ namespace XM.Services
         /// </summary>
         public UIPanelStatus Status { get { return _status; } }
 
+        /// <summary>
+        /// 面板名字
+        /// </summary>
+        public string PanelName { get { return _panelName; } }
+
         #endregion Public members
 
         #region Protected memebers
-
-        protected UIPanelStatus _status;
 
         /// <summary>
         /// UI服务
@@ -32,7 +35,11 @@ namespace XM.Services
 
         #region Private memebers
 
+        [SerializeField]
+        private string _panelName;
+
         private UIService _service;
+        private UIPanelStatus _status;
 
         #endregion Private memebers
 
@@ -310,5 +317,17 @@ namespace XM.Services
         }
 
         #endregion Anima
+
+#if UNITY_EDITOR
+
+        protected virtual void OnValidate()
+        {
+            if (string.IsNullOrEmpty(_panelName))
+            {
+                _panelName = gameObject.name;
+            }
+        }
+
+#endif
     }
 }
