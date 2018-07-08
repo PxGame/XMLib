@@ -12,8 +12,32 @@ namespace XM.Services
         /// </summary>
         public string PoolName { get { return _poolName; } set { _poolName = value; } }
 
+        #region protected members
+
         [SerializeField]
         protected string _poolName = "";
+
+        /// <summary>
+        /// 对象池服务
+        /// </summary>
+        protected PoolService Service { get { return _service; } }
+
+        #endregion protected members
+
+        #region private members
+
+        private PoolService _service;
+
+        #endregion private members
+
+        /// <summary>
+        /// 创建时初始化
+        /// </summary>
+        /// <param name="service">所在服务</param>
+        public void Create(PoolService service)
+        {
+            _service = service;
+        }
 
         /// <summary>
         /// 进入对象池
@@ -55,7 +79,7 @@ namespace XM.Services
 
 #if UNITY_EDITOR
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (string.IsNullOrEmpty(_poolName))
             {

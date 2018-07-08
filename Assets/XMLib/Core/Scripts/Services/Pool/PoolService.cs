@@ -126,6 +126,7 @@ namespace XM.Services
                 obj = GameObject.Instantiate(preObj);
                 obj.name = preObj.name;
                 item = obj.GetComponent<PoolItem>();
+                item.Create(this);//实例化后初始化
             }
             else
             {//有则取出
