@@ -21,16 +21,9 @@ namespace XM.Services
 
         #region Base
 
-        protected override void OnAddService()
+        protected override void OnClearService()
         {
-        }
-
-        protected override void OnInitService()
-        {
-        }
-
-        protected override void OnRemoveService()
-        {
+            RemoveEvent();
         }
 
         #endregion Base
@@ -222,6 +215,17 @@ namespace XM.Services
             lock (SyncRoot)
             {
                 _eventDict.Remove(eventName);
+            }
+        }
+
+        /// <summary>
+        /// 移除所有事件
+        /// </summary>
+        public void RemoveEvent()
+        {
+            lock (SyncRoot)
+            {
+                _eventDict.Clear();
             }
         }
 

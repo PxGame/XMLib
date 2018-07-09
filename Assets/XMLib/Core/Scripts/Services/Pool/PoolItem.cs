@@ -58,7 +58,7 @@ namespace XM.Services
         /// <summary>
         /// 销毁
         /// </summary>
-        public virtual void Destory()
+        public virtual void Delete()
         {
             Destroy(gameObject);
         }

@@ -36,10 +36,6 @@ namespace XM.Services
             _preItemDict = setting.PoolSetting.GetItemDict();
         }
 
-        protected override void OnInitService()
-        {
-        }
-
         protected override void OnRemoveService()
         {
             if (null != _poolObj)
@@ -50,6 +46,11 @@ namespace XM.Services
             }
 
             _pools.Clear();
+        }
+
+        protected override void OnClearService()
+        {
+            Clear();
         }
 
         #endregion Base
@@ -163,7 +164,7 @@ namespace XM.Services
                 while (items.Count > 0)
                 {
                     item = items.Pop();
-                    item.Destory();
+                    item.Delete();
                 }
             }
             _pools.Clear();
@@ -186,7 +187,7 @@ namespace XM.Services
             while (items.Count > 0)
             {
                 item = items.Pop();
-                item.Destory();
+                item.Delete();
             }
 
             _pools.Remove(poolName);

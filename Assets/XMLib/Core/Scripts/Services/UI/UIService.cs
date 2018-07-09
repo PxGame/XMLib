@@ -203,6 +203,21 @@ namespace XM.Services
             _panelCache.Clear();
         }
 
+        public void Clear()
+        {
+            IUIPanel panel;
+            foreach (var panelPair in _panelPool)
+            {
+                panel = panelPair.Value;
+
+                if (null == panel)
+                {
+                }
+
+                panel.Delete();
+            }
+        }
+
         #endregion Base Operation
 
         #region Stack Operation
@@ -256,7 +271,7 @@ namespace XM.Services
                 return false;
             }
 
-            //开始显示
+            //开始操作
             _isOperating = true;
 
             //执行协程
@@ -285,7 +300,7 @@ namespace XM.Services
                 return false;
             }
 
-            //开始显示
+            //开始操作
             _isOperating = true;
 
             //执行协程

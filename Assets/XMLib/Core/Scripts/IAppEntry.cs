@@ -119,6 +119,8 @@ namespace XM
             }
         }
 
+        #region Service Operation
+
         /// <summary>
         /// 获取服务
         /// </summary>
@@ -228,6 +230,30 @@ namespace XM
         }
 
         /// <summary>
+        /// 移除所有服务
+        /// </summary>
+        private void RemoveAll()
+        {
+            foreach (var servicePair in _serviceDict)
+            {
+                Debug(DebugType.Normal, "移除服务 {0}", servicePair.Key.FullName);
+
+                //调用移除事件
+                servicePair.Value.RemoveService();
+            }
+            _serviceDict.Clear();
+        }
+
+        /// <summary>
+        /// 清理所有服务
+        /// </summary>
+        public void ClearAll()
+        {
+        }
+
+        #endregion Service Operation
+
+        /// <summary>
         /// debug 输出
         /// </summary>
         /// <param name="debugType">debug 类型 </param>
@@ -250,21 +276,6 @@ namespace XM
 #if UNITY_EDITOR
             UnityEngine.Debug.LogFormat("[{0}]{1}", debugType, msg);
 #endif
-        }
-
-        /// <summary>
-        /// 移除所有服务
-        /// </summary>
-        private void RemoveAll()
-        {
-            foreach (var servicePair in _serviceDict)
-            {
-                Debug(DebugType.Normal, "移除服务 {0}", servicePair.Key.FullName);
-
-                //调用移除事件
-                servicePair.Value.RemoveService();
-            }
-            _serviceDict.Clear();
         }
 
         /// <summary>

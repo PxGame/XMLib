@@ -1,4 +1,6 @@
-﻿namespace XM
+﻿using System;
+
+namespace XM
 {
     /// <summary>
     /// 服务接口
@@ -51,6 +53,14 @@
         }
 
         /// <summary>
+        /// 清理服务
+        /// </summary>
+        public void ClearService()
+        {
+            OnClearService();
+        }
+
+        /// <summary>
         /// debug 输出
         /// </summary>
         /// <param name="debugType">debug 类型</param>
@@ -71,16 +81,29 @@
         /// <summary>
         /// 添加
         /// </summary>
-        protected abstract void OnAddService();
+        protected virtual void OnAddService()
+        {
+        }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        protected abstract void OnInitService();
+        protected virtual void OnInitService()
+        {
+        }
 
         /// <summary>
         /// 移除
         /// </summary>
-        protected abstract void OnRemoveService();
+        protected virtual void OnRemoveService()
+        {
+        }
+
+        /// <summary>
+        /// 清理
+        /// </summary>
+        protected virtual void OnClearService()
+        {
+        }
     }
 }

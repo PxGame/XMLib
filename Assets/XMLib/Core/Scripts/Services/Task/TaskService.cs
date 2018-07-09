@@ -47,13 +47,14 @@ namespace XM.Services
             Entry.OnUpdate += Update;
         }
 
-        protected override void OnInitService()
-        {
-        }
-
         protected override void OnRemoveService()
         {
             Entry.OnUpdate -= Update;
+        }
+
+        protected override void OnClearService()
+        {
+            Clear();
         }
 
         #endregion Base
@@ -125,6 +126,17 @@ namespace XM.Services
             lock (SyncRoot)
             {
                 _tasks.Push(data);
+            }
+        }
+
+        /// <summary>
+        /// 清理
+        /// </summary>
+        public void Clear()
+        {
+            lock (SyncRoot)
+            {
+                _tasks.Clear();
             }
         }
 
