@@ -9,6 +9,6 @@
         Warning = 0x02,
         Exception = 0x04,
         Error = 0x08,
-        GG = 0x10
+        GG = 0x10,
     }
 }

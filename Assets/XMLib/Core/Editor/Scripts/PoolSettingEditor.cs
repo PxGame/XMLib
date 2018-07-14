@@ -13,14 +13,17 @@ namespace XMEditor
         private string _tip = "每个对象需有或继承于PoolItem的组件，且PoolName不能相同";
         private string _errorMsg = "";
         private SerializedProperty items;
+        private SerializedProperty _debugType;
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            _debugType = serializedObject.FindProperty("_debugType");
             items = serializedObject.FindProperty("Items");
 
             EditorGUI.BeginChangeCheck();
 
+            EditorGUILayout.PropertyField(_debugType);
             EditorGUILayout.PropertyField(items, true);
 
             if (GUILayout.Button("检查"))

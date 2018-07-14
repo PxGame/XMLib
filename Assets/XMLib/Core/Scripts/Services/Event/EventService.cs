@@ -6,7 +6,7 @@ namespace XM.Services
     /// <summary>
     /// 事件服务
     /// </summary>
-    public class EventService : IService
+    public class EventService : BaseService<EventSetting>
     {
         #region protected members
 

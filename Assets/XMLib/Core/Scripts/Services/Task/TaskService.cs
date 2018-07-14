@@ -8,7 +8,7 @@ namespace XM.Services
     /// <summary>
     /// 任务服务
     /// </summary>
-    public class TaskService : IService
+    public class TaskService : BaseService<TaskSetting>
     {
         /// <summary>
         /// 当前线程是否是主线程

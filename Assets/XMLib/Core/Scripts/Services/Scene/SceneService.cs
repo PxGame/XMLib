@@ -8,7 +8,7 @@ namespace XM.Services
     /// <summary>
     /// 场景服务
     /// </summary>
-    public class SceneService : IService
+    public class SceneService : BaseService<SceneSetting>
     {
         #region Base
 

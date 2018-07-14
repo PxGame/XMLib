@@ -30,15 +30,16 @@ public class AppEntry : IAppEntry
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            AppEntry.UI.ShowPanel("Panel1", false, () => { Debug(DebugType.Normal, "show Panel1 complete"); }, "MMP");
+            AppEntry.UI.ShowPanel("Panel1", "MMP");
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            AppEntry.UI.ShowPanel("Panel2", false, () => { Debug(DebugType.Normal, "show Panel2 complete"); });
+            AppEntry.UI.ShowPanel("Panel2");
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            AppEntry.UI.HidePanel(false, () => { Debug(DebugType.Normal, "hide Panel complete"); });
+            AppEntry.UI.HidePanel();
         }
     }
 }

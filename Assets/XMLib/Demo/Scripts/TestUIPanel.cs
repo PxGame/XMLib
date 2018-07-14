@@ -7,6 +7,6 @@ public class TestUIPanel : UIPanel
 {
     protected void Initialize(string msg)
     {
-        Service.Entry.Debug(XM.DebugType.GG, msg);
+        Service.Debug(XM.DebugType.GG, msg);
     }
 }

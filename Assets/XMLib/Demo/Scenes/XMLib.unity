@@ -141,10 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78c1778ba2b16447ba7a3f3b1e544f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugType: -1
-  _settings:
-    _uiSetting: {fileID: 11400000, guid: 94b942b62da4c354f81a3b103546be8d, type: 2}
-    _poolSetting: {fileID: 11400000, guid: 38bd658e83fe9a949bcc8773c5677532, type: 2}
+  _settings: {fileID: 11400000, guid: c55763311d194b54b9935ce282a6f40e, type: 2}
 --- !u!4 &385234605
 Transform:
   m_ObjectHideFlags: 0

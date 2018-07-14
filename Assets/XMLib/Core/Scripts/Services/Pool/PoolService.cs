@@ -7,14 +7,23 @@ namespace XM.Services
     /// <summary>
     /// 对象池服务
     /// </summary>
-    public class PoolService : IService
+    public class PoolService : BaseService<PoolSetting>
     {
         #region private members
 
-        private Dictionary<string, GameObject> _preItemDict;
+        /// <summary>
+        /// 对象池字典
+        /// </summary>
         private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
 
+        /// <summary>
+        /// 根节点对象
+        /// </summary>
         private GameObject _poolObj;
+
+        /// <summary>
+        /// 根节点变换
+        /// </summary>
         private Transform _poolRoot;
 
         #endregion private members
@@ -26,14 +35,6 @@ namespace XM.Services
             _poolObj = new GameObject("PoolRoot");
             GameObject.DontDestroyOnLoad(_poolObj);
             _poolRoot = _poolObj.transform;
-
-            //获取设置
-            IPoolSettingValue setting = Entry.Settings as IPoolSettingValue;
-            if (null == setting)
-            {
-                throw new System.Exception("启用对象池服务后,服务设置机核必须实现IPoolSettingValue接口.");
-            }
-            _preItemDict = setting.PoolSetting.GetItemDict();
         }
 
         protected override void OnRemoveService()
@@ -118,8 +119,8 @@ namespace XM.Services
             if (!_pools.TryGetValue(poolName, out items))
             {//没有则创建
                 Debug(DebugType.Normal, "创建对象:{0}", poolName);
-                GameObject preObj = null;
-                if (!_preItemDict.TryGetValue(poolName, out preObj))
+                GameObject preObj = Setting.GetItem(poolName);
+                if (null == preObj)
                 {
                     throw new System.Exception("对象池预制中没有该类型对象:" + poolName);
                 }

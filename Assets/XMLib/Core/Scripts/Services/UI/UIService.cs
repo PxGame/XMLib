@@ -9,19 +9,9 @@ namespace XM.Services
     /// <summary>
     /// UI服务
     /// </summary>
-    public class UIService : IService
+    public class UIService : BaseService<UISetting>
     {
         #region Private members
-
-        /// <summary>
-        /// 根节点预制
-        /// </summary>
-        private GameObject _preRoot;
-
-        /// <summary>
-        /// 面板预制字典
-        /// </summary>
-        private Dictionary<string, GameObject> _prePanelDict;
 
         /// <summary>
         /// 根节点实例
@@ -50,32 +40,18 @@ namespace XM.Services
 
         #endregion Private members
 
-        #region Status
-
-        private bool _isOperating = false;
-
-        #endregion Status
-
         #region Base
 
         protected override void OnAddService()
         {
-            //获取设置
-            IUISettingValue setting = Entry.Settings as IUISettingValue;
-            if (null == setting)
-            {
-                throw new System.Exception("启用对象池服务后,服务设置机核必须实现IPoolSettingValue接口.");
-            }
-
-            _prePanelDict = setting.UISetting.GetPanelDict();
-            _preRoot = setting.UISetting.GetRoot();
         }
 
         protected override void OnInitService()
         {
             //创建根节点
-            _root = GameObject.Instantiate(_preRoot);
-            _root.name = _preRoot.name;
+            GameObject rootObj = Setting.GetRoot();
+            _root = GameObject.Instantiate(rootObj);
+            _root.name = rootObj.name;
             GameObject.DontDestroyOnLoad(_root);
 
             //获取UIRoot
@@ -118,9 +94,9 @@ namespace XM.Services
         /// <returns></returns>
         private GameObject GetPrePanel(string panelName)
         {
-            GameObject panelObj = null;
+            GameObject panelObj = Setting.GetPanel(panelName);
 
-            if (!_prePanelDict.TryGetValue(panelName, out panelObj))
+            if (null == panelObj)
             {
                 throw new Exception("该面板未找到预制:" + panelName);
             }
@@ -252,84 +228,23 @@ namespace XM.Services
         /// 显示面板
         /// </summary>
         /// <param name="panelName">面板名</param>
-        /// <param name="useAnima">是否使用动画</param>
-        /// <param name="onComplete">完成事件</param>
         /// <param name="args">参数</param>
         /// <returns></returns>
-        public bool ShowPanel(string panelName, bool useAnima, Action onComplete, params object[] args)
+        public void ShowPanel(string panelName, params object[] args)
         {
-            if (_isOperating)
-            {//是否有面板正在显示
-                Debug(DebugType.Warning, "有面板正在操作中，当前显示操作失败：{0}", panelName);
-                return false;
+            if (_panelStack.Contains(panelName))
+            {//已经在堆栈中
+                Debug(DebugType.Warning, "{0} 已在显示面板堆栈中", panelName);
+                return;
             }
 
             IUIPanel uiPanel = CreatePanel(panelName);
-            if (uiPanel.IsDisplay)
-            {//该面板未显示
-                Debug(DebugType.Warning, "该面板已显示，当前显示操作失败：{0}", panelName);
-                return false;
-            }
 
-            //开始操作
-            _isOperating = true;
-
-            //执行协程
-            Entry.StartCoroutine(_ShowPanel(uiPanel, useAnima, onComplete, args));
-
-            return true;
-        }
-
-        /// <summary>
-        /// 隐藏顶层面板
-        /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        /// <param name="onComplete">完成事件</param>
-        /// <returns></returns>
-        public bool HidePanel(bool useAnima, Action onComplete)
-        {
-            if (_isOperating)
-            {//是否有面板正在显示
-                Debug(DebugType.Warning, "有面板正在操作中，当前隐藏操作失败");
-                return false;
-            }
-
-            IUIPanel topPanel = GetTopPanel();
-            if (null == topPanel)
-            {//没有顶层面板
-                return false;
-            }
-
-            //开始操作
-            _isOperating = true;
-
-            //执行协程
-            Entry.StartCoroutine(_HidePanel(topPanel, useAnima, onComplete));
-
-            return true;
-        }
-
-        #endregion Operation
-
-        #region Operation coroutines
-
-        /// <summary>
-        /// 显示携程
-        /// </summary>
-        /// <param name="uiPanel">面板实例</param>
-        /// <param name="useAnima">是否使用动画</param>
-        /// <param name="onComplete">完成事件</param>
-        /// <param name="args">参数</param>
-        /// <returns></returns>
-        private IEnumerator _ShowPanel(IUIPanel uiPanel, bool useAnima, Action onComplete, params object[] args)
-        {
             IUIPanel topPanel = GetTopPanel();
             if (null != topPanel)
             {//暂停顶层面板
-                yield return topPanel.Pause(useAnima);
+                topPanel.Pause();
             }
-
-            string panelName = uiPanel.PanelName;
 
             //设置根节点
             uiPanel.SetRoot(_uiRoot.Normal);
@@ -350,8 +265,16 @@ namespace XM.Services
                 argTypes[i] = args[i].GetType();
             }
 
-            //Initialize 函数不能是public
-            MethodInfo method = uiPanel.GetType().GetMethod("Initialize", BindingFlags.Instance | BindingFlags.NonPublic, null, argTypes, null);
+            //Initialize 函数
+            MethodInfo method;
+
+            //先查找非public方法
+            method = uiPanel.GetType().GetMethod("Initialize", BindingFlags.Instance | BindingFlags.NonPublic, null, argTypes, null);
+            if (null == method)
+            {//未找到时，再查找public的方法
+                method = uiPanel.GetType().GetMethod("Initialize", BindingFlags.Instance | BindingFlags.Public, null, argTypes, null);
+            }
+
             if (null != method)
             {
                 //调用初始化
@@ -364,29 +287,24 @@ namespace XM.Services
             //
 
             //打开当前面板
-            yield return uiPanel.Enter(useAnima);
-
-            //操作完成
-            _isOperating = false;
-
-            if (null != onComplete)
-            {
-                onComplete();
-            }
+            uiPanel.Enter();
         }
 
         /// <summary>
-        /// 关闭协程
+        /// 隐藏顶层面板
         /// </summary>
-        /// <param name="topPanel">顶层面板</param>
-        /// <param name="useAnim">是否使用动画</param>
-        /// <param name="onComplete">完成事件</param>
-        /// <param name="args">参数</param>
         /// <returns></returns>
-        private IEnumerator _HidePanel(IUIPanel topPanel, bool useAnim, Action onComplete)
+        public void HidePanel()
         {
+            IUIPanel topPanel = GetTopPanel();
+            if (null == topPanel)
+            {//没有顶层面板
+                Debug(DebugType.Warning, "没有顶层窗口需要隐藏");
+                return;
+            }
+
             //关闭顶层面板
-            yield return topPanel.Leave(useAnim);
+            topPanel.Leave();
 
             string topPanelName = topPanel.PanelName;
 
@@ -394,10 +312,10 @@ namespace XM.Services
             topPanel.SetRoot(_uiRoot.Cache);
 
             //堆中中移除
-            _panelCache.Add(topPanelName);
+            _panelStack.Pop();
 
             //添加到缓存
-            _panelStack.Pop();
+            _panelCache.Add(topPanelName);
 
             //
 
@@ -405,18 +323,10 @@ namespace XM.Services
             IUIPanel newTopPanel = GetTopPanel();
             if (null != newTopPanel)
             {//唤醒新的顶层面板
-                yield return newTopPanel.Resume(useAnim);
-            }
-
-            //操作完成
-            _isOperating = false;
-
-            if (null != onComplete)
-            {
-                onComplete();
+                newTopPanel.Resume();
             }
         }
 
-        #endregion Operation coroutines
+        #endregion Operation
     }
 }

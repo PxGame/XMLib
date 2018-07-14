@@ -13,19 +13,9 @@ namespace XM.Services
         #region Public members
 
         /// <summary>
-        /// 面板状态
-        /// </summary>
-        public UIPanelStatus Status { get { return _status; } }
-
-        /// <summary>
         /// 面板名字
         /// </summary>
         public string PanelName { get { return _panelName; } }
-
-        /// <summary>
-        /// 是否显示
-        /// </summary>
-        public bool IsDisplay { get { return (_status != UIPanelStatus.Leave); } }
 
         #endregion Public members
 
@@ -44,7 +34,6 @@ namespace XM.Services
         private string _panelName;
 
         private UIService _service;
-        private UIPanelStatus _status = UIPanelStatus.Leave;
 
         #endregion Private memebers
 
@@ -53,90 +42,22 @@ namespace XM.Services
         /// <summary>
         /// 进入
         /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        internal IEnumerator Enter(bool useAnima)
-        {
-            //设置状态
-            _status = UIPanelStatus.Entering;
-
-            //完成所有动画
-            KillAllAnimations();
-
-            yield return OnEnterStart();
-
-            yield return OnEnterAnimation(useAnima);
-
-            //设置状态
-            _status = UIPanelStatus.Enter;
-
-            yield return OnEnterEnd();
-        }
+        internal abstract void Enter();
 
         /// <summary>
         /// 退出
         /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        internal IEnumerator Leave(bool useAnima)
-        {
-            //设置状态
-            _status = UIPanelStatus.Leaving;
-
-            //完成所有动画
-            KillAllAnimations();
-
-            yield return OnLeaveStart();
-
-            yield return OnLeaveAnimation(useAnima);
-
-            //设置状态
-            _status = UIPanelStatus.Leave;
-
-            yield return OnLeaveEnd();
-        }
+        internal abstract void Leave();
 
         /// <summary>
         /// 暂停
         /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        internal IEnumerator Pause(bool useAnima)
-        {
-            //设置状态
-            _status = UIPanelStatus.Pausing;
-
-            //完成所有动画
-            KillAllAnimations();
-
-            yield return OnPauseStart();
-
-            yield return OnPauseAnimation(useAnima);
-
-            //设置状态
-            _status = UIPanelStatus.Pause;
-
-            yield return OnPauseEnd();
-        }
+        internal abstract void Pause();
 
         /// <summary>
         /// 唤醒
         /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        internal IEnumerator Resume(bool useAnima)
-        {
-            //设置状态
-            _status = UIPanelStatus.Resuming;
-
-            //完成所有动画
-            KillAllAnimations();
-
-            yield return OnResumeStart();
-
-            yield return OnResumeAnimation(useAnima);
-
-            //设置状态
-            _status = UIPanelStatus.Resume;
-
-            yield return OnResumeEnd();
-        }
+        internal abstract void Resume();
 
         /// <summary>
         /// 窗口创建
@@ -207,121 +128,6 @@ namespace XM.Services
         }
 
         #endregion Other
-
-        #region Base Start End
-
-        /// <summary>
-        /// 进入开始
-        /// </summary>
-        protected virtual IEnumerator OnEnterStart()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 进入结束
-        /// </summary>
-        protected virtual IEnumerator OnEnterEnd()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 离开开始
-        /// </summary>
-        protected virtual IEnumerator OnLeaveStart()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 离开结束
-        /// </summary>
-        protected virtual IEnumerator OnLeaveEnd()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 暂停开始
-        /// </summary>
-        protected virtual IEnumerator OnPauseStart()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 暂停结束
-        /// </summary>
-        protected virtual IEnumerator OnPauseEnd()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 唤醒开始
-        /// </summary>
-        protected virtual IEnumerator OnResumeStart()
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 唤醒结束
-        /// </summary>
-        protected virtual IEnumerator OnResumeEnd()
-        {
-            yield break;
-        }
-
-        #endregion Base Start End
-
-        #region Anima
-
-        /// <summary>
-        /// 强制完成所有动画
-        /// </summary>
-        protected virtual void KillAllAnimations()
-        {
-        }
-
-        /// <summary>
-        /// 进入动画
-        /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        protected virtual IEnumerator OnEnterAnimation(bool useAnima)
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 离开动画
-        /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        protected virtual IEnumerator OnLeaveAnimation(bool useAnima)
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 暂停动画
-        /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        protected virtual IEnumerator OnPauseAnimation(bool useAnima)
-        {
-            yield break;
-        }
-
-        /// <summary>
-        /// 唤醒动画
-        /// </summary>
-        /// <param name="useAnima">是否使用动画</param>
-        protected virtual IEnumerator OnResumeAnimation(bool useAnima)
-        {
-            yield break;
-        }
-
-        #endregion Anima
 
 #if UNITY_EDITOR
 

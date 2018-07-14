@@ -15,56 +15,26 @@ namespace XM.Services
 
         #region Base
 
-        protected override IEnumerator OnEnterStart()
+        internal override void Enter()
         {
-            yield return base.OnEnterStart();
-
-            gameObject.SetActive(true);
             transform.SetAsLastSibling();
-        }
-
-        protected override IEnumerator OnEnterEnd()
-        {
-            yield return base.OnEnterEnd();
-
+            gameObject.SetActive(true);
             _canvasGroup.interactable = true;
         }
 
-        protected override IEnumerator OnLeaveStart()
+        internal override void Leave()
         {
-            yield return base.OnLeaveStart();
-
             _canvasGroup.interactable = false;
-        }
-
-        protected override IEnumerator OnLeaveEnd()
-        {
-            yield return base.OnLeaveEnd();
-
             gameObject.SetActive(false);
         }
 
-        protected override IEnumerator OnPauseStart()
+        internal override void Pause()
         {
-            yield return base.OnPauseStart();
-
             _canvasGroup.interactable = false;
         }
 
-        protected override IEnumerator OnPauseEnd()
+        internal override void Resume()
         {
-            yield return base.OnPauseEnd();
-        }
-
-        protected override IEnumerator OnResumeStart()
-        {
-            yield return base.OnResumeStart();
-        }
-
-        protected override IEnumerator OnResumeEnd()
-        {
-            yield return base.OnResumeEnd();
-
             _canvasGroup.interactable = true;
         }
 

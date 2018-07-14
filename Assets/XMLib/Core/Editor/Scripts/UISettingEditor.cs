@@ -13,16 +13,19 @@ namespace XMEditor
         private string _errorMsg = "";
         private SerializedProperty Root;
         private SerializedProperty Panels;
+        private SerializedProperty _debugType;
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
+            _debugType = serializedObject.FindProperty("_debugType");
             Root = serializedObject.FindProperty("Root");
             Panels = serializedObject.FindProperty("Panels");
 
             EditorGUI.BeginChangeCheck();
 
+            EditorGUILayout.PropertyField(_debugType);
             EditorGUILayout.PropertyField(Root, true);
             EditorGUILayout.PropertyField(Panels, true);
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using XM.Services;
-using XM.Tools;
 
 namespace XM
 {
@@ -34,11 +33,6 @@ namespace XM
         public Action<DebugType, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
 
         /// <summary>
-        /// Debug类型
-        /// </summary>
-        public DebugType DebugType { get { return _debugType; } set { _debugType = value; } }
-
-        /// <summary>
         /// 服务设置集合
         /// </summary>
         public ServiceSettings Settings { get { return _settings; } }
@@ -63,13 +57,6 @@ namespace XM
         private Action<DebugType, string> _onDebugOut;
 
         private Dictionary<Type, IService> _serviceDict = new Dictionary<Type, IService>();
-
-        /// <summary>
-        /// debug 等级
-        /// </summary>
-        [SerializeField]
-        [EnumFlags]
-        private DebugType _debugType;
 
         [SerializeField]
         private ServiceSettings _settings;
@@ -261,8 +248,8 @@ namespace XM
         /// <param name="args">参数</param>
         public virtual void Debug(DebugType debugType, string format, params object[] args)
         {
-            if (0 == (debugType & _debugType))
-            {
+            if (0 == (debugType & _settings.DebugType))
+            {//不符合输出要求
                 return;
             }
 

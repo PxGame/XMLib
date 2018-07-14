@@ -5,13 +5,11 @@ using UnityEngine;
 namespace XM.Services
 {
     /// <summary>
-    /// UI设置
+    /// 场景设置
     /// </summary>
-    public interface IUISettingValue
+    [System.Serializable]
+    [CreateAssetMenu(menuName = "XMLib/Scene Setting")]
+    public class SceneSetting : BaseSetting
     {
-        /// <summary>
-        /// UI设置
-        /// </summary>
-        UISetting UISetting { get; }
     }
 }
