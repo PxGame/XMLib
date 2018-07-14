@@ -10,7 +10,7 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/Base Setting")]
-    public class BaseSetting : ScriptableObject
+    public class SimpleSetting : ScriptableObject
     {
         #region 设置
 

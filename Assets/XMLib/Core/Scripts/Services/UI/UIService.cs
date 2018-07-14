@@ -9,7 +9,7 @@ namespace XM.Services
     /// <summary>
     /// UI服务
     /// </summary>
-    public class UIService : BaseService<UISetting>
+    public class UIService<AE> : SimpleService<AE, UISetting>, IUIService where AE : IAppEntry<AE>
     {
         #region Private members
 
@@ -66,6 +66,10 @@ namespace XM.Services
                 _root = null;
                 _uiRoot = null;
             }
+        }
+
+        protected override void OnClearService()
+        {
         }
 
         #endregion Base
@@ -150,7 +154,7 @@ namespace XM.Services
             //新实例化的面板首先放到缓存中
             _panelCache.Add(panelName);
             uiPanel.SetRoot(_uiRoot.Cache);
-            uiPanel.Create(this);
+            uiPanel.Create((IUIService)this);
         }
 
         /// <summary>
@@ -179,6 +183,9 @@ namespace XM.Services
             _panelCache.Clear();
         }
 
+        /// <summary>
+        /// 删除所有面板
+        /// </summary>
         public void Clear()
         {
             IUIPanel panel;

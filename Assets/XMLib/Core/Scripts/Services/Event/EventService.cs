@@ -6,7 +6,7 @@ namespace XM.Services
     /// <summary>
     /// 事件服务
     /// </summary>
-    public class EventService : BaseService<EventSetting>
+    public class EventService<AE> : SimpleService<AE, EventSetting> where AE : IAppEntry<AE>
     {
         #region protected members
 
@@ -20,6 +20,18 @@ namespace XM.Services
         #endregion protected members
 
         #region Base
+
+        protected override void OnAddService()
+        {
+        }
+
+        protected override void OnInitService()
+        {
+        }
+
+        protected override void OnRemoveService()
+        {
+        }
 
         protected override void OnClearService()
         {
@@ -39,11 +51,6 @@ namespace XM.Services
         public List<object> Call(string eventName, params object[] args)
         {
             return Call<object>(eventName, args);
-        }
-
-        internal IEventData Add<T>(object onTest)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

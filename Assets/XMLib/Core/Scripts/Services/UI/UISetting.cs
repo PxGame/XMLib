@@ -10,7 +10,7 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/UI Setting")]
-    public class UISetting : BaseSetting
+    public class UISetting : SimpleSetting
     {
         #region 设置
 
@@ -18,13 +18,13 @@ namespace XM.Services
         /// UI根节点
         /// </summary>
         [SerializeField]
-        protected GameObject Root;
+        protected GameObject _root;
 
         /// <summary>
         /// 面板
         /// </summary>
         [SerializeField]
-        protected List<GameObject> Panels;
+        protected List<GameObject> _panels;
 
         #endregion 设置
 
@@ -36,7 +36,7 @@ namespace XM.Services
         /// <returns></returns>
         public GameObject GetRoot()
         {
-            return Root;
+            return _root;
         }
 
         /// <summary>
@@ -74,14 +74,14 @@ namespace XM.Services
             }
 
             //转换成字典
-            int length = Panels.Count;
+            int length = _panels.Count;
             _panelDict = new Dictionary<string, GameObject>(length);
 
             GameObject obj;
             IUIPanel panel;
             for (int i = 0; i < length; i++)
             {
-                obj = Panels[i];
+                obj = _panels[i];
                 panel = obj.GetComponent<IUIPanel>();
                 _panelDict.Add(panel.PanelName, obj);
             }

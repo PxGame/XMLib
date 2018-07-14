@@ -9,7 +9,7 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/Task Setting")]
-    public class TaskSetting : BaseSetting
+    public class TaskSetting : SimpleSetting
     {
     }
 }

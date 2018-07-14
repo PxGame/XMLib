@@ -7,28 +7,29 @@ using XM.Services;
 
 namespace XMEditor
 {
-    [CustomEditor(typeof(PoolSetting))]
-    public class PoolSettingEditor : Editor
+    [CustomEditor(typeof(ServiceSettings))]
+    public class ServiceSettingsEditor : Editor
     {
-        private string _tip = "每个对象需有或继承于PoolItem的组件，且PoolName不能相同";
+        private string _tip = "存放服务使用的配置文件，同类型配置不能重复";
         private string _errorMsg = "";
-        private SerializedProperty _items;
+        private SerializedProperty _settings;
         private SerializedProperty _debugType;
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
             _debugType = serializedObject.FindProperty("_debugType");
-            _items = serializedObject.FindProperty("_items");
+            _settings = serializedObject.FindProperty("_settings");
 
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_debugType);
-            EditorGUILayout.PropertyField(_items, true);
+            EditorGUILayout.PropertyField(_settings, true);
 
             if (GUILayout.Button("检查"))
             {
-                CheckData(_items);
+                CheckData(_settings);
             }
 
             EditorGUILayout.HelpBox(_tip, MessageType.None);
@@ -41,50 +42,43 @@ namespace XMEditor
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                CheckData(_items);
+                CheckData(_settings);
             }
         }
 
-        /// <summary>
-        /// 检查数据
-        /// </summary>
-        private void CheckData(SerializedProperty items)
+        private void CheckData(SerializedProperty settings)
         {
             bool isError = false;
             string tmpMsg = "";
+
             try
             {
-                int length = items.arraySize;
-                GameObject obj;
-                PoolItem item;
-                Dictionary<string, int> poolNames = new Dictionary<string, int>();
+                int length = settings.arraySize;
+                SimpleSetting setting;
+                Type settingType;
+                Dictionary<Type, int> settingTypes = new Dictionary<Type, int>();
                 int existIndex;
                 for (int i = 0; i < length; i++)
                 {
-                    obj = (GameObject)items.GetArrayElementAtIndex(i).objectReferenceValue;
-                    if (null == obj)
+                    setting = (SimpleSetting)settings.GetArrayElementAtIndex(i).objectReferenceValue;
+                    if (null == setting)
                     {
-                        tmpMsg = string.Format("第{0}条对象为null.", i);
+                        tmpMsg = string.Format("第{0}条设置为null.", i);
                         throw new System.Exception(tmpMsg);
                     }
 
-                    item = obj.GetComponent<PoolItem>();
-                    if (null == item)
+                    settingType = setting.GetType();
+
+                    if (settingTypes.TryGetValue(settingType, out existIndex))
                     {
-                        tmpMsg = string.Format("第{0}条对象没有PoolItem组件", i);
+                        tmpMsg = string.Format("第{0}条与第{1}条设置类型重复.", i, existIndex);
                         throw new System.Exception(tmpMsg);
                     }
 
-                    if (poolNames.TryGetValue(item.PoolName, out existIndex))
-                    {
-                        tmpMsg = string.Format("第{0}条与第{1}条对象的PoolName重复.", i, existIndex);
-                        throw new System.Exception(tmpMsg);
-                    }
-
-                    poolNames.Add(item.PoolName, i);
+                    settingTypes.Add(settingType, i);
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 isError = true;
                 _errorMsg = ex.Message;

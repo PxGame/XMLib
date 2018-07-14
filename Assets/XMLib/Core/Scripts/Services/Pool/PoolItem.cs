@@ -20,13 +20,13 @@ namespace XM.Services
         /// <summary>
         /// 对象池服务
         /// </summary>
-        protected PoolService Service { get { return _service; } }
+        protected IPoolService Service { get { return _service; } }
 
         #endregion protected members
 
         #region private members
 
-        private PoolService _service;
+        private IPoolService _service;
 
         #endregion private members
 
@@ -34,7 +34,7 @@ namespace XM.Services
         /// 创建时初始化
         /// </summary>
         /// <param name="service">所在服务</param>
-        public void Create(PoolService service)
+        public void Create(IPoolService service)
         {
             _service = service;
         }

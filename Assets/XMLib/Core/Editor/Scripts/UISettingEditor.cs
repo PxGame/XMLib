@@ -11,8 +11,8 @@ namespace XMEditor
     {
         private string _tip = "每个对象需有或继承于IUIPanel的组件，且PanelName不能相同";
         private string _errorMsg = "";
-        private SerializedProperty Root;
-        private SerializedProperty Panels;
+        private SerializedProperty _root;
+        private SerializedProperty _panels;
         private SerializedProperty _debugType;
 
         public override void OnInspectorGUI()
@@ -20,18 +20,18 @@ namespace XMEditor
             serializedObject.Update();
 
             _debugType = serializedObject.FindProperty("_debugType");
-            Root = serializedObject.FindProperty("Root");
-            Panels = serializedObject.FindProperty("Panels");
+            _root = serializedObject.FindProperty("_root");
+            _panels = serializedObject.FindProperty("_panels");
 
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_debugType);
-            EditorGUILayout.PropertyField(Root, true);
-            EditorGUILayout.PropertyField(Panels, true);
+            EditorGUILayout.PropertyField(_root, true);
+            EditorGUILayout.PropertyField(_panels, true);
 
             if (GUILayout.Button("检查"))
             {
-                CheckData(Root, Panels);
+                CheckData(_root, _panels);
             }
 
             EditorGUILayout.HelpBox(_tip, MessageType.None);
@@ -44,7 +44,7 @@ namespace XMEditor
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                CheckData(Root, Panels);
+                CheckData(_root, _panels);
             }
         }
 

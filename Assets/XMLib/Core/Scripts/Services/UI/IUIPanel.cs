@@ -24,7 +24,7 @@ namespace XM.Services
         /// <summary>
         /// UI服务
         /// </summary>
-        protected UIService Service { get { return _service; } }
+        protected IUIService Service { get { return _service; } }
 
         #endregion Protected memebers
 
@@ -33,7 +33,7 @@ namespace XM.Services
         [SerializeField]
         private string _panelName;
 
-        private UIService _service;
+        private IUIService _service;
 
         #endregion Private memebers
 
@@ -63,7 +63,7 @@ namespace XM.Services
         /// 窗口创建
         /// </summary>
         /// <param name="service"></param>
-        internal void Create(UIService service)
+        internal void Create(IUIService service)
         {
             _service = service;
             OnCreate();

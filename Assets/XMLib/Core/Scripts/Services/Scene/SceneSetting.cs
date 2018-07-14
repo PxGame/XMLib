@@ -9,7 +9,7 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/Scene Setting")]
-    public class SceneSetting : BaseSetting
+    public class SceneSetting : SimpleSetting
     {
     }
 }

@@ -29,7 +29,7 @@ namespace XM.Services
         protected DebugType _debugType;
 
         [SerializeField]
-        protected List<BaseSetting> _settings;
+        protected List<SimpleSetting> _settings;
 
         #endregion 设置
 
@@ -38,7 +38,7 @@ namespace XM.Services
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSetting<T>() where T : BaseSetting
+        public T GetSetting<T>() where T : SimpleSetting
         {
             T setting = (T)_settings.Find(t => t.GetType() == typeof(T));
             return setting;

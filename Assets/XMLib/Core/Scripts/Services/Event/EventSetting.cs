@@ -10,7 +10,7 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/Event Setting")]
-    public class EventSetting : BaseSetting
+    public class EventSetting : SimpleSetting
     {
     }
 }

@@ -11,6 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883a4097b38a42747bc9eacac2e36d61, type: 3}
   m_Name: ServiceSettings
   m_EditorClassIdentifier: 
-  _debugType: 0
-  _uiSetting: {fileID: 11400000, guid: 94b942b62da4c354f81a3b103546be8d, type: 2}
-  _poolSetting: {fileID: 11400000, guid: 38bd658e83fe9a949bcc8773c5677532, type: 2}
+  _debugType: -1
+  _settings:
+  - {fileID: 11400000, guid: 0c4843f165f17384ea3dc99a71f9f905, type: 2}
+  - {fileID: 11400000, guid: 38bd658e83fe9a949bcc8773c5677532, type: 2}
+  - {fileID: 11400000, guid: 536a86594bfd39e46a195974d118a005, type: 2}
+  - {fileID: 11400000, guid: 15e55f723ff37444f8f406248661ca66, type: 2}
+  - {fileID: 11400000, guid: 94b942b62da4c354f81a3b103546be8d, type: 2}

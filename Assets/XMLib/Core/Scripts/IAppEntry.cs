@@ -8,7 +8,7 @@ namespace XM
     /// <summary>
     /// 应用入口
     /// </summary>
-    public abstract class IAppEntry : MonoBehaviour
+    public abstract class IAppEntry<AE> : MonoBehaviour where AE : IAppEntry<AE>
     {
         #region Public memebers
 
@@ -40,7 +40,7 @@ namespace XM
         /// <summary>
         /// 获取单例
         /// </summary>
-        public static IAppEntry Inst { get { return _inst; } }
+        public static AE Inst { get { return _inst; } }
 
         /// <summary>
         /// 是否初始化
@@ -51,17 +51,17 @@ namespace XM
 
         #region private members
 
+        private static AE _inst = null;
+
         private Action _onFixedUpdate;
         private Action _onLateUpdate;
         private Action _onUpdate;
         private Action<DebugType, string> _onDebugOut;
 
-        private Dictionary<Type, IService> _serviceDict = new Dictionary<Type, IService>();
+        private Dictionary<Type, IService<AE>> _serviceDict = new Dictionary<Type, IService<AE>>();
 
         [SerializeField]
         private ServiceSettings _settings;
-
-        private static IAppEntry _inst;
 
         #endregion private members
 
@@ -71,7 +71,11 @@ namespace XM
             {
                 throw new Exception("IAppEntry 重复实例化.");
             }
-            _inst = this;
+            _inst = this as AE;
+            if (null == _inst)
+            {
+                throw new Exception("单例初始化失败。");
+            }
 
             Initialize();
         }
@@ -79,7 +83,6 @@ namespace XM
         protected virtual void OnDestroy()
         {
             Terminal();
-            _inst = null;
         }
 
         protected virtual void FixedUpdate()
@@ -113,9 +116,9 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>服务实例</returns>
-        public T Get<T>() where T : IService
+        public T Get<T>() where T : IService<AE>
         {
-            IService service = null;
+            IService<AE> service = null;
 
             if (!_serviceDict.TryGetValue(typeof(T), out service))
             {
@@ -129,7 +132,7 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>服务实例</returns>
-        public T Add<T>() where T : IService, new()
+        public T Add<T>() where T : IService<AE>, new()
         {
             Type type = typeof(T);
             if (_serviceDict.ContainsKey(type))
@@ -143,7 +146,7 @@ namespace XM
 
             _serviceDict.Add(type, service);
 
-            service.AddService(this);
+            service.AddService((AE)this);
             service.InitService();
 
             return service;
@@ -156,18 +159,18 @@ namespace XM
         public void Adds(List<Type> serviceTypes)
         {
             Type tmpType;
-            IService tmpService;
+            IService<AE> tmpService;
             Type[] argsTypes = new Type[] { };
             object[] args = new object[] { };
 
-            List<IService> services = new List<IService>();
+            List<IService<AE>> services = new List<IService<AE>>();
             int length = serviceTypes.Count;
             for (int i = 0; i < length; i++)
             {
                 tmpType = serviceTypes[i];
 
                 //创建对象
-                tmpService = (IService)tmpType.GetConstructor(argsTypes).Invoke(args);
+                tmpService = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
 
                 if (_serviceDict.ContainsKey(tmpType))
                 {//已存在服务
@@ -179,7 +182,7 @@ namespace XM
                 _serviceDict.Add(tmpType, tmpService);
 
                 //注册
-                tmpService.AddService(this);
+                tmpService.AddService((AE)this);
 
                 //添加到初始化列表
                 services.Add(tmpService);
@@ -200,12 +203,12 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns></returns>
-        public bool Remove<T>() where T : IService
+        public bool Remove<T>() where T : IService<AE>
         {
             Type type = typeof(T);
             Debug(DebugType.Normal, "移除服务 {0}", type.FullName);
 
-            IService service = null;
+            IService<AE> service = null;
             if (!_serviceDict.TryGetValue(typeof(T), out service))
             {
                 return false;
@@ -314,12 +317,6 @@ namespace XM
         /// </summary>
         protected virtual void OnTerminal()
         {
-            //static变量，服务关闭，引用设null
-            _event = null;
-            _pool = null;
-            _task = null;
-            _ui = null;
-            _scene = null;
         }
 
         /// <summary>
@@ -329,105 +326,7 @@ namespace XM
         protected virtual List<Type> DefaultServices()
         {
             //默认服务
-            return new List<Type>() {
-                typeof(EventService),
-                typeof(PoolService),
-                typeof(TaskService),
-                typeof(UIService),
-                typeof(SceneService),
-            };
+            return new List<Type>() { };
         }
-
-        #region Specific Custom
-
-        //服务引用
-
-        private static EventService _event;
-        private static PoolService _pool;
-        private static TaskService _task;
-        private static UIService _ui;
-        private static SceneService _scene;
-
-        //
-
-        /// <summary>
-        /// 事件服务
-        /// </summary>
-        public static EventService Event
-        {
-            get
-            {
-                if (null == _event)
-                {
-                    _event = _inst.Get<EventService>();
-                }
-                return _event;
-            }
-        }
-
-        /// <summary>
-        /// 对象池服务
-        /// </summary>
-        public static PoolService Pool
-        {
-            get
-            {
-                if (null == _pool)
-                {
-                    _pool = _inst.Get<PoolService>();
-                }
-                return _pool;
-            }
-        }
-
-        /// <summary>
-        /// 任务服务
-        /// </summary>
-        public static TaskService Task
-        {
-            get
-            {
-                if (null == _task)
-                {
-                    _task = _inst.Get<TaskService>();
-                }
-
-                return _task;
-            }
-        }
-
-        /// <summary>
-        /// UI服务
-        /// </summary>
-        public static UIService UI
-        {
-            get
-            {
-                if (null == _ui)
-                {
-                    _ui = _inst.Get<UIService>();
-                }
-
-                return _ui;
-            }
-        }
-
-        /// <summary>
-        /// 场景服务
-        /// </summary>
-        public static SceneService Scene
-        {
-            get
-            {
-                if (null == _scene)
-                {
-                    _scene = _inst.Get<SceneService>();
-                }
-
-                return _scene;
-            }
-        }
-
-        #endregion Specific Custom
     }
 }

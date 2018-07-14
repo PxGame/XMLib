@@ -8,7 +8,7 @@ namespace XM.Services
     /// <summary>
     /// 场景服务
     /// </summary>
-    public class SceneService : BaseService<SceneSetting>
+    public class SceneService<AE> : SimpleService<AE, SceneSetting> where AE : IAppEntry<AE>
     {
         #region Base
 
@@ -21,6 +21,10 @@ namespace XM.Services
         }
 
         protected override void OnRemoveService()
+        {
+        }
+
+        protected override void OnClearService()
         {
         }
 

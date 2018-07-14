@@ -11,7 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60343f3d414ec445ad03b872e72b6c1, type: 3}
   m_Name: UISetting
   m_EditorClassIdentifier: 
-  Root: {fileID: 1087099143413692, guid: 89cf51528f852224ebb3c53e078fbae6, type: 2}
-  Panels:
+  _debugType: -1
+  _root: {fileID: 1087099143413692, guid: 89cf51528f852224ebb3c53e078fbae6, type: 2}
+  _panels:
   - {fileID: 1330694268139898, guid: 0a22ec17622827e43a8564d5208c2118, type: 2}
   - {fileID: 1951375453986650, guid: 82de879be838c9f4f8292ad5ec42fb6b, type: 2}

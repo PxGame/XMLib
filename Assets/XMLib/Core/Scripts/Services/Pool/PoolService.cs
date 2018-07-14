@@ -7,7 +7,7 @@ namespace XM.Services
     /// <summary>
     /// 对象池服务
     /// </summary>
-    public class PoolService : BaseService<PoolSetting>
+    public class PoolService<AE> : SimpleService<AE, PoolSetting>, IPoolService where AE : IAppEntry<AE>
     {
         #region private members
 
@@ -47,6 +47,10 @@ namespace XM.Services
             }
 
             _pools.Clear();
+        }
+
+        protected override void OnInitService()
+        {
         }
 
         protected override void OnClearService()
@@ -128,7 +132,7 @@ namespace XM.Services
                 obj = GameObject.Instantiate(preObj);
                 obj.name = preObj.name;
                 item = obj.GetComponent<PoolItem>();
-                item.Create(this);//实例化后初始化
+                item.Create((IPoolService)this);//实例化后初始化
             }
             else
             {//有则取出

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33077058929162708}
   - component: {fileID: 23494125596165218}
   - component: {fileID: 136654838611475304}
-  - component: {fileID: 114978531541671510}
+  - component: {fileID: 114567173693290372}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -85,7 +85,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1144090732615774}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114978531541671510
+--- !u!114 &114567173693290372
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

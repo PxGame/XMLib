@@ -10,12 +10,12 @@ namespace XM.Services
     /// </summary>
     [System.Serializable]
     [CreateAssetMenu(menuName = "XMLib/Pool Setting")]
-    public class PoolSetting : BaseSetting
+    public class PoolSetting : SimpleSetting
     {
         #region 设置
 
         [SerializeField]
-        protected List<GameObject> Items;
+        protected List<GameObject> _items;
 
         #endregion 设置
 
@@ -56,14 +56,14 @@ namespace XM.Services
             }
 
             //转换成字典
-            int length = Items.Count;
+            int length = _items.Count;
             _itemDict = new Dictionary<string, GameObject>(length);
 
             GameObject obj;
             PoolItem item;
             for (int i = 0; i < length; i++)
             {
-                obj = Items[i];
+                obj = _items[i];
                 item = obj.GetComponent<PoolItem>();
                 _itemDict.Add(item.PoolName, obj);
             }
