@@ -8,6 +8,7 @@ namespace XM.Services
     /// <summary>
     /// 任务服务
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public class TaskService<AE> : SimpleService<AE, TaskSetting> where AE : IAppEntry<AE>
     {
         /// <summary>

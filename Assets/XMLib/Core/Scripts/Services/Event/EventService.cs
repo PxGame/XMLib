@@ -6,6 +6,7 @@ namespace XM.Services
     /// <summary>
     /// 事件服务
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public class EventService<AE> : SimpleService<AE, EventSetting> where AE : IAppEntry<AE>
     {
         #region protected members

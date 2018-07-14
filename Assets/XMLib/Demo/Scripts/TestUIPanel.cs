@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using XM.Services;
+﻿using XM.Services;
 
 public class TestUIPanel : UIPanel
 {

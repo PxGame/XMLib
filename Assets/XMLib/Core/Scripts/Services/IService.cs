@@ -1,10 +1,9 @@
-﻿using System;
-
-namespace XM.Services
+﻿namespace XM.Services
 {
     /// <summary>
     /// 服务接口
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public interface IService<AE> where AE : IAppEntry<AE>
     {
         /// <summary>

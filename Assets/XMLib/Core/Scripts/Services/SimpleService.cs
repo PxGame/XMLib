@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace XM.Services
 {
     /// <summary>
     /// 简单服务基类，带配置文件设置
     /// </summary>
-    /// <typeparam name="AE"></typeparam>
-    /// <typeparam name="ST"></typeparam>
+    /// <typeparam name="AE">程序入口类型</typeparam>
+    /// <typeparam name="ST">服务配置类型</typeparam>
     public abstract class SimpleService<AE, ST> : BaseService<AE> where ST : SimpleSetting where AE : IAppEntry<AE>
     {
         private ST _setting;

@@ -7,6 +7,7 @@ namespace XM.Services
     /// <summary>
     /// 对象池服务
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public class PoolService<AE> : SimpleService<AE, PoolSetting>, IPoolService where AE : IAppEntry<AE>
     {
         #region private members
@@ -14,7 +15,7 @@ namespace XM.Services
         /// <summary>
         /// 对象池字典
         /// </summary>
-        private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>();
+        private Dictionary<string, Stack<PoolItem>> _pools = new Dictionary<string, Stack<PoolItem>>(10);
 
         /// <summary>
         /// 根节点对象

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace XM.Services
+﻿namespace XM.Services
 {
     /// <summary>
     /// 服务基类
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public abstract class BaseService<AE> : IService<AE> where AE : IAppEntry<AE>
     {
         private AE _entry;

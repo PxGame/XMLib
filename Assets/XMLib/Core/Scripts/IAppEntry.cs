@@ -8,6 +8,7 @@ namespace XM
     /// <summary>
     /// 应用入口
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public abstract class IAppEntry<AE> : MonoBehaviour where AE : IAppEntry<AE>
     {
         #region Public memebers

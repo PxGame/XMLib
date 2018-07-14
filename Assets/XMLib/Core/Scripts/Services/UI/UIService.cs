@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -7,8 +6,9 @@ using UnityEngine;
 namespace XM.Services
 {
     /// <summary>
-    /// UI服务
+    ///  UI服务
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public class UIService<AE> : SimpleService<AE, UISetting>, IUIService where AE : IAppEntry<AE>
     {
         #region Private members

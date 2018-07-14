@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 namespace XM.Services
 {
     /// <summary>
     /// 场景服务
     /// </summary>
+    /// <typeparam name="AE">程序入口类型</typeparam>
     public class SceneService<AE> : SimpleService<AE, SceneSetting> where AE : IAppEntry<AE>
     {
         #region Base
