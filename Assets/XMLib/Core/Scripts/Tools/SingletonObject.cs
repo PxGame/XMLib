@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XM.Tool
+namespace XM.Tools
 {
     /// <summary>
     /// Unity单例模板

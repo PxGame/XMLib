@@ -11,4 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c8f736b8801ec41a6a6f6b029ccd5b, type: 3}
   m_Name: InputSetting
   m_EditorClassIdentifier: 
-  _debugType: 0
+  _debugType: -1
