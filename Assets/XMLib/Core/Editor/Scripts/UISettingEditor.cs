@@ -25,7 +25,7 @@ namespace XMEditor
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_debugType);
-            EditorGUILayout.PropertyField(_root, true);
+            EditorGUILayout.PropertyField(_root);
             EditorGUILayout.PropertyField(_panels, true);
 
             if (GUILayout.Button("检查"))

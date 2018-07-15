@@ -20,6 +20,7 @@ namespace XM
             _task = null;
             _ui = null;
             _scene = null;
+            _input = null;
         }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace XM
             services.Add(typeof(TaskService<AppEntry>));
             services.Add(typeof(UIService<AppEntry>));
             services.Add(typeof(SceneService<AppEntry>));
+            services.Add(typeof(InputService<AppEntry>));
 
             //默认服务
             return services;
@@ -49,6 +51,7 @@ namespace XM
         private static TaskService<AppEntry> _task;
         private static UIService<AppEntry> _ui;
         private static SceneService<AppEntry> _scene;
+        private static InputService<AppEntry> _input;
 
         //
 
@@ -127,6 +130,22 @@ namespace XM
                 }
 
                 return _scene;
+            }
+        }
+
+        /// <summary>
+        /// 输入服务
+        /// </summary>
+        public static InputService<AppEntry> Input
+        {
+            get
+            {
+                if (null == _input)
+                {
+                    _input = Inst.Get<InputService<AppEntry>>();
+                }
+
+                return _input;
             }
         }
 

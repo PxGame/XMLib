@@ -23,6 +23,7 @@ public class AppEntryTest : IAppEntry<AppEntryTest>
         _task = null;
         _ui = null;
         _scene = null;
+        _input = null;
     }
 
     /// <summary>
@@ -38,6 +39,7 @@ public class AppEntryTest : IAppEntry<AppEntryTest>
         services.Add(typeof(TaskService<AppEntryTest>));
         services.Add(typeof(UIService<AppEntryTest>));
         services.Add(typeof(SceneService<AppEntryTest>));
+        services.Add(typeof(InputService<AppEntryTest>));
         services.Add(typeof(TestService));
 
         //默认服务
@@ -53,6 +55,7 @@ public class AppEntryTest : IAppEntry<AppEntryTest>
     private static TaskService<AppEntryTest> _task;
     private static UIService<AppEntryTest> _ui;
     private static SceneService<AppEntryTest> _scene;
+    private static InputService<AppEntryTest> _input;
 
     //
 
@@ -131,6 +134,22 @@ public class AppEntryTest : IAppEntry<AppEntryTest>
             }
 
             return _scene;
+        }
+    }
+
+    /// <summary>
+    /// 输入服务
+    /// </summary>
+    public static InputService<AppEntryTest> Input
+    {
+        get
+        {
+            if (null == _input)
+            {
+                _input = Inst.Get<InputService<AppEntryTest>>();
+            }
+
+            return _input;
         }
     }
 
