@@ -10,7 +10,7 @@ namespace XM.Services
     {
         #region Base
 
-        protected override void OnAddService()
+        protected override void OnCreateService()
         {
         }
 

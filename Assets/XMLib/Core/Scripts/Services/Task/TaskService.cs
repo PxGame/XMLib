@@ -42,7 +42,7 @@ namespace XM.Services
 
         #region Base
 
-        protected override void OnAddService()
+        protected override void OnCreateService()
         {
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Entry.OnUpdate += Update;

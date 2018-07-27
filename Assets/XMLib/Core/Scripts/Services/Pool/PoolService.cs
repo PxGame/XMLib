@@ -31,7 +31,7 @@ namespace XM.Services
 
         #region Base
 
-        protected override void OnAddService()
+        protected override void OnCreateService()
         {
             _poolObj = new GameObject("PoolRoot");
             GameObject.DontDestroyOnLoad(_poolObj);

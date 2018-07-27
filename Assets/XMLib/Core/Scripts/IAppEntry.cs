@@ -147,7 +147,7 @@ namespace XM
 
             _serviceDict.Add(type, service);
 
-            service.AddService((AE)this);
+            service.CreateService((AE)this);
             service.InitService();
 
             return service;
@@ -183,7 +183,7 @@ namespace XM
                 _serviceDict.Add(tmpType, tmpService);
 
                 //注册
-                tmpService.AddService((AE)this);
+                tmpService.CreateService((AE)this);
 
                 //添加到初始化列表
                 services.Add(tmpService);
