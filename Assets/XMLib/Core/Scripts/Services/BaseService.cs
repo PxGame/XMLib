@@ -19,14 +19,14 @@
         public virtual string ServiceName { get { return GetType().FullName; } }
 
         /// <summary>
-        /// 添加服务
+        /// 创建服务
         /// </summary>
         /// <param name="appEntry"></param>
-        public void AddService(AE appEntry)
+        public void CreateService(AE appEntry)
         {
             InitData(appEntry);
 
-            OnAddService();
+            OnCreateService();
         }
 
         /// <summary>
@@ -82,7 +82,7 @@
         /// <summary>
         /// 添加
         /// </summary>
-        protected abstract void OnAddService();
+        protected abstract void OnCreateService();
 
         /// <summary>
         /// 初始化

@@ -2,7 +2,7 @@
 
 public class TestService : BaseService<AppEntryTest>
 {
-    protected override void OnAddService()
+    protected override void OnCreateService()
     {
     }
 

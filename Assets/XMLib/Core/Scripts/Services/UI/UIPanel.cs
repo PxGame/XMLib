@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace XM.Services
 {
@@ -8,35 +9,62 @@ namespace XM.Services
     [RequireComponent(typeof(CanvasGroup))]
     public class UIPanel : IUIPanel
     {
-        [SerializeField]
+        #region protected members
+
         protected CanvasGroup _canvasGroup;
 
-        #region Base
+        #endregion protected members
 
-        internal override void Enter()
+        #region IUIPanel
+
+        protected override void OnCreate()
         {
-            transform.SetAsLastSibling();
+            base.OnCreate();
+
+            gameObject.SetActive(false);
+            _canvasGroup.interactable = false;
+        }
+
+        internal override void OnPreEnter()
+        {
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
+            base.OnPreEnter();
+        }
+
+        internal override void OnLateEnter()
+        {
+            base.OnLateEnter();
             _canvasGroup.interactable = true;
         }
 
-        internal override void Leave()
+        internal override void OnPreLeave()
         {
             _canvasGroup.interactable = false;
+            base.OnPreLeave();
+        }
+
+        internal override void OnLateLeave()
+        {
+            base.OnLateLeave();
             gameObject.SetActive(false);
         }
 
-        internal override void Pause()
+        internal override void OnPrePause()
         {
             _canvasGroup.interactable = false;
+            base.OnPrePause();
         }
 
-        internal override void Resume()
+        internal override void OnLateResume()
         {
+            base.OnLateResume();
             _canvasGroup.interactable = true;
         }
 
-        #endregion Base
+        #endregion IUIPanel
+
+        #region Editor
 
 #if UNITY_EDITOR
 
@@ -51,5 +79,7 @@ namespace XM.Services
         }
 
 #endif
+
+        #endregion Editor
     }
 }

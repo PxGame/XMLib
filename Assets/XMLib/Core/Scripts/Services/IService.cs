@@ -7,10 +7,15 @@
     public interface IService<AE> where AE : IAppEntry<AE>
     {
         /// <summary>
+        /// 应用入口
+        /// </summary>
+        AE Entry { get; }
+
+        /// <summary>
         /// 添加服务
         /// </summary>
         /// <param name="appEntry"></param>
-        void AddService(AE appEntry);
+        void CreateService(AE appEntry);
 
         /// <summary>
         /// 初始化服务
