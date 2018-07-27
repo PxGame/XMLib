@@ -81,8 +81,8 @@ namespace XM.Services
         /// </summary>
         public void Dispose()
         {
-            GameObject.Destroy(gameObject);
             OnDispose();
+            GameObject.Destroy(gameObject);
         }
 
         /// <summary>
