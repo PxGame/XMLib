@@ -228,7 +228,13 @@ namespace XM
         {
             foreach (var servicePair in _serviceDict)
             {
-                Debug(DebugType.Normal, "移除服务 {0}", servicePair.Key.FullName);
+                if (null == servicePair.Value)
+                {
+                    Debug(DebugType.Error, "移除服务失败，未找到服务实例 {0}", servicePair.Key.Name);
+                    continue;
+                }
+
+                Debug(DebugType.Normal, "移除服务 {0}", servicePair.Value.ServiceName);
 
                 //调用移除事件
                 servicePair.Value.RemoveService();
