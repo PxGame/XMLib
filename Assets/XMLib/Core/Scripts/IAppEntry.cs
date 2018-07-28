@@ -207,14 +207,15 @@ namespace XM
         public bool Remove<T>() where T : IService<AE>
         {
             Type type = typeof(T);
-            Debug(DebugType.Normal, "移除服务 {0}", type.FullName);
 
             IService<AE> service = null;
-            if (!_serviceDict.TryGetValue(typeof(T), out service))
+            if (!_serviceDict.TryGetValue(type, out service))
             {
+                Debug(DebugType.Error, "移除服务失败，未找到服务实例 {0}", type.Name);
                 return false;
             }
 
+            Debug(DebugType.Normal, "移除服务 {0}", service.ServiceName);
             service.RemoveService();
 
             return true;
