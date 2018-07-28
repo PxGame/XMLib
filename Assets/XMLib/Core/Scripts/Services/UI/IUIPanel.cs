@@ -51,6 +51,13 @@ namespace XM.Services
         #region public Function
 
         /// <summary>
+        /// 初始化
+        /// </summary>
+        public virtual void Initialize()
+        {
+        }
+
+        /// <summary>
         /// 创建
         /// </summary>
         /// <param name="service">UI服务</param>
@@ -66,14 +73,14 @@ namespace XM.Services
         /// <param name="debugType"></param>
         /// <param name="format"></param>
         /// <param name="args"></param>
-        public void Debug(DebugType debugType, string format, params string[] args)
+        public void Debug(DebugType debugType, string format, params object[] args)
         {
             if (null == _service)
             {
                 throw new Exception("UI服务未初始化");
             }
 
-            _service.DebugPanel(PanelName, debugType, format, args);
+            _service.Debug(debugType, "[" + _panelName + "]" + format, args);
         }
 
         /// <summary>
@@ -133,6 +140,15 @@ namespace XM.Services
         }
 
         #endregion Base
+
+        #region override
+
+        public override string ToString()
+        {
+            return string.Format("UIPanel:{0}", _panelName);
+        }
+
+        #endregion override
 
         #region Enter status
 

@@ -170,15 +170,15 @@ namespace XM
             {
                 tmpType = serviceTypes[i];
 
-                //创建对象
-                tmpService = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
-
                 if (_serviceDict.ContainsKey(tmpType))
                 {//已存在服务
                     throw new Exception("已存在该服务 " + tmpType.FullName);
                 }
 
-                Debug(DebugType.Normal, "添加服务 {0}", tmpType.FullName);
+                //创建对象
+                tmpService = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
+
+                Debug(DebugType.Normal, "添加服务 {0}", tmpService.ServiceName);
 
                 _serviceDict.Add(tmpType, tmpService);
 

@@ -16,7 +16,7 @@
         /// <summary>
         /// 服务名
         /// </summary>
-        public virtual string ServiceName { get { return GetType().FullName; } }
+        public virtual string ServiceName { get { return GetType().Name; } }
 
         /// <summary>
         /// 创建服务
@@ -71,11 +71,6 @@
         /// <param name="args">参数</param>
         public virtual void Debug(DebugType debugType, string format, params object[] args)
         {
-            if (0 == (debugType & Entry.Settings.DebugType))
-            {//不符合输出要求
-                return;
-            }
-
             Entry.Debug(debugType, "[" + ServiceName + "]" + format, args);
         }
 

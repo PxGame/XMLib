@@ -2,14 +2,10 @@
 
 public class Test : MonoBehaviour
 {
-    public string str;
-
     protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            bool isOK = System.Text.RegularExpressions.Regex.IsMatch(str, "^.+(P|p)anel$");
-            Debug.Log(isOK);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -29,18 +25,31 @@ public class Test : MonoBehaviour
         {
             AppEntryTest.Pool.Clear();
         }
-        //if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    AppEntryTest.UI.ShowPanel("Panel1", "MMP");
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    AppEntryTest.UI.ShowPanel("Panel2");
-        //}
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Debug.Log("Open Panel1");
+            AppEntryTest.UI.Open("Panel1", "MMP");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Debug.Log("Open Panel2");
+            AppEntryTest.UI.Open("Panel2");
+        }
 
-        //if (Input.GetKeyDown(KeyCode.Alpha6))
-        //{
-        //    AppEntryTest.UI.HidePanel();
-        //}
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Debug.Log("CloseAll");
+            AppEntryTest.UI.CloseAll(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            Debug.Log("CloseTop");
+            AppEntryTest.UI.CloseTop(false, null);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            Debug.Log("SwitchTop");
+            AppEntryTest.UI.SwitchTop("Panel1", false, null, "MMP2");
+        }
     }
 }

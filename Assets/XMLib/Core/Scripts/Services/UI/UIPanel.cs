@@ -11,6 +11,7 @@ namespace XM.Services
     {
         #region protected members
 
+        [SerializeField]
         protected CanvasGroup _canvasGroup;
 
         #endregion protected members
