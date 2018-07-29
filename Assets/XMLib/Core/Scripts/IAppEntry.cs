@@ -216,7 +216,7 @@ namespace XM
             }
 
             Debug(DebugType.Normal, "移除服务 {0}", service.ServiceName);
-            service.RemoveService();
+            service.DisposeService();
 
             return true;
         }
@@ -237,7 +237,7 @@ namespace XM
                 Debug(DebugType.Normal, "移除服务 {0}", servicePair.Value.ServiceName);
 
                 //调用移除事件
-                servicePair.Value.RemoveService();
+                servicePair.Value.DisposeService();
             }
             _serviceDict.Clear();
         }

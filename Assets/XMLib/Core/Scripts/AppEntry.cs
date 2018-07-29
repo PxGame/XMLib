@@ -21,6 +21,7 @@ namespace XM
             _ui = null;
             _scene = null;
             _input = null;
+            _localization = null;
         }
 
         /// <summary>
@@ -31,12 +32,13 @@ namespace XM
         {
             List<Type> services = base.DefaultServices();
 
-            services.Add(typeof(EventService<AppEntry>));
-            services.Add(typeof(PoolService<AppEntry>));
-            services.Add(typeof(TaskService<AppEntry>));
-            services.Add(typeof(UIService<AppEntry>));
-            services.Add(typeof(SceneService<AppEntry>));
-            services.Add(typeof(InputService<AppEntry>));
+            services.Add(typeof(EventService));
+            services.Add(typeof(PoolService));
+            services.Add(typeof(TaskService));
+            services.Add(typeof(UIService));
+            services.Add(typeof(SceneService));
+            services.Add(typeof(InputService));
+            services.Add(typeof(LocalizationService));
 
             //默认服务
             return services;
@@ -46,25 +48,26 @@ namespace XM
 
         //服务引用
 
-        private static EventService<AppEntry> _event;
-        private static PoolService<AppEntry> _pool;
-        private static TaskService<AppEntry> _task;
-        private static UIService<AppEntry> _ui;
-        private static SceneService<AppEntry> _scene;
-        private static InputService<AppEntry> _input;
+        private static EventService _event;
+        private static PoolService _pool;
+        private static TaskService _task;
+        private static UIService _ui;
+        private static SceneService _scene;
+        private static InputService _input;
+        private static LocalizationService _localization;
 
         //
 
         /// <summary>
         /// 事件服务
         /// </summary>
-        public static EventService<AppEntry> Event
+        public static EventService Event
         {
             get
             {
                 if (null == _event)
                 {
-                    _event = Inst.Get<EventService<AppEntry>>();
+                    _event = Inst.Get<EventService>();
                 }
                 return _event;
             }
@@ -73,13 +76,13 @@ namespace XM
         /// <summary>
         /// 对象池服务
         /// </summary>
-        public static PoolService<AppEntry> Pool
+        public static PoolService Pool
         {
             get
             {
                 if (null == _pool)
                 {
-                    _pool = Inst.Get<PoolService<AppEntry>>();
+                    _pool = Inst.Get<PoolService>();
                 }
                 return _pool;
             }
@@ -88,13 +91,13 @@ namespace XM
         /// <summary>
         /// 任务服务
         /// </summary>
-        public static TaskService<AppEntry> Task
+        public static TaskService Task
         {
             get
             {
                 if (null == _task)
                 {
-                    _task = Inst.Get<TaskService<AppEntry>>();
+                    _task = Inst.Get<TaskService>();
                 }
 
                 return _task;
@@ -104,13 +107,13 @@ namespace XM
         /// <summary>
         /// UI服务
         /// </summary>
-        public static UIService<AppEntry> UI
+        public static UIService UI
         {
             get
             {
                 if (null == _ui)
                 {
-                    _ui = Inst.Get<UIService<AppEntry>>();
+                    _ui = Inst.Get<UIService>();
                 }
 
                 return _ui;
@@ -120,13 +123,13 @@ namespace XM
         /// <summary>
         /// 场景服务
         /// </summary>
-        public static SceneService<AppEntry> Scene
+        public static SceneService Scene
         {
             get
             {
                 if (null == _scene)
                 {
-                    _scene = Inst.Get<SceneService<AppEntry>>();
+                    _scene = Inst.Get<SceneService>();
                 }
 
                 return _scene;
@@ -136,16 +139,32 @@ namespace XM
         /// <summary>
         /// 输入服务
         /// </summary>
-        public static InputService<AppEntry> Input
+        public static InputService Input
         {
             get
             {
                 if (null == _input)
                 {
-                    _input = Inst.Get<InputService<AppEntry>>();
+                    _input = Inst.Get<InputService>();
                 }
 
                 return _input;
+            }
+        }
+
+        /// <summary>
+        /// 本地化服务
+        /// </summary>
+        public static LocalizationService Localization
+        {
+            get
+            {
+                if (null == _localization)
+                {
+                    _localization = Inst.Get<LocalizationService>();
+                }
+
+                return _localization;
             }
         }
 

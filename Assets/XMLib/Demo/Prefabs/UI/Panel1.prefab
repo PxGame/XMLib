@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelName: Panel1
+  _status: 2
   _canvasGroup: {fileID: 225186934513693152}
 --- !u!114 &114941866315225906
 MonoBehaviour:
@@ -287,7 +288,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1330694268139898}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

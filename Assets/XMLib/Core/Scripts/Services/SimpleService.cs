@@ -16,15 +16,17 @@ namespace XM.Services
         /// </summary>
         public ST Setting { get { return _setting; } }
 
-        protected override void InitData(AE appEntry)
+        public override void CreateService(AE appEntry)
         {
-            base.InitData(appEntry);
-
-            _setting = Entry.Settings.GetSetting<ST>();
+            //初始化设置
+            _setting = appEntry.Settings.GetSetting<ST>();
             if (null == _setting)
             {
                 throw new Exception(string.Format("未找到 {0} 的设置文件 {1}", ServiceName, typeof(ST).FullName));
             }
+
+            //必须最后调用
+            base.CreateService(appEntry);
         }
 
         public override void Debug(DebugType debugType, string format, params object[] args)

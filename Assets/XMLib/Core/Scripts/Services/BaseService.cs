@@ -22,26 +22,17 @@
         /// 创建服务
         /// </summary>
         /// <param name="appEntry"></param>
-        public void CreateService(AE appEntry)
+        public virtual void CreateService(AE appEntry)
         {
-            InitData(appEntry);
+            _entry = appEntry;
 
             OnCreateService();
         }
 
         /// <summary>
-        /// 初始化数据
-        /// </summary>
-        /// <param name="appEntry"></param>
-        protected virtual void InitData(AE appEntry)
-        {
-            _entry = appEntry;
-        }
-
-        /// <summary>
         /// 初始化服务
         /// </summary>
-        public void InitService()
+        public virtual void InitService()
         {
             OnInitService();
         }
@@ -49,16 +40,16 @@
         /// <summary>
         /// 移除服务
         /// </summary>
-        public void RemoveService()
+        public virtual void DisposeService()
         {
-            OnRemoveService();
+            OnDisposeService();
             _entry = null;
         }
 
         /// <summary>
         /// 清理服务
         /// </summary>
-        public void ClearService()
+        public virtual void ClearService()
         {
             OnClearService();
         }
@@ -87,7 +78,7 @@
         /// <summary>
         /// 移除
         /// </summary>
-        protected abstract void OnRemoveService();
+        protected abstract void OnDisposeService();
 
         /// <summary>
         /// 清理

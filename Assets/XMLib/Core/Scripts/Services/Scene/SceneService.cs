@@ -6,7 +6,7 @@ namespace XM.Services
     /// 场景服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class SceneService<AE> : SimpleService<AE, SceneSetting> where AE : IAppEntry<AE>
+    public class SceneService : SimpleService<AppEntry, SceneSetting>
     {
         #region Base
 
@@ -18,7 +18,7 @@ namespace XM.Services
         {
         }
 
-        protected override void OnRemoveService()
+        protected override void OnDisposeService()
         {
         }
 

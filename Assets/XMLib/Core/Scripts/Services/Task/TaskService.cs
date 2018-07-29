@@ -9,7 +9,7 @@ namespace XM.Services
     /// 任务服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class TaskService<AE> : SimpleService<AE, TaskSetting> where AE : IAppEntry<AE>
+    public class TaskService : SimpleService<AppEntry, TaskSetting>
     {
         /// <summary>
         /// 当前线程是否是主线程
@@ -48,7 +48,7 @@ namespace XM.Services
             Entry.OnUpdate += Update;
         }
 
-        protected override void OnRemoveService()
+        protected override void OnDisposeService()
         {
             Entry.OnUpdate -= Update;
         }

@@ -8,7 +8,7 @@ namespace XM.Services
     /// 对象池服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class PoolService<AE> : SimpleService<AE, PoolSetting>, IPoolService where AE : IAppEntry<AE>
+    public class PoolService : SimpleService<AppEntry, PoolSetting>, IPoolService
     {
         #region private members
 
@@ -38,7 +38,7 @@ namespace XM.Services
             _poolRoot = _poolObj.transform;
         }
 
-        protected override void OnRemoveService()
+        protected override void OnDisposeService()
         {
             if (null != _poolObj)
             {

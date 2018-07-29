@@ -27,7 +27,7 @@
         /// <summary>
         /// 移除服务
         /// </summary>
-        void RemoveService();
+        void DisposeService();
 
         /// <summary>
         /// 清理服务

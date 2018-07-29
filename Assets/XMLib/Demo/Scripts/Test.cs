@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
+using XM;
+using XM.Services;
 
 public class Test : MonoBehaviour
 {
+    public LocalizationText text;
+
     protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -10,7 +14,7 @@ public class Test : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            AppEntryTest.Pool.Pop("Capsule");
+            AppEntry.Pool.Pop("Capsule");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -18,38 +22,38 @@ public class Test : MonoBehaviour
             GameObject obj = GameObject.Find("Capsule");
             if (obj != null)
             {
-                AppEntryTest.Pool.Push(obj);
+                AppEntry.Pool.Push(obj);
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            AppEntryTest.Pool.Clear();
+            AppEntry.Pool.Clear();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Debug.Log("Open Panel1");
-            AppEntryTest.UI.Open("Panel1", "MMP");
+            AppEntry.UI.Open("Panel1", "MMP");
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             Debug.Log("Open Panel2");
-            AppEntryTest.UI.Open("Panel2");
+            AppEntry.UI.Open("Panel2");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             Debug.Log("CloseAll");
-            AppEntryTest.UI.CloseAll(false);
+            AppEntry.UI.CloseAll(false);
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             Debug.Log("CloseTop");
-            AppEntryTest.UI.CloseTop(false, null);
+            AppEntry.UI.CloseTop(false, null);
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             Debug.Log("SwitchTop");
-            AppEntryTest.UI.SwitchTop("Panel1", false, null, "MMP2");
+            AppEntry.UI.SwitchTop("Panel1", false, null, "MMP2");
         }
     }
 }

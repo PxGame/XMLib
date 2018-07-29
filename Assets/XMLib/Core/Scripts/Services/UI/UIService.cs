@@ -9,7 +9,7 @@ namespace XM.Services
     ///  UI服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class UIService<AE> : SimpleService<AE, UISetting>, IUIService where AE : IAppEntry<AE>
+    public class UIService : SimpleService<AppEntry, UISetting>, IUIService
     {
         #region private members
 
@@ -37,7 +37,7 @@ namespace XM.Services
         {
         }
 
-        protected override void OnRemoveService()
+        protected override void OnDisposeService()
         {
         }
 
