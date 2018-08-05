@@ -5,30 +5,15 @@ using UnityEngine;
 namespace XM.Services
 {
     /// <summary>
-    /// 本地化服务元素
+    /// 本地化元素
     /// </summary>
+    [DisallowMultipleComponent]
     public class LocalizationItem : MonoBehaviour
     {
+        /// <summary>
+        /// ID
+        /// </summary>
         [SerializeField]
-        private string _id;
-
-        public string ID { get { return _id; } }
-
-        protected virtual void Awake()
-        {
-            LocalizationService.Inst.AddItem(this);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (null != LocalizationService.Inst)
-            {
-                LocalizationService.Inst.RemoveItem(this);
-            }
-        }
-
-        protected virtual void OnUpdateText(string text)
-        {
-        }
+        protected string _id = null;
     }
 }

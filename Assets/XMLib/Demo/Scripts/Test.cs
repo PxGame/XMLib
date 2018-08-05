@@ -4,8 +4,6 @@ using XM.Services;
 
 public class Test : MonoBehaviour
 {
-    public LocalizationText text;
-
     protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))

@@ -11,7 +11,5 @@ namespace XM.Services
     [CreateAssetMenu(menuName = "XMLib/Localization Setting")]
     public class LocalizationSetting : SimpleSetting
     {
-        [SerializeField]
-        protected List<LocalizationInfo> _infos = new List<LocalizationInfo>();
     }
 }
