@@ -2,8 +2,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XM.Services
+namespace XM.Services.Pool
 {
+    using Scene = UnityEngine.SceneManagement.Scene;
+
     /// <summary>
     /// 对象池服务
     /// </summary>

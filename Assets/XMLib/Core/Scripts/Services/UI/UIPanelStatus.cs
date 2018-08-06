@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.UI
 {
     /// <summary>
     /// UI面板状态

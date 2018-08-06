@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace XM.Services
+namespace XM.Services.Event
 {
     /// <summary>
     /// 事件服务

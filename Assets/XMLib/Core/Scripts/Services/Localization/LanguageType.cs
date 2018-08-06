@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.Localization
 {
     /// <summary>
     /// 本地化语言类型
@@ -17,6 +17,11 @@ namespace XM.Services
         /// <summary>
         /// 英文
         /// </summary>
-        English = 1
+        English = 1,
+
+        /// <summary>
+        /// 日语
+        /// </summary>
+        Japanese = 2
     }
 }

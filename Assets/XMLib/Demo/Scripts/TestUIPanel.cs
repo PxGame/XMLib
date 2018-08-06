@@ -1,6 +1,5 @@
-﻿using DG.Tweening;
-using System;
-using XM.Services;
+﻿using System;
+using XM.Services.UI;
 
 public class TestUIPanel : UIPanel
 {
@@ -12,39 +11,25 @@ public class TestUIPanel : UIPanel
     protected override void OnForceCompleteOperation()
     {
         base.OnForceCompleteOperation();
-
-        _canvasGroup.DOKill(true);
     }
 
     internal override void OnEnter(Action complete)
     {
-        _canvasGroup.DOFade(1.0f, 1.5f).ChangeValues(0.0f, 1.0f).OnComplete(() =>
-        {
-            base.OnEnter(complete);
-        }).Play();
+        base.OnEnter(complete);
     }
 
     internal override void OnLeave(Action complete)
     {
-        _canvasGroup.DOFade(0.0f, 1.5f).ChangeValues(1.0f, 0.0f).OnComplete(() =>
-         {
-             base.OnLeave(complete);
-         }).Play();
+        base.OnLeave(complete);
     }
 
     internal override void OnResume(Action complete)
     {
-        _canvasGroup.DOFade(1.0f, 1.0f).ChangeValues(0.5f, 1.0f).OnComplete(() =>
-         {
-             base.OnResume(complete);
-         }).Play();
+        base.OnResume(complete);
     }
 
     internal override void OnPause(Action complete)
     {
-        _canvasGroup.DOFade(0.5f, 1.0f).ChangeValues(1.0f, 0.5f).OnComplete(() =>
-        {
-            base.OnPause(complete);
-        }).Play();
+        base.OnPause(complete);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace XM.Services
+namespace XM.Services.Event
 {
     /// <summary>
     /// 事件监听

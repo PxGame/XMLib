@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using XM.Services;
+using XM.Services.Event;
+using XM.Services.Input;
+using XM.Services.Localization;
+using XM.Services.Pool;
+using XM.Services.Scene;
+using XM.Services.Task;
+using XM.Services.UI;
 
 namespace XM
 {

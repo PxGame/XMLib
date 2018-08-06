@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace XM.Services
+namespace XM.Services.Task
 {
     /// <summary>
     /// 任务数据

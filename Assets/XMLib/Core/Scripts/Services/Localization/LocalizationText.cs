@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace XM.Services
+namespace XM.Services.Localization
 {
     /// <summary>
     /// 本地化Text组件

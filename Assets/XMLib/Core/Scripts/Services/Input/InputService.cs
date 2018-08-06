@@ -1,4 +1,4 @@
-﻿namespace XM.Services
+﻿namespace XM.Services.Input
 {
     /// <summary>
     /// 输入服务

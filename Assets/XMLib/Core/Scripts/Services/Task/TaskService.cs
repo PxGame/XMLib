@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 
-namespace XM.Services
+namespace XM.Services.Task
 {
     /// <summary>
     /// 任务服务

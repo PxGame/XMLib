@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.UI
 {
     /// <summary>
     ///  UI服务

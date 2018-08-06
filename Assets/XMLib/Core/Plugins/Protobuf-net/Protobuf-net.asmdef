@@ -1,0 +1,8 @@
+{
+    "name": "Protobuf-net",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
+}

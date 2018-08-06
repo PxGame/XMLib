@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.Pool
 {
     /// <summary>
     /// 对象池物体

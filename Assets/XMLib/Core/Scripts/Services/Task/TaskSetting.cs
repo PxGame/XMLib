@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.Task
 {
     /// <summary>
     /// 任务设置

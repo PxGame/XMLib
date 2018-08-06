@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.Pool
 {
     /// <summary>
     /// 对象池实例设置

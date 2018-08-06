@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.UI
 {
     /// <summary>
     /// 基于UGUI的面板

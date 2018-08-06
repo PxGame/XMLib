@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.Localization
 {
     /// <summary>
     /// 本地化元素

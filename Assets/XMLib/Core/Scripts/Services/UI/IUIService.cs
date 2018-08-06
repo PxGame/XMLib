@@ -1,4 +1,4 @@
-﻿namespace XM.Services
+﻿namespace XM.Services.UI
 {
     /// <summary>
     /// UI服务接口

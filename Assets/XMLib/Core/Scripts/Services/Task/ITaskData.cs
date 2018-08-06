@@ -1,4 +1,4 @@
-﻿namespace XM.Services
+﻿namespace XM.Services.Task
 {
     /// <summary>
     /// 任务接口

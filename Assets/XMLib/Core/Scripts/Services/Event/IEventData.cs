@@ -1,4 +1,4 @@
-﻿namespace XM.Services
+﻿namespace XM.Services.Event
 {
     /// <summary>
     /// 事件监听接口

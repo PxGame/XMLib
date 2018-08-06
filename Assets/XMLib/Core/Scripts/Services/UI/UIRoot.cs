@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XM.Services
+namespace XM.Services.UI
 {
     /// <summary>
     /// UI节点

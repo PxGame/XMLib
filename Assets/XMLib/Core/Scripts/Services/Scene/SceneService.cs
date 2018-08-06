@@ -1,6 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 
-namespace XM.Services
+namespace XM.Services.Scene
 {
     /// <summary>
     /// 场景服务
