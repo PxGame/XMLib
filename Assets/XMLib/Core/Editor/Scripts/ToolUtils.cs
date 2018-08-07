@@ -30,7 +30,7 @@ namespace XMEditor
         /// <param name="fileName"></param>
         /// <param name="createDir"></param>
         /// <returns></returns>
-        public static string GetTemplateFilePath(string fileName, bool createDir = true)
+        public static string GetTemplatePath(string fileName, bool createDir = true)
         {
             string filePath = Path.Combine(TemplatePath, fileName);
 
@@ -49,7 +49,7 @@ namespace XMEditor
         /// <param name="fileName"></param>
         /// <param name="createDir"></param>
         /// <returns></returns>
-        public static string GetResourceFilePath(string fileName, bool createDir = true)
+        public static string GetResourcePath(string fileName, bool createDir = true)
         {
             string filePath = Path.Combine(ResourcePath, fileName);
 

@@ -8,6 +8,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using XM.Services;
 using XM.Services.Localization;
+using XM.Tools;
 
 namespace XMEditor.Services.Localization
 {
@@ -132,7 +133,7 @@ namespace XMEditor.Services.Localization
             int length = enumNames.Length;
             string enumName;
 
-            string filePath = ToolUtils.GetTemplateFilePath("Language/Language.xlsx");
+            string filePath = SpecialUtils.Language.GetConfigPath();
             Debug.Log("Export:" + filePath);
 
             using (var excel = new ExcelPackage())
@@ -152,7 +153,7 @@ namespace XMEditor.Services.Localization
 
         private void ExportLanguage()
         {
-            string filePath = ToolUtils.GetTemplateFilePath("Language/Language.xlsx");
+            string filePath = SpecialUtils.Language.GetConfigPath();
             if (!File.Exists(filePath))
             {
                 Debug.LogErrorFormat("文件不存在:{0}", filePath);
@@ -279,13 +280,10 @@ namespace XMEditor.Services.Localization
 
         private void ExportLanguageInfo(LanguageInfo info)
         {
-            string fileName = string.Format("Language/{0}.json", info.Language);
-            string filePath = ToolUtils.GetResourceFilePath(fileName);
-            Debug.LogFormat("Export Language Info:{0}", filePath);
-            string json = JsonConvert.SerializeObject(info);
-            File.WriteAllText(filePath, json);
-
-            AssetDatabase.Refresh();
+            string filePath = SpecialUtils.Language.GetTempPath(info.Language);
+            Debug.LogFormat("导出语言文件:{0}", filePath);
+            byte[] data = SerializationUtils.Serialize(info);
+            File.WriteAllBytes(filePath, data);
         }
 
         private void OnGUI()
