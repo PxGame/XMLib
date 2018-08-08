@@ -213,7 +213,7 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 写入语言文件
         /// </summary>
-        /// <param name="info"></param>
+        /// <param name="info">语言信息</param>
         public static void WriteFile(LanguageInfo info)
         {
             string filePath = GetPath(info.Language);
@@ -225,7 +225,7 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 读取语言文件
         /// </summary>
-        /// <param name="languageType"></param>
+        /// <param name="languageType">语言类型</param>
         /// <returns></returns>
         public static LanguageInfo ReadFile(LanguageType languageType)
         {
@@ -238,8 +238,8 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 获取语言
         /// </summary>
-        /// <param name="languageType"></param>
-        /// <param name="id"></param>
+        /// <param name="languageType">语言类型</param>
+        /// <param name="id">字段id</param>
         /// <returns></returns>
         public static string Get(LanguageType languageType, string id)
         {
@@ -251,6 +251,10 @@ namespace XMEditor.Services.Localization
             str = info.Get(id);
 
             return str;
+        }
+
+        public static void UpdateScene(LanguageType languageType)
+        {
         }
     }
 }
