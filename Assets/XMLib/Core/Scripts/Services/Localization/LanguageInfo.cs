@@ -29,6 +29,21 @@ namespace XM.Services.Localization
         {
         }
 
+        /// <summary>
+        /// 获取语言
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Get(string id)
+        {
+            string str = "";
+
+            LanguageItem item = Items.Find((t) => { return t.ID == id; });
+            Checker.NotNull(item, "{0} 语言没有 {1} ID", Language, id);
+
+            return str;
+        }
+
         public override string ToString()
         {
             int cnt = 0;
@@ -37,7 +52,7 @@ namespace XM.Services.Localization
                 cnt = Items.Count;
             }
 
-            return string.Format("[{0}]({1})", Language, cnt);
+            return string.Format("[{0}](cnt={1})", Language, cnt);
         }
     }
 }

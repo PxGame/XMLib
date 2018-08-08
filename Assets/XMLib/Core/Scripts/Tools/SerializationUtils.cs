@@ -28,8 +28,8 @@ namespace XM.Tools
                 data = stream.ToArray();
             }
 #else
-        string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-        data = System.Text.Encoding.UTF8.GetBytes(jsonStr);
+            string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            data = System.Text.Encoding.UTF8.GetBytes(jsonStr);
 #endif
 
             return data;
@@ -51,8 +51,8 @@ namespace XM.Tools
                 obj = ProtoBuf.Serializer.Deserialize<T>(stream);
             }
 #else
-        string jsonStr = System.Text.Encoding.UTF8.GetString(data);
-        obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
+            string jsonStr = System.Text.Encoding.UTF8.GetString(data);
+            obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
 #endif
 
             return obj;

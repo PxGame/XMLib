@@ -17,7 +17,7 @@ namespace XMEditor
         /// <summary>
         /// 模板路径
         /// </summary>
-        public static string TemplatePath { get { return Path.Combine(Application.dataPath, "../XMTemplate/"); } }
+        public static string TemplatePath { get { return Path.Combine(Application.dataPath, "../XMTemp/"); } }
 
         /// <summary>
         /// 模板路径
