@@ -181,7 +181,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: "\u6709\u751F\u547D\u5C31\u6709\u5E0C\u671B"
 --- !u!222 &78215824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -199,10 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ec3d9a54dd2d4180cd44b55c2518d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _language: 0
-  _font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
-  _fontSize: 22
-  _id: 
+  _id: 2
+  _text: {fileID: 78215823}
 --- !u!1001 &280514133
 Prefab:
   m_ObjectHideFlags: 0
@@ -804,10 +802,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ec3d9a54dd2d4180cd44b55c2518d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _language: 0
-  _font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
-  _fontSize: 22
-  _id: 
+  _id: 1
+  _text: {fileID: 1039772029}
+--- !u!114 &1039772029 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114026896091371842, guid: 0a22ec17622827e43a8564d5208c2118,
+    type: 2}
+  m_PrefabInternal: {fileID: 1039772025}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1179962668
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +991,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: "\u5FC3\u4E4B\u6240\u613F\uFF0C\u65E0\u6240\u4E0D\u6210\u3002"
 --- !u!222 &1841440423
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1007,10 +1009,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ec3d9a54dd2d4180cd44b55c2518d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _language: 0
-  _font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
-  _fontSize: 22
-  _id: 
+  _id: 3
+  _text: {fileID: 1841440422}
 --- !u!1 &1874206306
 GameObject:
   m_ObjectHideFlags: 0

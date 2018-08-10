@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XM
+namespace XM.Tools
 {
     /// <summary>
     /// 检查者

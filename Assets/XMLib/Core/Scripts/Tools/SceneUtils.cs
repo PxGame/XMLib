@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using XM.Tools;
 
-namespace XM.Extends
+namespace XM.Tools
 {
     /// <summary>
     /// 场景工具

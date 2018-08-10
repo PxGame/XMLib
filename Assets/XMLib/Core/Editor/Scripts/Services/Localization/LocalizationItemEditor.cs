@@ -35,12 +35,21 @@ namespace XMEditor.Services.Localization
 
             if (GUILayout.Button("刷新"))
             {
+                UpdateItems();
             }
 
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
                 OnValueChanged();
+            }
+        }
+
+        private void UpdateItems()
+        {
+            foreach (var item in targets)
+            {
+                LocalizationUtils.UpdateItem((LocalizationItem)item);
             }
         }
 

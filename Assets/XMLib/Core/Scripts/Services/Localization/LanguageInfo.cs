@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XM.Tools;
 
 namespace XM.Services.Localization
 {
@@ -39,7 +40,8 @@ namespace XM.Services.Localization
             string str = "";
 
             LanguageItem item = Items.Find((t) => { return t.ID == id; });
-            Checker.NotNull(item, "{0} 语言没有 {1} ID", Language, id);
+            Checker.NotNull(item, "{0} 语言中不存在 ID:{1}", Language, id);
+            str = item.Text;
 
             return str;
         }

@@ -1,10 +1,12 @@
 ﻿using OfficeOpenXml;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using XM;
 using XM.Services.Localization;
 using XM.Tools;
@@ -238,10 +240,10 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 获取语言
         /// </summary>
-        /// <param name="languageType">语言类型</param>
         /// <param name="id">字段id</param>
+        /// <param name="languageType">语言类型</param>
         /// <returns></returns>
-        public static string Get(LanguageType languageType, string id)
+        public static string Get(string id, LanguageType languageType)
         {
             string str = null;
 
@@ -253,8 +255,72 @@ namespace XMEditor.Services.Localization
             return str;
         }
 
-        public static void UpdateScene(LanguageType languageType)
+        /// <summary>
+        /// 更新场景中的语言
+        /// </summary>
+        /// <param name="scene">场景</param>
+        /// <param name="languageType">语言类型</param>
+        public static void UpdateScene(Scene scene, LanguageType languageType)
         {
+            LanguageInfo info = ReadFile(languageType);
+            List<LocalizationItem> items = SceneUtils.FindAllComponent<LocalizationItem>(scene, true);
+            int length = items.Count;
+            LocalizationItem item;
+            string text;
+            for (int i = 0; i < length; i++)
+            {
+                item = items[i];
+
+                text = info.Get(item.ID);
+                items[i].UpdateText(languageType, text, null);
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+        }
+
+        /// <summary>
+        ///  更新场景中的语言，使用默认语言
+        /// </summary>
+        /// <param name="scene"></param>
+        public static void UpdateScene(Scene scene)
+        {
+            LanguageType languageType = LocalizationWindow.Language;
+            LanguageInfo info = ReadFile(languageType);
+            List<LocalizationItem> items = SceneUtils.FindAllComponent<LocalizationItem>(scene, true);
+            int length = items.Count;
+            LocalizationItem item;
+            string text;
+            for (int i = 0; i < length; i++)
+            {
+                item = items[i];
+
+                text = info.Get(item.ID);
+                items[i].UpdateText(languageType, text, null);
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+        }
+
+        /// <summary>
+        /// 更新元素
+        /// </summary>
+        /// <param name="item">元素</param>
+        /// <param name="languageType">语言类型</param>
+        public static void UpdateItem(LocalizationItem item, LanguageType languageType)
+        {
+            string text = Get(item.ID, languageType);
+            item.UpdateText(languageType, text, null);
+        }
+
+        /// <summary>
+        /// 更新元素,使用默认语言
+        /// </summary>
+        /// <param name="item"></param>
+        public static void UpdateItem(LocalizationItem item)
+        {
+            LanguageType languageType = LocalizationWindow.Language;
+            string text = Get(item.ID, languageType);
+            item.UpdateText(languageType, text, null);
         }
     }
 }
