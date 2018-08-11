@@ -20,10 +20,7 @@ namespace XM.Services
         {
             //初始化设置
             _setting = appEntry.Settings.GetSetting<ST>();
-            if (null == _setting)
-            {
-                throw new Exception(string.Format("未找到 {0} 的设置文件 {1}", ServiceName, typeof(ST).FullName));
-            }
+            Checker.NotNull(_setting, "未找到 {0} 的设置文件 {1}", ServiceName, typeof(ST).FullName);
 
             //必须最后调用
             base.CreateService(appEntry);

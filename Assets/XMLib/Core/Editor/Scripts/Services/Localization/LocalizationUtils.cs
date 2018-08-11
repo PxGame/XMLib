@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using XM;
+using XM.Exceptions;
 using XM.Services.Localization;
 using XM.Tools;
 
@@ -125,10 +126,7 @@ namespace XMEditor.Services.Localization
                     col++;
                 } while (true);
 
-                if (!dict.ContainsKey("ID"))
-                {
-                    throw new Exception(string.Format("配置表中没有ID字段:{0}", filePath));
-                }
+                Checker.IsTrue(dict.ContainsKey("ID"), "配置表中没有ID字段:{0}", filePath);
 
                 //取id
                 col = 1;
@@ -181,9 +179,13 @@ namespace XMEditor.Services.Localization
                 header = indexs[i];
                 items = dict[header];
 
-                if (!Enum.TryParse<LanguageType>(header, out type))
+                try
                 {
-                    throw new Exception(string.Format("{0} 不是 LanguageType", header));
+                    type = (LanguageType)Enum.Parse(typeof(LanguageType), header);
+                }
+                catch (Exception)
+                {
+                    throw new StringException("{0} 无法转换为 LanguageType", header);
                 }
 
                 info = new LanguageInfo();

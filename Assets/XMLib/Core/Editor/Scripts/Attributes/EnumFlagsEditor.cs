@@ -1,8 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using XM.Tools;
+using XM.Attributes;
 
-namespace XMEditor.Tools
+namespace XMEditor.Attributes
 {
     /// <summary>
     /// 枚举多选

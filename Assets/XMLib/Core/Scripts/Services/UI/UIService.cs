@@ -20,25 +20,13 @@ namespace XM.Services.UI
 
         #region SimpleService
 
-        protected override void OnCreateService()
+        protected override void OnServiceCreate()
         {
             //实例化根节点
             GameObject preUIRoot = Setting.GetRoot();
             _uiRootObj = GameObject.Instantiate(preUIRoot);
             _uiRoot = _uiRootObj.GetComponent<UIRoot>();
             //
-        }
-
-        protected override void OnClearService()
-        {
-        }
-
-        protected override void OnInitService()
-        {
-        }
-
-        protected override void OnDisposeService()
-        {
         }
 
         #endregion SimpleService

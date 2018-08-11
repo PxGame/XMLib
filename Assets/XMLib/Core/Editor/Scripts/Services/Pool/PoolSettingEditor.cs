@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XM;
 using XM.Services;
 using XM.Services.Pool;
 
@@ -51,7 +52,6 @@ namespace XMEditor.Services.Pool
         private void CheckData(SerializedProperty items)
         {
             bool isError = false;
-            string tmpMsg = "";
             try
             {
                 int length = items.arraySize;
@@ -62,24 +62,11 @@ namespace XMEditor.Services.Pool
                 for (int i = 0; i < length; i++)
                 {
                     obj = (GameObject)items.GetArrayElementAtIndex(i).objectReferenceValue;
-                    if (null == obj)
-                    {
-                        tmpMsg = string.Format("第{0}条对象为null.", i);
-                        throw new System.Exception(tmpMsg);
-                    }
-
+                    Checker.NotNull(obj, "第{0}条对象为null.", i);
                     item = obj.GetComponent<PoolItem>();
-                    if (null == item)
-                    {
-                        tmpMsg = string.Format("第{0}条对象没有PoolItem组件", i);
-                        throw new System.Exception(tmpMsg);
-                    }
-
-                    if (poolNames.TryGetValue(item.PoolName, out existIndex))
-                    {
-                        tmpMsg = string.Format("第{0}条与第{1}条对象的PoolName重复.", i, existIndex);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    Checker.NotNull(item, "第{0}条对象没有PoolItem组件", i);
+                    bool isExist = poolNames.TryGetValue(item.PoolName, out existIndex);
+                    Checker.IsFalse(isExist, "第{0}条与第{1}条对象的PoolName重复.", i, existIndex);
 
                     poolNames.Add(item.PoolName, i);
                 }

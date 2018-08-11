@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using XM.Exceptions;
 
 namespace XM.Services.Event
 {
@@ -48,10 +49,7 @@ namespace XM.Services.Event
         /// <param name="invokeMaxCount">达到最大调用次数后移除</param>
         public EventData(string eventName, object methodTarget, MethodInfo methodInfo, int invokeMaxCount)
         {
-            if (null == methodTarget && !methodInfo.IsStatic)
-            {//非静态函数，Target不能为null
-                throw new Exception("非静态函数，Target不能为null");
-            }
+            Checker.IsFalse(null == methodTarget && !methodInfo.IsStatic, "非静态函数，Target不能为null");
 
             _eventName = eventName;
             _methodTarget = methodTarget;
@@ -77,8 +75,7 @@ namespace XM.Services.Event
             }
             catch (Exception ex)
             {
-                string msg = string.Format("事件调用异常 事件名：{0} 类：{1} 函数：{2}", _eventName, _methodTarget, _methodInfo);
-                throw new Exception(msg, ex);
+                throw new StringException(ex, "事件调用异常 事件名：{0} 类：{1} 函数：{2}", _eventName, _methodTarget, _methodInfo);
             }
 
             return bRet;

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XM.Exceptions;
 
 namespace XM.Services.UI
 {
@@ -75,10 +76,7 @@ namespace XM.Services.UI
         /// <param name="args"></param>
         public void Debug(DebugType debugType, string format, params object[] args)
         {
-            if (null == _service)
-            {
-                throw new Exception("UI服务未初始化");
-            }
+            Checker.NotNull(_service, "UI服务未初始化");
 
             _service.Debug(debugType, "[" + _panelName + "]" + format, args);
         }
@@ -120,7 +118,7 @@ namespace XM.Services.UI
         /// </summary>
         protected virtual void OnCreate()
         {
-            Debug(DebugType.Normal, "OnCreate");
+            Debug(DebugType.Debug, "OnCreate");
         }
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace XM.Services.UI
         /// </summary>
         protected virtual void OnDispose()
         {
-            Debug(DebugType.Normal, "OnDispose");
+            Debug(DebugType.Debug, "OnDispose");
         }
 
         /// <summary>
@@ -136,7 +134,7 @@ namespace XM.Services.UI
         /// </summary>
         protected virtual void OnForceCompleteOperation()
         {
-            Debug(DebugType.Normal, "OnForceCompleteOperation");
+            Debug(DebugType.Debug, "OnForceCompleteOperation");
         }
 
         #endregion Base
@@ -157,7 +155,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnPreEnter()
         {
-            Debug(DebugType.Normal, "OnPreEnter");
+            Debug(DebugType.Debug, "OnPreEnter");
             _status = UIPanelStatus.Enter;
         }
 
@@ -167,7 +165,7 @@ namespace XM.Services.UI
         /// <param name="complete">操作完成</param>
         internal virtual void OnEnter(Action complete)
         {
-            Debug(DebugType.Normal, "OnEnter");
+            Debug(DebugType.Debug, "OnEnter");
             if (null != complete)
             {
                 complete();
@@ -179,7 +177,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnLateEnter()
         {
-            Debug(DebugType.Normal, "OnLateEnter");
+            Debug(DebugType.Debug, "OnLateEnter");
         }
 
         #endregion Enter status
@@ -191,7 +189,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnPreLeave()
         {
-            Debug(DebugType.Normal, "OnPreLeave");
+            Debug(DebugType.Debug, "OnPreLeave");
             _status = UIPanelStatus.Leave;
         }
 
@@ -201,7 +199,7 @@ namespace XM.Services.UI
         /// <param name="complete">操作完成</param>
         internal virtual void OnLeave(Action complete)
         {
-            Debug(DebugType.Normal, "OnLeave");
+            Debug(DebugType.Debug, "OnLeave");
             if (null != complete)
             {
                 complete();
@@ -213,7 +211,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnLateLeave()
         {
-            Debug(DebugType.Normal, "OnLateLeave");
+            Debug(DebugType.Debug, "OnLateLeave");
         }
 
         #endregion Leave status
@@ -225,7 +223,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnPrePause()
         {
-            Debug(DebugType.Normal, "OnPrePause");
+            Debug(DebugType.Debug, "OnPrePause");
             _status = UIPanelStatus.Pause;
         }
 
@@ -235,7 +233,7 @@ namespace XM.Services.UI
         /// <param name="complete">操作完成</param>
         internal virtual void OnPause(Action complete)
         {
-            Debug(DebugType.Normal, "OnPause");
+            Debug(DebugType.Debug, "OnPause");
             if (null != complete)
             {
                 complete();
@@ -247,7 +245,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnLatePause()
         {
-            Debug(DebugType.Normal, "OnLatePause");
+            Debug(DebugType.Debug, "OnLatePause");
         }
 
         #endregion Pause status
@@ -259,7 +257,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnPreResume()
         {
-            Debug(DebugType.Normal, "OnPreResume");
+            Debug(DebugType.Debug, "OnPreResume");
             _status = UIPanelStatus.Resume;
         }
 
@@ -269,7 +267,7 @@ namespace XM.Services.UI
         /// <param name="complete">操作完成</param>
         internal virtual void OnResume(Action complete)
         {
-            Debug(DebugType.Normal, "OnResume");
+            Debug(DebugType.Debug, "OnResume");
             if (null != complete)
             {
                 complete();
@@ -281,7 +279,7 @@ namespace XM.Services.UI
         /// </summary>
         internal virtual void OnLateResume()
         {
-            Debug(DebugType.Normal, "OnLateResume");
+            Debug(DebugType.Debug, "OnLateResume");
         }
 
         #endregion Resume status

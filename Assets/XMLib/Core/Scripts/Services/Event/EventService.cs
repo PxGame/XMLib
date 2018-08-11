@@ -21,19 +21,7 @@ namespace XM.Services.Event
 
         #region Base
 
-        protected override void OnCreateService()
-        {
-        }
-
-        protected override void OnInitService()
-        {
-        }
-
-        protected override void OnDisposeService()
-        {
-        }
-
-        protected override void OnClearService()
+        protected override void OnServiceClear()
         {
             RemoveEvent();
         }
@@ -288,7 +276,12 @@ namespace XM.Services.Event
                     }
                     catch (Exception ex)
                     {
-                        Debug(DebugType.Exception, "事件调用异常:", ex);
+                        //发生异常
+                        eventDatas.Remove(eventData);
+                        --count;
+                        --i;
+
+                        Debug(DebugType.Exception, "事件调用异常，并且将异常事件移除处理队列:", ex);
                     }
                 }
 

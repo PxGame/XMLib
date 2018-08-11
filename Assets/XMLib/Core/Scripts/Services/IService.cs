@@ -25,9 +25,14 @@
         void InitService();
 
         /// <summary>
-        /// 移除服务
+        /// 开始移除服务
         /// </summary>
-        void DisposeService();
+        void DisposeBeforeService();
+
+        /// <summary>
+        /// 结束移除服务
+        /// </summary>
+        void DisposedService();
 
         /// <summary>
         /// 清理服务

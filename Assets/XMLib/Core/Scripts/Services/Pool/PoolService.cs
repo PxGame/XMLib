@@ -33,14 +33,14 @@ namespace XM.Services.Pool
 
         #region Base
 
-        protected override void OnCreateService()
+        protected override void OnServiceCreate()
         {
             _poolObj = new GameObject("PoolRoot");
             GameObject.DontDestroyOnLoad(_poolObj);
             _poolRoot = _poolObj.transform;
         }
 
-        protected override void OnDisposeService()
+        protected override void OnServiceDisposed()
         {
             if (null != _poolObj)
             {
@@ -52,11 +52,7 @@ namespace XM.Services.Pool
             _pools.Clear();
         }
 
-        protected override void OnInitService()
-        {
-        }
-
-        protected override void OnClearService()
+        protected override void OnServiceClear()
         {
             Clear();
         }
@@ -90,10 +86,7 @@ namespace XM.Services.Pool
         /// <param name="item"></param>
         public void Push(PoolItem item)
         {
-            if (null == item)
-            {
-                throw new System.Exception(string.Format("对象池压入对象为null。"));
-            }
+            Checker.NotNull(item, "对象池压入对象为null");
 
             string poolName = item.PoolName;
             Stack<PoolItem> items = null;
@@ -103,7 +96,7 @@ namespace XM.Services.Pool
                 _pools.Add(item.PoolName, items);
             }
 
-            Debug(DebugType.Normal, "压入对象:{0}", poolName);
+            Debug(DebugType.Debug, "压入对象:{0}", poolName);
             //压入池
             items.Push(item);
 
@@ -125,12 +118,10 @@ namespace XM.Services.Pool
             Stack<PoolItem> items = null;
             if (!_pools.TryGetValue(poolName, out items))
             {//没有则创建
-                Debug(DebugType.Normal, "创建对象:{0}", poolName);
+                Debug(DebugType.Debug, "创建对象:{0}", poolName);
                 GameObject preObj = Setting.GetItem(poolName);
-                if (null == preObj)
-                {
-                    throw new System.Exception("对象池预制中没有该类型对象:" + poolName);
-                }
+
+                Checker.NotNull(preObj, "对象池预制中没有该类型对象:{0}", poolName);
 
                 obj = GameObject.Instantiate(preObj);
                 obj.name = preObj.name;
@@ -139,7 +130,7 @@ namespace XM.Services.Pool
             }
             else
             {//有则取出
-                Debug(DebugType.Normal, "取出对象:{0}", poolName);
+                Debug(DebugType.Debug, "取出对象:{0}", poolName);
                 item = items.Pop();
                 obj = item.gameObject;
 

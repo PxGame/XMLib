@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XM;
 using XM.Services;
 using XM.Services.UI;
 
@@ -54,23 +55,14 @@ namespace XMEditor.Services.UI
         private void CheckData(SerializedProperty root, SerializedProperty panels)
         {
             bool isError = false;
-            string tmpMsg = "";
 
             try
             {
                 GameObject rootObj = (GameObject)root.objectReferenceValue;
-                if (null == rootObj)
-                {
-                    tmpMsg = string.Format("根节点对象为null.");
-                    throw new System.Exception(tmpMsg);
-                }
+                Checker.NotNull(rootObj, "根节点对象为null");
 
                 UIRoot uiRoot = rootObj.GetComponent<UIRoot>();
-                if (null == uiRoot)
-                {
-                    tmpMsg = string.Format("根节点对象没有UIRoot组件");
-                    throw new System.Exception(tmpMsg);
-                }
+                Checker.NotNull(uiRoot, "根节点对象没有UIRoot组件");
 
                 int length = panels.arraySize;
                 GameObject obj;
@@ -80,24 +72,13 @@ namespace XMEditor.Services.UI
                 for (int i = 0; i < length; i++)
                 {
                     obj = (GameObject)panels.GetArrayElementAtIndex(i).objectReferenceValue;
-                    if (null == obj)
-                    {
-                        tmpMsg = string.Format("第{0}条对象为null.", i);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    Checker.NotNull(obj, "第{0}条对象为null.", i);
 
                     panel = obj.GetComponent<IUIPanel>();
-                    if (null == panel)
-                    {
-                        tmpMsg = string.Format("第{0}条对象没有IUIPanel组件", i);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    Checker.NotNull(panel, "第{0}条对象没有IUIPanel组件", i);
 
-                    if (panelNames.TryGetValue(panel.PanelName, out existIndex))
-                    {
-                        tmpMsg = string.Format("第{0}条与第{1}条对象的PanelName重复.", i, existIndex);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    bool isExist = panelNames.TryGetValue(panel.PanelName, out existIndex);
+                    Checker.IsFalse(isExist, "第{0}条与第{1}条对象的PanelName重复.", i, existIndex);
 
                     panelNames.Add(panel.PanelName, i);
                 }

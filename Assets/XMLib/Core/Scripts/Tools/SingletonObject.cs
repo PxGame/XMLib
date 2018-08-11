@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using XM.Exceptions;
 
 namespace XM.Tools
 {
@@ -24,8 +25,7 @@ namespace XM.Tools
         {
             if (_instance != null)
             {//重复实例化
-                string msg = string.Format("重复实例化单实例 {0}", GetType().Name);
-                throw new System.Exception(msg);
+                throw new StringException("重复实例化单实例 {0}", GetType().Name);
             }
 
             _instance = (T)this;

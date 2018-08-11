@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using XM.Services;
+using XM.Tools;
 
 namespace XM
 {
@@ -12,21 +15,6 @@ namespace XM
     public abstract class IAppEntry<AE> : MonoBehaviour where AE : IAppEntry<AE>
     {
         #region Public memebers
-
-        /// <summary>
-        /// 物理更新
-        /// </summary>
-        public Action OnFixedUpdate { get { return _onFixedUpdate; } set { _onFixedUpdate = value; } }
-
-        /// <summary>
-        /// 延迟更新
-        /// </summary>
-        public Action OnLateUpdate { get { return _onLateUpdate; } set { _onLateUpdate = value; } }
-
-        /// <summary>
-        /// 更新
-        /// </summary>
-        public Action OnUpdate { get { return _onUpdate; } set { _onUpdate = value; } }
 
         /// <summary>
         /// 日志输出
@@ -54,12 +42,10 @@ namespace XM
 
         private static AE _inst = null;
 
-        private Action _onFixedUpdate;
-        private Action _onLateUpdate;
-        private Action _onUpdate;
         private Action<DebugType, string> _onDebugOut;
 
         private Dictionary<Type, IService<AE>> _serviceDict = new Dictionary<Type, IService<AE>>();
+        private List<IService<AE>> _serviceList = new List<IService<AE>>();
 
         [SerializeField]
         private ServiceSettings _settings;
@@ -68,15 +54,9 @@ namespace XM
 
         protected virtual void Awake()
         {
-            if (null != _inst)
-            {
-                throw new Exception("IAppEntry 重复实例化.");
-            }
+            Checker.IsNull(_inst, "IAppEntry 重复实例化");
             _inst = this as AE;
-            if (null == _inst)
-            {
-                throw new Exception("单例初始化失败。");
-            }
+            Checker.NotNull(_inst, "单例初始化失败");
 
             Initialize();
         }
@@ -84,30 +64,6 @@ namespace XM
         protected virtual void OnDestroy()
         {
             Terminal();
-        }
-
-        protected virtual void FixedUpdate()
-        {
-            if (null != _onFixedUpdate)
-            {
-                _onFixedUpdate();
-            }
-        }
-
-        protected virtual void LateUpdate()
-        {
-            if (null != _onLateUpdate)
-            {
-                _onLateUpdate();
-            }
-        }
-
-        protected virtual void Update()
-        {
-            if (null != _onUpdate)
-            {
-                _onUpdate();
-            }
         }
 
         #region Service Operation
@@ -123,6 +79,7 @@ namespace XM
 
             if (!_serviceDict.TryGetValue(typeof(T), out service))
             {
+                Debug(DebugType.Warning, "未获取到该类型的服务：{0}", typeof(T).FullName);
             }
 
             return (T)service;
@@ -131,36 +88,11 @@ namespace XM
         /// <summary>
         /// 添加服务
         /// </summary>
-        /// <typeparam name="T">服务类型</typeparam>
-        /// <returns>服务实例</returns>
-        public T Add<T>() where T : IService<AE>, new()
-        {
-            Type type = typeof(T);
-            if (_serviceDict.ContainsKey(type))
-            {//已存在服务
-                throw new Exception("已存在该服务 " + type.FullName);
-            }
-
-            Debug(DebugType.Normal, "添加服务 {0}", type.FullName);
-
-            T service = new T();
-
-            _serviceDict.Add(type, service);
-
-            service.CreateService((AE)this);
-            service.InitService();
-
-            return service;
-        }
-
-        /// <summary>
-        /// 添加服务
-        /// </summary>
-        /// <param name="serviceTypes"></param>
-        public void Adds(List<Type> serviceTypes)
+        /// <param name="serviceTypes">服务类型</param>
+        public void AddRange(ServiceTypeList<AE> serviceTypes)
         {
             Type tmpType;
-            IService<AE> tmpService;
+            IService<AE> service;
             Type[] argsTypes = new Type[] { };
             object[] args = new object[] { };
 
@@ -169,56 +101,46 @@ namespace XM
             for (int i = 0; i < length; i++)
             {
                 tmpType = serviceTypes[i];
-
-                if (_serviceDict.ContainsKey(tmpType))
-                {//已存在服务
-                    throw new Exception("已存在该服务 " + tmpType.FullName);
-                }
+                Checker.IsFalse(_serviceDict.ContainsKey(tmpType), "已存在该服务 {0}", tmpType.FullName);
 
                 //创建对象
-                tmpService = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
+                service = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
 
-                Debug(DebugType.Normal, "添加服务 {0}", tmpService.ServiceName);
-
-                _serviceDict.Add(tmpType, tmpService);
-
-                //注册
-                tmpService.CreateService((AE)this);
+                Debug(DebugType.Debug, "添加服务 {0}", service.ServiceName);
 
                 //添加到初始化列表
-                services.Add(tmpService);
+                services.Add(service);
+            }
+
+            //创建
+            length = services.Count;
+            for (int i = 0; i < length; i++)
+            {
+                service = services[i];
+
+                service.CreateService((AE)this);
             }
 
             //初始化
             length = services.Count;
             for (int i = 0; i < length; i++)
             {
-                tmpService = services[i];
+                service = services[i];
 
-                tmpService.InitService();
+                service.InitService();
             }
-        }
 
-        /// <summary>
-        /// 移除服务
-        /// </summary>
-        /// <typeparam name="T">服务类型</typeparam>
-        /// <returns></returns>
-        public bool Remove<T>() where T : IService<AE>
-        {
-            Type type = typeof(T);
-
-            IService<AE> service = null;
-            if (!_serviceDict.TryGetValue(type, out service))
+            //初始化
+            length = services.Count;
+            for (int i = 0; i < length; i++)
             {
-                Debug(DebugType.Error, "移除服务失败，未找到服务实例 {0}", type.Name);
-                return false;
+                service = services[i];
+
+                //添加到列表
+                _serviceList.Add(service);
+                //添加到字典
+                _serviceDict.Add(service.GetType(), service);
             }
-
-            Debug(DebugType.Normal, "移除服务 {0}", service.ServiceName);
-            service.DisposeService();
-
-            return true;
         }
 
         /// <summary>
@@ -226,19 +148,32 @@ namespace XM
         /// </summary>
         private void RemoveAll()
         {
-            foreach (var servicePair in _serviceDict)
+            //反向，先创建的后移除
+            _serviceList.Reverse();
+
+            int length = _serviceList.Count;
+            IService<AE> service;
+
+            //开始移除
+            for (int i = 0; i < length; i++)
             {
-                if (null == servicePair.Value)
-                {
-                    Debug(DebugType.Error, "移除服务失败，未找到服务实例 {0}", servicePair.Key.Name);
-                    continue;
-                }
+                service = _serviceList[i];
 
-                Debug(DebugType.Normal, "移除服务 {0}", servicePair.Value.ServiceName);
-
-                //调用移除事件
-                servicePair.Value.DisposeService();
+                Debug(DebugType.Debug, "开始移除服务 {0}", service.ServiceName);
+                service.DisposeBeforeService();
             }
+
+            //完成移除
+            for (int i = 0; i < length; i++)
+            {
+                service = _serviceList[i];
+
+                Debug(DebugType.Debug, "完成移除服务 {0}", service.ServiceName);
+                service.DisposedService();
+            }
+
+            //清理
+            _serviceList.Clear();
             _serviceDict.Clear();
         }
 
@@ -247,6 +182,15 @@ namespace XM
         /// </summary>
         public void ClearAll()
         {
+            int length = _serviceList.Count;
+            IService<AE> service;
+            for (int i = 0; i < length; i++)
+            {
+                service = _serviceList[i];
+
+                Debug(DebugType.Debug, "清理服务 {0}", service.ServiceName);
+                service.ClearService();
+            }
         }
 
         #endregion Service Operation
@@ -302,7 +246,7 @@ namespace XM
         private void AddDefaults()
         {
             //获取默认服务
-            List<Type> serviceTypes = DefaultServices();
+            ServiceTypeList<AE> serviceTypes = GetDefaultServices();
 
             if (null == serviceTypes)
             {//没有直接返回
@@ -310,7 +254,7 @@ namespace XM
             }
 
             //添加
-            Adds(serviceTypes);
+            AddRange(serviceTypes);
         }
 
         /// <summary>
@@ -331,10 +275,10 @@ namespace XM
         /// 初始化默认服务列表
         /// </summary>
         /// <returns></returns>
-        protected virtual List<Type> DefaultServices()
+        protected virtual ServiceTypeList<AE> GetDefaultServices()
         {
             //默认服务
-            return new List<Type>() { };
+            return new ServiceTypeList<AE>();
         }
     }
 }

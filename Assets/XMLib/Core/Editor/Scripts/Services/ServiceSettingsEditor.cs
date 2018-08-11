@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XM;
 using XM.Services;
 
 namespace XMEditor.Services
@@ -48,7 +49,6 @@ namespace XMEditor.Services
         private void CheckData(SerializedProperty settings)
         {
             bool isError = false;
-            string tmpMsg = "";
 
             try
             {
@@ -60,19 +60,12 @@ namespace XMEditor.Services
                 for (int i = 0; i < length; i++)
                 {
                     setting = (SimpleSetting)settings.GetArrayElementAtIndex(i).objectReferenceValue;
-                    if (null == setting)
-                    {
-                        tmpMsg = string.Format("第{0}条设置为null.", i);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    Checker.NotNull(setting, "第{0}条设置为null.", i);
 
                     settingType = setting.GetType();
 
-                    if (settingTypes.TryGetValue(settingType, out existIndex))
-                    {
-                        tmpMsg = string.Format("第{0}条与第{1}条设置类型重复.", i, existIndex);
-                        throw new System.Exception(tmpMsg);
-                    }
+                    bool isExist = settingTypes.TryGetValue(settingType, out existIndex);
+                    Checker.IsFalse(isExist, "第{0}条与第{1}条设置类型重复.", i, existIndex);
 
                     settingTypes.Add(settingType, i);
                 }

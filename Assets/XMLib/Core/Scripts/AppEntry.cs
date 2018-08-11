@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using XM.Services;
 using XM.Services.Event;
 using XM.Services.Input;
 using XM.Services.Localization;
@@ -34,17 +35,17 @@ namespace XM
         /// 初始化默认服务列表
         /// </summary>
         /// <returns></returns>
-        protected override List<Type> DefaultServices()
+        protected override ServiceTypeList<AppEntry> GetDefaultServices()
         {
-            List<Type> services = base.DefaultServices();
+            ServiceTypeList<AppEntry> services = base.GetDefaultServices();
 
-            services.Add(typeof(EventService));
-            services.Add(typeof(PoolService));
-            services.Add(typeof(TaskService));
-            services.Add(typeof(UIService));
-            services.Add(typeof(SceneService));
-            services.Add(typeof(InputService));
-            services.Add(typeof(LocalizationService));
+            services.Add<EventService>();
+            services.Add<PoolService>();
+            services.Add<TaskService>();
+            services.Add<UIService>();
+            services.Add<SceneService>();
+            services.Add<InputService>();
+            services.Add<LocalizationService>();
 
             //默认服务
             return services;

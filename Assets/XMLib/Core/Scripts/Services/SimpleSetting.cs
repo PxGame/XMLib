@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using XM.Tools;
+using XM.Attributes;
 
 namespace XM.Services
 {

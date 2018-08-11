@@ -26,7 +26,7 @@
         {
             _entry = appEntry;
 
-            OnCreateService();
+            OnServiceCreate();
         }
 
         /// <summary>
@@ -34,15 +34,23 @@
         /// </summary>
         public virtual void InitService()
         {
-            OnInitService();
+            OnServiceInit();
         }
 
         /// <summary>
-        /// 移除服务
+        /// 开始移除
         /// </summary>
-        public virtual void DisposeService()
+        public virtual void DisposeBeforeService()
         {
-            OnDisposeService();
+            OnServiceDisposeBefore();
+        }
+
+        /// <summary>
+        /// 完成移除
+        /// </summary>
+        public virtual void DisposedService()
+        {
+            OnServiceDisposed();
             _entry = null;
         }
 
@@ -51,7 +59,7 @@
         /// </summary>
         public virtual void ClearService()
         {
-            OnClearService();
+            OnServiceClear();
         }
 
         /// <summary>
@@ -68,21 +76,26 @@
         /// <summary>
         /// 添加
         /// </summary>
-        protected abstract void OnCreateService();
+        protected virtual void OnServiceCreate() { }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        protected abstract void OnInitService();
+        protected virtual void OnServiceInit() { }
 
         /// <summary>
-        /// 移除
+        /// 开始移除
         /// </summary>
-        protected abstract void OnDisposeService();
+        protected virtual void OnServiceDisposeBefore() { }
+
+        /// <summary>
+        /// 完成移除
+        /// </summary>
+        protected virtual void OnServiceDisposed() { }
 
         /// <summary>
         /// 清理
         /// </summary>
-        protected abstract void OnClearService();
+        protected virtual void OnServiceClear() { }
     }
 }

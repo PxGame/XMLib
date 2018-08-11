@@ -9,7 +9,7 @@ namespace XM.Services.Task
     /// 任务服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class TaskService : SimpleService<AppEntry, TaskSetting>
+    public class TaskService : SimpleService<AppEntry, TaskSetting>, IUpdate
     {
         /// <summary>
         /// 当前线程是否是主线程
@@ -42,22 +42,12 @@ namespace XM.Services.Task
 
         #region Base
 
-        protected override void OnCreateService()
+        protected override void OnServiceCreate()
         {
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
-            Entry.OnUpdate += Update;
         }
 
-        protected override void OnDisposeService()
-        {
-            Entry.OnUpdate -= Update;
-        }
-
-        protected override void OnInitService()
-        {
-        }
-
-        protected override void OnClearService()
+        protected override void OnServiceClear()
         {
             Clear();
         }
@@ -65,9 +55,9 @@ namespace XM.Services.Task
         #endregion Base
 
         /// <summary>
-        /// 必须在主线程循环中调用
+        /// 在主线程循环中调用
         /// </summary>
-        private void Update()
+        public void Update()
         {
             lock (SyncRoot)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using XM.Exceptions;
 
 namespace XM.Services.Task
 {
@@ -49,10 +50,7 @@ namespace XM.Services.Task
         /// <param name="methodArgs">函数参数</param>
         public TaskData(object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
         {
-            if (null == methodTarget && !methodInfo.IsStatic)
-            {//非静态函数，Target不能为null
-                throw new Exception("非静态函数，Target不能为null");
-            }
+            Checker.IsFalse(null == methodTarget && !methodInfo.IsStatic, "非静态函数，Target不能为null");
 
             _methodArgs = methodArgs;
             _methodTarget = methodTarget;
@@ -77,8 +75,7 @@ namespace XM.Services.Task
             }
             catch (Exception ex)
             {
-                string msg = string.Format("事件调用异常 类：{0} 函数：{1}", _methodTarget, _methodInfo);
-                throw new Exception(msg, ex);
+                throw new StringException(ex, "事件调用异常 类：{0} 函数：{1}", _methodTarget, _methodInfo);
             }
         }
     }
