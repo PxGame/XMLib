@@ -274,8 +274,6 @@ namespace XMEditor.Services.Localization
                 text = info.Get(item.ID);
                 items[i].UpdateText(languageType, text, null);
             }
-
-            EditorSceneManager.MarkSceneDirty(scene);
         }
 
         /// <summary>
@@ -297,8 +295,6 @@ namespace XMEditor.Services.Localization
                 text = info.Get(item.ID);
                 items[i].UpdateText(languageType, text, null);
             }
-
-            EditorSceneManager.MarkSceneDirty(scene);
         }
 
         /// <summary>

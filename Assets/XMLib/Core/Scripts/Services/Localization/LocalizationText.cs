@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace XM.Services.Localization
@@ -14,6 +12,11 @@ namespace XM.Services.Localization
         [SerializeField]
         protected Text _text;
 
+        /// <summary>
+        /// 文本组件
+        /// </summary>
+        public Text Text { get { return _text; } }
+
         private void Awake()
         {
             if (null == _text)
@@ -25,6 +28,12 @@ namespace XM.Services.Localization
         protected override void OnTextUpdate(string text)
         {
             _text.text = text;
+
+#if UNITY_EDITOR
+            //编辑器模式下必须设置，否则将无法及时显示修改
+            //当前场景将标记为修改
+            UnityEditor.EditorUtility.SetDirty(_text);
+#endif
         }
 
 #if UNITY_EDITOR

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace XM.Services.UI
+﻿namespace XM.Services.UI
 {
     /// <summary>
     /// UI面板状态

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace XM.Services.Localization
+﻿namespace XM.Services.Localization
 {
     /// <summary>
     /// 本地化语言类型

@@ -1,9 +1,6 @@
 ﻿using ProtoBuf;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using XM.Tools;
 
 namespace XM.Services.Localization
 {

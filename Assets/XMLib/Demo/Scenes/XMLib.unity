@@ -181,7 +181,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6709\u751F\u547D\u5C31\u6709\u5E0C\u671B"
+  m_Text: "\u751F\u547D\u304C\u3042\u308C\u3070\u5E0C\u671B\u304C\u3042\u308B\u3002"
 --- !u!222 &78215824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -778,6 +778,15 @@ Prefab:
       propertyPath: m_FontData.m_MaxSize
       value: 111
       objectReference: {fileID: 0}
+    - target: {fileID: 1821855783206008, guid: 0a22ec17622827e43a8564d5208c2118, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114026896091371842, guid: 0a22ec17622827e43a8564d5208c2118,
+        type: 2}
+      propertyPath: m_Text
+      value: "\u904E\u53BB\u306E\u82E6\u3057\u307F\u306F\u559C\u3073\u3060\u3063\u305F\u3002"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a22ec17622827e43a8564d5208c2118, type: 2}
   m_IsPrefabParent: 0
@@ -991,7 +1000,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5FC3\u4E4B\u6240\u613F\uFF0C\u65E0\u6240\u4E0D\u6210\u3002"
+  m_Text: "\u5FC3\u306E\u9858\u3044\u306F,\u3060\u3081\u306B\u306A\u3089\u306A\u3044\u3002"
 --- !u!222 &1841440423
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1147,6 +1156,20 @@ Prefab:
     - target: {fileID: 4734312015529872, guid: 89cf51528f852224ebb3c53e078fbae6, type: 2}
       propertyPath: m_RootOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659960544488860, guid: 89cf51528f852224ebb3c53e078fbae6, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114615676820196678, guid: 89cf51528f852224ebb3c53e078fbae6,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114941236852351350, guid: 89cf51528f852224ebb3c53e078fbae6,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 89cf51528f852224ebb3c53e078fbae6, type: 2}

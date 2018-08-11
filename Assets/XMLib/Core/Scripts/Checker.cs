@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace XM.Tools
+namespace XM
 {
     /// <summary>
     /// 检查者
