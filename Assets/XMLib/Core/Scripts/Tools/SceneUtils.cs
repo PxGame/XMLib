@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XM.Tools
+namespace XM
 {
     /// <summary>
     /// 场景工具
@@ -15,7 +15,7 @@ namespace XM.Tools
         /// <typeparam name="T">组件类型</typeparam>
         /// <param name="scene">场景</param>
         /// <param name="includeInactive">是否包含不活跃物体</param>
-        /// <returns></returns>
+        /// <returns>组件列表</returns>
         public static List<T> FindAllComponent<T>(Scene scene, bool includeInactive = false) where T : UnityEngine.Object
         {
             List<T> cps = new List<T>();
@@ -36,11 +36,11 @@ namespace XM.Tools
         }
 
         /// <summary>
-        ///  查找场景中所有的GameObject
+        /// 查找场景中所有的GameObject
         /// </summary>
         /// <param name="scene">场景</param>
         /// <param name="name">GameObject名字</param>
-        /// <returns></returns>
+        /// <returns>对象列表</returns>
         public static List<GameObject> FindAllGameObject(Scene scene, string name)
         {
             List<GameObject> objs = new List<GameObject>();

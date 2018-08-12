@@ -7,12 +7,12 @@ namespace XM.Services.Pool
     /// </summary>
     public class PoolItem : MonoBehaviour
     {
+        #region 属性
+
         /// <summary>
         /// 池名字
         /// </summary>
         public string PoolName { get { return _poolName; } set { _poolName = value; } }
-
-        #region protected members
 
         [SerializeField]
         protected string _poolName = "";
@@ -22,13 +22,11 @@ namespace XM.Services.Pool
         /// </summary>
         protected IPoolService Service { get { return _service; } }
 
-        #endregion protected members
-
-        #region private members
-
         private IPoolService _service;
 
-        #endregion private members
+        #endregion 属性
+
+        #region 函数
 
         /// <summary>
         /// 创建时初始化
@@ -37,6 +35,14 @@ namespace XM.Services.Pool
         public void Create(IPoolService service)
         {
             _service = service;
+        }
+
+        /// <summary>
+        /// 销毁
+        /// </summary>
+        public virtual void Delete()
+        {
+            Destroy(gameObject);
         }
 
         /// <summary>
@@ -55,13 +61,9 @@ namespace XM.Services.Pool
             OnLeavePool();
         }
 
-        /// <summary>
-        /// 销毁
-        /// </summary>
-        public virtual void Delete()
-        {
-            Destroy(gameObject);
-        }
+        #endregion 函数
+
+        #region 回调
 
         /// <summary>
         /// 进入对象池
@@ -77,6 +79,10 @@ namespace XM.Services.Pool
         {
         }
 
+        #endregion 回调
+
+        #region 编辑器
+
 #if UNITY_EDITOR
 
         protected virtual void OnValidate()
@@ -88,5 +94,7 @@ namespace XM.Services.Pool
         }
 
 #endif
+
+        #endregion 编辑器
     }
 }

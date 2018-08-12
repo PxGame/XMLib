@@ -17,7 +17,13 @@ namespace XM.Services.Pool
 
         #endregion 设置
 
-        #region 公开
+        #region 属性
+
+        protected Dictionary<string, GameObject> _itemDict;
+
+        #endregion 属性
+
+        #region 函数
 
         /// <summary>
         /// 获取元素
@@ -35,12 +41,6 @@ namespace XM.Services.Pool
 
             return itemObj;
         }
-
-        #endregion 公开
-
-        #region 不公开
-
-        protected Dictionary<string, GameObject> _itemDict;
 
         /// <summary>
         /// 更新元素字典
@@ -67,6 +67,6 @@ namespace XM.Services.Pool
             }
         }
 
-        #endregion 不公开
+        #endregion 函数
     }
 }

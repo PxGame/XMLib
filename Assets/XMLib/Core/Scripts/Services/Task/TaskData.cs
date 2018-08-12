@@ -9,6 +9,8 @@ namespace XM.Services.Task
     /// </summary>
     public class TaskData : ITaskData, IMethodData
     {
+        #region 属性
+
         /// <summary>
         /// 函数参数
         /// </summary>
@@ -29,8 +31,6 @@ namespace XM.Services.Task
         /// </summary>
         public Action<object> ResultCallback { get { return _resultCallback; } }
 
-        #region private member
-
         protected object[] _methodArgs;
 
         protected object _methodTarget;
@@ -39,7 +39,7 @@ namespace XM.Services.Task
 
         protected Action<object> _resultCallback;
 
-        #endregion private member
+        #endregion 属性
 
         /// <summary>
         /// 构造函数
@@ -61,7 +61,6 @@ namespace XM.Services.Task
         /// <summary>
         /// 执行
         /// </summary>
-        /// <returns></returns>
         public void Call()
         {
             object result;

@@ -27,8 +27,8 @@ namespace XMEditor
         /// <summary>
         /// 获取模板路径
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="createDir"></param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="createDir">是否创建文件夹</param>
         /// <returns></returns>
         public static string GetTemplatePath(string fileName, bool createDir = true)
         {
@@ -46,8 +46,8 @@ namespace XMEditor
         /// <summary>
         /// 获取资源路径
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="createDir"></param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="createDir">是否创建文件夹</param>
         /// <returns></returns>
         public static string GetResourcePath(string fileName, bool createDir = true)
         {

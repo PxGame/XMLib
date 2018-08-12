@@ -11,12 +11,12 @@ namespace XM.Services.Task
     /// <typeparam name="AE">程序入口类型</typeparam>
     public class TaskService : SimpleService<AppEntry, TaskSetting>, IUpdate
     {
+        #region 属性
+
         /// <summary>
         /// 当前线程是否是主线程
         /// </summary>
         public bool IsMainThread { get { return (Thread.CurrentThread.ManagedThreadId == _mainThreadId); } }
-
-        #region protected members
 
         /// <summary>
         /// 主线程ID
@@ -38,9 +38,9 @@ namespace XM.Services.Task
         /// </summary>
         private int _maxTaskProcess = 10;
 
-        #endregion protected members
+        #endregion 属性
 
-        #region Base
+        #region 重写
 
         protected override void OnServiceCreate()
         {
@@ -52,7 +52,9 @@ namespace XM.Services.Task
             Clear();
         }
 
-        #endregion Base
+        #endregion 重写
+
+        #region IUpdate 接口实现
 
         /// <summary>
         /// 在主线程循环中调用
@@ -81,7 +83,9 @@ namespace XM.Services.Task
             }
         }
 
-        #region Main Thread
+        #endregion IUpdate 接口实现
+
+        #region 主线程调用
 
         /// <summary>
         /// 主线程执行
@@ -135,9 +139,9 @@ namespace XM.Services.Task
             }
         }
 
-        #endregion Main Thread
+        #endregion 主线程调用
 
-        #region New Thread
+        #region 子线程调用
 
 #if UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 
@@ -194,6 +198,6 @@ namespace XM.Services.Task
             ((ITaskData)task).Call();
         }
 
-        #endregion New Thread
+        #endregion 子线程调用
     }
 }

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using XM.Services.Localization;
-using XM.Tools;
 
 namespace XMEditor.Services.Localization
 {
     /// <summary>
-    /// 本地化
+    /// 本地化设置窗口
     /// </summary>
     public class LocalizationWindow : EditorWindow
     {
@@ -20,6 +19,8 @@ namespace XMEditor.Services.Localization
             var win = GetWindow<LocalizationWindow>("本地化设置");
             win.Show();
         }
+
+        #region 属性
 
         [System.Serializable]
         private class Data
@@ -39,17 +40,9 @@ namespace XMEditor.Services.Localization
 
         protected const string DataFlag = "XM_LocalizationWindow";
 
-        private void OnEnable()
-        {
-            LoadData();
-        }
+        #endregion 属性
 
-        private void OnDisable()
-        {
-            SaveData();
-        }
-
-        #region Editor Data
+        #region 编辑器数据
 
         /// <summary>
         /// 当前语言
@@ -130,7 +123,19 @@ namespace XMEditor.Services.Localization
             EditorPrefs.SetString(DataFlag, json);
         }
 
-        #endregion Editor Data
+        #endregion 编辑器数据
+
+        #region Unity 函数
+
+        private void OnEnable()
+        {
+            LoadData();
+        }
+
+        private void OnDisable()
+        {
+            SaveData();
+        }
 
         private void OnDrawFontHeader(Rect rect)
         {
@@ -179,10 +184,19 @@ namespace XMEditor.Services.Localization
             }
         }
 
+        #endregion Unity 函数
+
+        #region 函数
+
         private void UpdateScene()
         {
             Scene scene = SceneManager.GetActiveScene();
             LocalizationUtils.UpdateScene(scene, _data.Language);
+
+            if (!EditorApplication.isPlaying)
+            {//标记修改
+                EditorSceneManager.MarkSceneDirty(scene);
+            }
         }
 
         private void CreateTemplate()
@@ -194,5 +208,7 @@ namespace XMEditor.Services.Localization
         {
             LocalizationUtils.ExportConfigFile();
         }
+
+        #endregion 函数
     }
 }

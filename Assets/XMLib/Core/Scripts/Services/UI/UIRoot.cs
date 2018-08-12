@@ -7,8 +7,6 @@ namespace XM.Services.UI
     /// </summary>
     public class UIRoot : MonoBehaviour
     {
-        #region public members
-
         /// <summary>
         /// 一般节点
         /// </summary>
@@ -19,16 +17,10 @@ namespace XM.Services.UI
         /// </summary>
         public Transform Cache { get { return _cache; } }
 
-        #endregion public members
-
-        #region private members
-
         [SerializeField]
         private Transform _normal;
 
         [SerializeField]
         private Transform _cache;
-
-        #endregion private members
     }
 }

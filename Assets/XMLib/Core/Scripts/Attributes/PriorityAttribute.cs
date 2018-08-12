@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XM.Attributes
+namespace XM
 {
     /// <summary>
     /// 优先级

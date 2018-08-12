@@ -21,7 +21,7 @@
         /// <summary>
         /// 创建服务
         /// </summary>
-        /// <param name="appEntry"></param>
+        /// <param name="appEntry">入口实例</param>
         public virtual void CreateService(AE appEntry)
         {
             _entry = appEntry;

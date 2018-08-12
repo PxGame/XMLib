@@ -45,6 +45,9 @@ namespace XMEditor.Services.Localization
             }
         }
 
+        /// <summary>
+        /// 更新对象
+        /// </summary>
         private void UpdateItems()
         {
             foreach (var item in targets)

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XM.Services
+﻿namespace XM.Services
 {
     /// <summary>
     /// 简单服务基类，带配置文件设置
@@ -16,6 +14,12 @@ namespace XM.Services
         /// </summary>
         public ST Setting { get { return _setting; } }
 
+        #region 重写
+
+        /// <summary>
+        /// 创建服务
+        /// </summary>
+        /// <param name="appEntry">入口实例</param>
         public override void CreateService(AE appEntry)
         {
             //初始化设置
@@ -26,6 +30,12 @@ namespace XM.Services
             base.CreateService(appEntry);
         }
 
+        /// <summary>
+        /// 输出日志
+        /// </summary>
+        /// <param name="debugType">日志类型</param>
+        /// <param name="format">格式化文本</param>
+        /// <param name="args">参数</param>
         public override void Debug(DebugType debugType, string format, params object[] args)
         {
             if (0 == (debugType & _setting.DebugType))
@@ -35,5 +45,7 @@ namespace XM.Services
 
             base.Debug(debugType, format, args);
         }
+
+        #endregion 重写
     }
 }

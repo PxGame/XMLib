@@ -1,4 +1,4 @@
-﻿namespace XM.Tools
+﻿namespace XM
 {
     /// <summary>
     /// 序列化工具
@@ -8,9 +8,9 @@
         /// <summary>
         /// 序列化方法
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">序列化类型</typeparam>
+        /// <param name="obj">类型实例</param>
+        /// <returns>字节数组</returns>
         public static byte[] Serialize<T>(T obj) where T : class
         {
             byte[] data = null;
@@ -32,9 +32,9 @@
         /// <summary>
         /// 反序列化
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">序列化类型</typeparam>
+        /// <param name="data">字节数组</param>
+        /// <returns>类型实例</returns>
         public static T Deserialize<T>(byte[] data) where T : class
         {
             T obj = null;

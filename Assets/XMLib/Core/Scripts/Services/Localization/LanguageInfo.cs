@@ -30,8 +30,8 @@ namespace XM.Services.Localization
         /// <summary>
         /// 获取语言
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">ID</param>
+        /// <returns>文本</returns>
         public string Get(string id)
         {
             string str = "";

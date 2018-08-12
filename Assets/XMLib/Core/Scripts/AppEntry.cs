@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using XM.Services;
+﻿using XM.Services;
 using XM.Services.Event;
 using XM.Services.Input;
 using XM.Services.Localization;
@@ -16,10 +14,12 @@ namespace XM
     /// </summary>
     public class AppEntry : IAppEntry<AppEntry>
     {
+        #region 重写
+
         /// <summary>
-        /// 开始关闭
+        /// 关闭完成
         /// </summary>
-        protected override void OnTerminal()
+        protected override void OnTerminaled()
         {
             //static变量，服务关闭，引用设null
             _event = null;
@@ -51,9 +51,11 @@ namespace XM
             return services;
         }
 
-        #region Specific Custom
+        #endregion 重写
 
-        //服务引用
+        #region 自定义
+
+        #region 服务静态引用单例
 
         private static EventService _event;
         private static PoolService _pool;
@@ -63,7 +65,9 @@ namespace XM
         private static InputService _input;
         private static LocalizationService _localization;
 
-        //
+        #endregion 服务静态引用单例
+
+        #region 服务单例
 
         /// <summary>
         /// 事件服务
@@ -175,6 +179,8 @@ namespace XM
             }
         }
 
-        #endregion Specific Custom
+        #endregion 服务单例
+
+        #endregion 自定义
     }
 }

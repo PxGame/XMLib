@@ -26,7 +26,13 @@ namespace XM.Services.UI
 
         #endregion 设置
 
-        #region 公开
+        #region 属性
+
+        protected Dictionary<string, GameObject> _panelDict;
+
+        #endregion 属性
+
+        #region 函数
 
         /// <summary>
         /// 获取根节点
@@ -54,12 +60,6 @@ namespace XM.Services.UI
             return panelObj;
         }
 
-        #endregion 公开
-
-        #region 不公开
-
-        protected Dictionary<string, GameObject> _panelDict;
-
         /// <summary>
         /// 获取面板字典
         /// </summary>
@@ -85,6 +85,6 @@ namespace XM.Services.UI
             }
         }
 
-        #endregion 不公开
+        #endregion 函数
     }
 }

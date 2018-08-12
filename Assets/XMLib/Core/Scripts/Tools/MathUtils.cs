@@ -1,4 +1,4 @@
-﻿namespace XM.Tools
+﻿namespace XM
 {
     /// <summary>
     /// 数学工具

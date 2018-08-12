@@ -6,6 +6,9 @@
     /// <typeparam name="AE">程序入口类型</typeparam>
     public interface IService<AE> where AE : IAppEntry<AE>
     {
+        /// <summary>
+        /// 服务名
+        /// </summary>
         string ServiceName { get; }
 
         /// <summary>
@@ -16,7 +19,7 @@
         /// <summary>
         /// 添加服务
         /// </summary>
-        /// <param name="appEntry"></param>
+        /// <param name="appEntry">入口实例</param>
         void CreateService(AE appEntry);
 
         /// <summary>

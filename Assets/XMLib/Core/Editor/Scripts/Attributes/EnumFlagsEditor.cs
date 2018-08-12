@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using XM.Attributes;
+using XM;
 
 namespace XMEditor.Attributes
 {

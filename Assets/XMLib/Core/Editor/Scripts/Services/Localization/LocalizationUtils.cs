@@ -3,14 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using XM;
 using XM.Exceptions;
 using XM.Services.Localization;
-using XM.Tools;
 
 namespace XMEditor.Services.Localization
 {
@@ -28,8 +25,8 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 获取语言配置
         /// </summary>
-        /// <param name="languageType"></param>
-        /// <returns></returns>
+        /// <param name="languageType">语言类型</param>
+        /// <returns>路径</returns>
         public static string GetPath(LanguageType languageType)
         {
             string fileName = string.Format("Language/{0}{1}", languageType, Extension);
@@ -40,7 +37,7 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 获取语言配置文件
         /// </summary>
-        /// <returns></returns>
+        /// <returns>路径</returns>
         public static string GetConfigPath()
         {
             string filePath = ToolUtils.GetTemplatePath("Language/Language.xlsx");
@@ -230,7 +227,7 @@ namespace XMEditor.Services.Localization
         /// 读取语言文件
         /// </summary>
         /// <param name="languageType">语言类型</param>
-        /// <returns></returns>
+        /// <returns>语言信息</returns>
         public static LanguageInfo ReadFile(LanguageType languageType)
         {
             string filePath = GetPath(languageType);
@@ -244,7 +241,7 @@ namespace XMEditor.Services.Localization
         /// </summary>
         /// <param name="id">字段id</param>
         /// <param name="languageType">语言类型</param>
-        /// <returns></returns>
+        /// <returns>文本</returns>
         public static string Get(string id, LanguageType languageType)
         {
             string str = null;
@@ -279,9 +276,9 @@ namespace XMEditor.Services.Localization
         }
 
         /// <summary>
-        ///  更新场景中的语言，使用默认语言
+        /// 更新场景中的语言，使用默认语言
         /// </summary>
-        /// <param name="scene"></param>
+        /// <param name="scene">场景</param>
         public static void UpdateScene(Scene scene)
         {
             LanguageType languageType = LocalizationWindow.Language;
@@ -313,7 +310,7 @@ namespace XMEditor.Services.Localization
         /// <summary>
         /// 更新元素,使用默认语言
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">本地对象</param>
         public static void UpdateItem(LocalizationItem item)
         {
             LanguageType languageType = LocalizationWindow.Language;

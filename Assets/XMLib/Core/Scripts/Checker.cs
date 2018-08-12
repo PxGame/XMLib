@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using XM.Exceptions;
+﻿using XM.Exceptions;
 
 namespace XM
 {
@@ -44,9 +42,9 @@ namespace XM
         /// <summary>
         /// 为真
         /// </summary>
-        /// <param name="isOk"></param>
-        /// <param name="format"></param>
-        /// <param name="args"></param>
+        /// <param name="isOk">是否</param>
+        /// <param name="format">格式化文本</param>
+        /// <param name="args">参数</param>
         public static void IsTrue(bool isOk, string format, params object[] args)
         {
             if (isOk)
@@ -60,9 +58,9 @@ namespace XM
         /// <summary>
         /// 为假
         /// </summary>
-        /// <param name="isOk"></param>
-        /// <param name="format"></param>
-        /// <param name="args"></param>
+        /// <param name="isOk">是否</param>
+        /// <param name="format">格式化文本</param>
+        /// <param name="args">参数</param>
         public static void IsFalse(bool isOk, string format, params object[] args)
         {
             if (!isOk)

@@ -8,7 +8,7 @@ namespace XM.Services.Event
     /// </summary>
     public class EventService : SimpleService<AppEntry, EventSetting>
     {
-        #region protected members
+        #region 属性
 
         /// <summary>
         /// 同步
@@ -17,106 +17,23 @@ namespace XM.Services.Event
 
         protected Dictionary<string, List<IEventData>> _eventDict = new Dictionary<string, List<IEventData>>();
 
-        #endregion protected members
+        #endregion 属性
 
-        #region Base
+        #region 重写
 
         protected override void OnServiceClear()
         {
             RemoveEvent();
         }
 
-        #endregion Base
+        #endregion 重写
 
-        #region ext opt
-
-        /// <summary>
-        /// 触发事件
-        /// </summary>
-        /// <param name="eventName">事件名</param>
-        /// <param name="args">参数</param>
-        /// <returns></returns>
-        public List<object> Call(string eventName, params object[] args)
-        {
-            return Call<object>(eventName, args);
-        }
+        #region 函数
 
         /// <summary>
         /// 添加事件监听
         /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="callback"></param>
-        public IEventData Add(string eventName, Action callback, int invokeMaxCount = -1)
-        {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
-            Add(eventData);
-            return eventData;
-        }
-
-        /// <summary>
-        /// 添加事件监听
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="eventName"></param>
-        /// <param name="callback"></param>
-        public IEventData Add<T>(string eventName, Action<T> callback, int invokeMaxCount = -1)
-        {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
-            Add(eventData);
-            return eventData;
-        }
-
-        /// <summary>
-        /// 添加事件监听
-        /// </summary>
-        /// <typeparam name="T1"></typeparam>
-        /// <typeparam name="T2"></typeparam>
-        /// <param name="eventName"></param>
-        /// <param name="callback"></param>
-        public IEventData Add<T1, T2>(string eventName, Action<T1, T2> callback, int invokeMaxCount = -1)
-        {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
-            Add(eventData);
-            return eventData;
-        }
-
-        /// <summary>
-        /// 添加事件监听
-        /// </summary>
-        /// <typeparam name="T1"></typeparam>
-        /// <typeparam name="T2"></typeparam>
-        /// <typeparam name="T3"></typeparam>
-        /// <param name="eventName"></param>
-        /// <param name="callback"></param>
-        public IEventData Add<T1, T2, T3>(string eventName, Action<T1, T2, T3> callback, int invokeMaxCount = -1)
-        {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
-            Add(eventData);
-            return eventData;
-        }
-
-        /// <summary>
-        /// 添加事件监听
-        /// </summary>
-        /// <typeparam name="T1"></typeparam>
-        /// <typeparam name="T2"></typeparam>
-        /// <typeparam name="T3"></typeparam>
-        /// <typeparam name="T4"></typeparam>
-        /// <param name="eventName"></param>
-        /// <param name="callback"></param>
-        public IEventData Add<T1, T2, T3, T4>(string eventName, Action<T1, T2, T3, T4> callback, int invokeMaxCount = -1)
-        {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
-            Add(eventData);
-            return eventData;
-        }
-
-        #endregion ext opt
-
-        /// <summary>
-        /// 添加事件监听
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <param name="eventData">事件对象</param>
         public void Add(IEventData eventData)
         {
             lock (SyncRoot)
@@ -135,7 +52,7 @@ namespace XM.Services.Event
         /// <summary>
         /// 移除事件监听
         /// </summary>
-        /// <param name="eventData"></param>
+        /// <param name="eventData">事件对象</param>
         public void Remove(IEventData eventData)
         {
             List<IEventData> events;
@@ -158,7 +75,7 @@ namespace XM.Services.Event
         /// <summary>
         /// 移除对象上的所有监听
         /// </summary>
-        /// <param name="target"></param>
+        /// <param name="target">事件对象</param>
         public void Remove(object target)
         {
             List<string> removeEvents = new List<string>();//需要移除的事件
@@ -204,7 +121,7 @@ namespace XM.Services.Event
         /// <summary>
         /// 移除事件
         /// </summary>
-        /// <param name="eventName"></param>
+        /// <param name="eventName">事件名</param>
         public void RemoveEvent(string eventName)
         {
             lock (SyncRoot)
@@ -299,13 +216,100 @@ namespace XM.Services.Event
         /// 事件是否存在
         /// </summary>
         /// <param name="eventName">事件名</param>
-        /// <returns></returns>
-        public bool IsExist(string eventName)
+        /// <returns>是否存在</returns>
+        public bool Exist(string eventName)
         {
             lock (SyncRoot)
             {
                 return _eventDict.ContainsKey(eventName);
             }
         }
+
+        #endregion 函数
+
+        #region 扩展方法
+
+        /// <summary>
+        /// 触发事件
+        /// </summary>
+        /// <param name="eventName">事件名</param>
+        /// <param name="args">参数</param>
+        /// <returns></returns>
+        public List<object> Call(string eventName, params object[] args)
+        {
+            return Call<object>(eventName, args);
+        }
+
+        /// <summary>
+        /// 添加事件监听
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public IEventData Add(string eventName, Action callback, int invokeMaxCount = -1)
+        {
+            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            Add(eventData);
+            return eventData;
+        }
+
+        /// <summary>
+        /// 添加事件监听
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public IEventData Add<T>(string eventName, Action<T> callback, int invokeMaxCount = -1)
+        {
+            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            Add(eventData);
+            return eventData;
+        }
+
+        /// <summary>
+        /// 添加事件监听
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public IEventData Add<T1, T2>(string eventName, Action<T1, T2> callback, int invokeMaxCount = -1)
+        {
+            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            Add(eventData);
+            return eventData;
+        }
+
+        /// <summary>
+        /// 添加事件监听
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public IEventData Add<T1, T2, T3>(string eventName, Action<T1, T2, T3> callback, int invokeMaxCount = -1)
+        {
+            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            Add(eventData);
+            return eventData;
+        }
+
+        /// <summary>
+        /// 添加事件监听
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public IEventData Add<T1, T2, T3, T4>(string eventName, Action<T1, T2, T3, T4> callback, int invokeMaxCount = -1)
+        {
+            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            Add(eventData);
+            return eventData;
+        }
+
+        #endregion 扩展方法
     }
 }

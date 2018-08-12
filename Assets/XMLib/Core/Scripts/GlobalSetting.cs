@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace XM
+﻿namespace XM
 {
     /// <summary>
     /// 全局设置

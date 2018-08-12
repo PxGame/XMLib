@@ -6,19 +6,19 @@ using UnityEngine;
 namespace XM.Services.UI
 {
     /// <summary>
-    ///  UI服务
+    /// UI服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
     public class UIService : SimpleService<AppEntry, UISetting>, IUIService
     {
-        #region private members
+        #region 属性
 
         private GameObject _uiRootObj;
         private UIRoot _uiRoot;
 
-        #endregion private members
+        #endregion 属性
 
-        #region SimpleService
+        #region 重写
 
         protected override void OnServiceCreate()
         {
@@ -29,9 +29,9 @@ namespace XM.Services.UI
             //
         }
 
-        #endregion SimpleService
+        #endregion 重写
 
-        #region Normal Panel
+        #region 通用面板
 
         private Dictionary<string, IUIPanel> _dict = new Dictionary<string, IUIPanel>();
         private Stack<string> _stack = new Stack<string>();
@@ -142,7 +142,7 @@ namespace XM.Services.UI
         }
 
         /// <summary>
-        ///  打开面板
+        /// 打开面板
         /// </summary>
         /// <param name="panelName">面板名</param>
         /// <param name="args">完成事件</param>
@@ -153,7 +153,7 @@ namespace XM.Services.UI
         }
 
         /// <summary>
-        ///  打开面板
+        /// 打开面板
         /// </summary>
         /// <param name="panelName">面板名</param>
         /// <param name="onComplete">完成事件</param>
@@ -442,6 +442,6 @@ namespace XM.Services.UI
             return true;
         }
 
-        #endregion Normal Panel
+        #endregion 通用面板
     }
 }

@@ -8,14 +8,14 @@ namespace XM.Services.UI
     [RequireComponent(typeof(CanvasGroup))]
     public class UIPanel : IUIPanel
     {
-        #region protected members
+        #region 属性
 
         [SerializeField]
         protected CanvasGroup _canvasGroup;
 
-        #endregion protected members
+        #endregion 属性
 
-        #region IUIPanel
+        #region 重写
 
         protected override void OnCreate()
         {
@@ -62,7 +62,7 @@ namespace XM.Services.UI
             _canvasGroup.interactable = true;
         }
 
-        #endregion IUIPanel
+        #endregion 重写
 
         #region Editor
 

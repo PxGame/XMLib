@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using XM.Attributes;
 
 namespace XM.Services
 {
@@ -10,8 +9,6 @@ namespace XM.Services
     [CreateAssetMenu(menuName = "XMLib/Base Setting")]
     public class SimpleSetting : ScriptableObject
     {
-        #region 设置
-
         /// <summary>
         /// 输出控制
         /// </summary>
@@ -19,15 +16,9 @@ namespace XM.Services
         [EnumFlags]
         protected DebugType _debugType;
 
-        #endregion 设置
-
-        #region 公开
-
         /// <summary>
         /// debug 等级
         /// </summary>
         public DebugType DebugType { get { return _debugType; } }
-
-        #endregion 公开
     }
 }

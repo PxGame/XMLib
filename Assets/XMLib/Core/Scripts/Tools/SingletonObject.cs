@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using XM.Exceptions;
 
-namespace XM.Tools
+namespace XM
 {
     /// <summary>
     /// Unity单例模板

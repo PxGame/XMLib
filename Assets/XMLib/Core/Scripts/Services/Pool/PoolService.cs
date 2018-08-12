@@ -12,7 +12,7 @@ namespace XM.Services.Pool
     /// <typeparam name="AE">程序入口类型</typeparam>
     public class PoolService : SimpleService<AppEntry, PoolSetting>, IPoolService
     {
-        #region private members
+        #region 属性
 
         /// <summary>
         /// 对象池字典
@@ -29,9 +29,9 @@ namespace XM.Services.Pool
         /// </summary>
         private Transform _poolRoot;
 
-        #endregion private members
+        #endregion 属性
 
-        #region Base
+        #region 重写
 
         protected override void OnServiceCreate()
         {
@@ -57,7 +57,9 @@ namespace XM.Services.Pool
             Clear();
         }
 
-        #endregion Base
+        #endregion 重写
+
+        #region 函数
 
         /// <summary>
         /// 移动对象到当前场景
@@ -191,5 +193,7 @@ namespace XM.Services.Pool
 
             _pools.Remove(poolName);
         }
+
+        #endregion 函数
     }
 }

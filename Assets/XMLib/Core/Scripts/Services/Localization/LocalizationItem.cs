@@ -22,7 +22,7 @@ namespace XM.Services.Localization
         /// <summary>
         /// 更新文本
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">文本</param>
         public void UpdateText(LanguageType languageType, string text, Font font)
         {
             OnTextUpdate(text);

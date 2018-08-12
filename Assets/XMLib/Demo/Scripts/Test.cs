@@ -3,6 +3,10 @@ using XM;
 
 public class Test : MonoBehaviour
 {
+    private void Awake()
+    {
+    }
+
     protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))

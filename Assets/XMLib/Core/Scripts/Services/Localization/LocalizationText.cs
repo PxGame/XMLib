@@ -25,6 +25,8 @@ namespace XM.Services.Localization
             }
         }
 
+        #region 重写
+
         protected override void OnTextUpdate(string text)
         {
             _text.text = text;
@@ -35,6 +37,10 @@ namespace XM.Services.Localization
             UnityEditor.EditorUtility.SetDirty(_text);
 #endif
         }
+
+        #endregion 重写
+
+        #region 编辑器
 
 #if UNITY_EDITOR
 
@@ -47,5 +53,7 @@ namespace XM.Services.Localization
         }
 
 #endif
+
+        #endregion 编辑器
     }
 }

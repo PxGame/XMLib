@@ -10,20 +10,20 @@ namespace XM.Services.Pool
         /// <summary>
         /// 压入对象池
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">对象实例</param>
         void Push(GameObject obj);
 
         /// <summary>
         /// 压入对象池
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">对象实例</param>
         void Push(PoolItem item);
 
         /// <summary>
         /// 弹出对象
         /// </summary>
         /// <param name="poolName">对象名</param>
-        /// <returns></returns>
+        /// <returns>对象实例</returns>
         GameObject Pop(string poolName);
 
         /// <summary>

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using XM.Services;
-using XM.Tools;
 
 namespace XM
 {
@@ -14,17 +11,7 @@ namespace XM
     /// <typeparam name="AE">程序入口类型</typeparam>
     public abstract class IAppEntry<AE> : MonoBehaviour where AE : IAppEntry<AE>
     {
-        #region Public memebers
-
-        /// <summary>
-        /// 日志输出
-        /// </summary>
-        public Action<DebugType, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
-
-        /// <summary>
-        /// 服务设置集合
-        /// </summary>
-        public ServiceSettings Settings { get { return _settings; } }
+        #region 属性
 
         /// <summary>
         /// 获取单例
@@ -36,53 +23,36 @@ namespace XM
         /// </summary>
         public static bool IsInit { get { return null != _inst; } }
 
-        #endregion Public memebers
+        /// <summary>
+        /// 日志输出
+        /// </summary>
+        public Action<DebugType, string> OnDebugOut { get { return _onDebugOut; } set { _onDebugOut = value; } }
 
-        #region private members
+        /// <summary>
+        /// 服务设置集合
+        /// </summary>
+        public ServiceSettings Settings { get { return _settings; } }
 
         private static AE _inst = null;
-
         private Action<DebugType, string> _onDebugOut;
-
         private Dictionary<Type, IService<AE>> _serviceDict = new Dictionary<Type, IService<AE>>();
         private List<IService<AE>> _serviceList = new List<IService<AE>>();
 
         [SerializeField]
         private ServiceSettings _settings;
 
-        #endregion private members
+        #endregion 属性
 
-        protected virtual void Awake()
-        {
-            Checker.IsNull(_inst, "IAppEntry 重复实例化");
-            _inst = this as AE;
-            Checker.NotNull(_inst, "单例初始化失败");
-
-            Initialize();
-        }
-
-        protected virtual void OnDestroy()
-        {
-            Terminal();
-        }
-
-        #region Service Operation
+        #region 服务函数
 
         /// <summary>
-        /// 获取服务
+        /// 初始化默认服务列表
         /// </summary>
-        /// <typeparam name="T">服务类型</typeparam>
-        /// <returns>服务实例</returns>
-        public T Get<T>() where T : IService<AE>
+        /// <returns>默认服务类型列表</returns>
+        protected virtual ServiceTypeList<AE> GetDefaultServices()
         {
-            IService<AE> service = null;
-
-            if (!_serviceDict.TryGetValue(typeof(T), out service))
-            {
-                Debug(DebugType.Warning, "未获取到该类型的服务：{0}", typeof(T).FullName);
-            }
-
-            return (T)service;
+            //默认服务
+            return new ServiceTypeList<AE>();
         }
 
         /// <summary>
@@ -101,7 +71,7 @@ namespace XM
             for (int i = 0; i < length; i++)
             {
                 tmpType = serviceTypes[i];
-                Checker.IsFalse(_serviceDict.ContainsKey(tmpType), "已存在该服务 {0}", tmpType.FullName);
+                Checker.IsFalse(Exist(tmpType), "已存在该服务 {0}", tmpType.FullName);
 
                 //创建对象
                 service = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
@@ -130,7 +100,7 @@ namespace XM
                 service.InitService();
             }
 
-            //初始化
+            //添加到已有列表
             length = services.Count;
             for (int i = 0; i < length; i++)
             {
@@ -141,6 +111,81 @@ namespace XM
                 //添加到字典
                 _serviceDict.Add(service.GetType(), service);
             }
+        }
+
+        /// <summary>
+        /// 清理所有服务
+        /// </summary>
+        public void ClearAll()
+        {
+            int length = _serviceList.Count;
+            IService<AE> service;
+            for (int i = 0; i < length; i++)
+            {
+                service = _serviceList[i];
+
+                Debug(DebugType.Debug, "清理服务 {0}", service.ServiceName);
+                service.ClearService();
+            }
+        }
+
+        /// <summary>
+        /// 是否存在服务
+        /// </summary>
+        /// <typeparam name="T">服务类型</typeparam>
+        /// <returns>是否存在</returns>
+        public bool Exist<T>() where T : IService<AE>
+        {
+            return Exist(typeof(T));
+        }
+
+        /// <summary>
+        /// 是否存在服务
+        /// </summary>
+        /// <param name="serviceType">服务类型</param>
+        /// <returns>是否存在</returns>
+        public bool Exist(Type serviceType)
+        {
+            return _serviceDict.ContainsKey(serviceType);
+        }
+
+        /// <summary>
+        /// 获取服务
+        /// </summary>
+        /// <typeparam name="T">服务类型</typeparam>
+        /// <returns>服务实例</returns>
+        public T Get<T>() where T : IService<AE>
+        {
+            IService<AE> service = null;
+
+            if (!_serviceDict.TryGetValue(typeof(T), out service))
+            {
+                Debug(DebugType.Warning, "未获取到该类型的服务：{0}", typeof(T).FullName);
+            }
+
+            return (T)service;
+        }
+
+        /// <summary>
+        /// 移除服务
+        /// </summary>
+        /// <typeparam name="T">服务类型</typeparam>
+        /// <returns>是否成功</returns>
+        public bool Remove<T>() where T : IService<AE>
+        {
+            if (!Exist<T>())
+            {
+                return false;
+            }
+
+            T service = Get<T>();
+
+            //开始关闭
+            service.DisposeBeforeService();
+            //完成关闭
+            service.DisposedService();
+
+            return true;
         }
 
         /// <summary>
@@ -177,28 +222,73 @@ namespace XM
             _serviceDict.Clear();
         }
 
-        /// <summary>
-        /// 清理所有服务
-        /// </summary>
-        public void ClearAll()
-        {
-            int length = _serviceList.Count;
-            IService<AE> service;
-            for (int i = 0; i < length; i++)
-            {
-                service = _serviceList[i];
+        #endregion 服务函数
 
-                Debug(DebugType.Debug, "清理服务 {0}", service.ServiceName);
-                service.ClearService();
-            }
+        #region Unity 函数
+
+        protected virtual void Awake()
+        {
+            Checker.IsNull(_inst, "IAppEntry 重复实例化");
+
+            _inst = this as AE;
+            Checker.NotNull(_inst, "单例初始化失败");
+
+            Initialize();
         }
 
-        #endregion Service Operation
+        protected virtual void OnDestroy()
+        {
+            Terminal();
+
+            _inst = null;
+        }
+
+        #endregion Unity 函数
+
+        #region 入口操作
+
+        /// <summary>
+        /// 安装默认服务
+        /// </summary>
+        private void InstallDefaultServices()
+        {
+            //获取默认服务
+            ServiceTypeList<AE> serviceTypes = GetDefaultServices();
+
+            if (null == serviceTypes)
+            {//没有直接返回
+                return;
+            }
+
+            //添加
+            AddRange(serviceTypes);
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        private void Initialize()
+        {
+            //安装默认服务
+            InstallDefaultServices();
+
+            //初始化完成
+            OnInitilized();
+        }
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        private void Terminal()
+        {
+            RemoveAll();
+            OnTerminaled();
+        }
 
         /// <summary>
         /// debug 输出
         /// </summary>
-        /// <param name="debugType">debug 类型 </param>
+        /// <param name="debugType">debug 类型</param>
         /// <param name="format">格式化</param>
         /// <param name="args">参数</param>
         public virtual void Debug(DebugType debugType, string format, params object[] args)
@@ -220,42 +310,9 @@ namespace XM
 #endif
         }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        private void Initialize()
-        {
-            AddDefaults();
+        #endregion 入口操作
 
-            OnInitilized();
-        }
-
-        /// <summary>
-        /// 关闭
-        /// </summary>
-        private void Terminal()
-        {
-            OnTerminal();
-
-            RemoveAll();
-        }
-
-        /// <summary>
-        /// 添加默认服务
-        /// </summary>
-        private void AddDefaults()
-        {
-            //获取默认服务
-            ServiceTypeList<AE> serviceTypes = GetDefaultServices();
-
-            if (null == serviceTypes)
-            {//没有直接返回
-                return;
-            }
-
-            //添加
-            AddRange(serviceTypes);
-        }
+        #region 回调
 
         /// <summary>
         /// 初始化完成
@@ -265,20 +322,12 @@ namespace XM
         }
 
         /// <summary>
-        /// 开始关闭
+        /// 关闭完成
         /// </summary>
-        protected virtual void OnTerminal()
+        protected virtual void OnTerminaled()
         {
         }
 
-        /// <summary>
-        /// 初始化默认服务列表
-        /// </summary>
-        /// <returns></returns>
-        protected virtual ServiceTypeList<AE> GetDefaultServices()
-        {
-            //默认服务
-            return new ServiceTypeList<AE>();
-        }
+        #endregion 回调
     }
 }

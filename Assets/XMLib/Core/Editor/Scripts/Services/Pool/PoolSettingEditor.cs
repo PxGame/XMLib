@@ -8,6 +8,9 @@ using XM.Services.Pool;
 
 namespace XMEditor.Services.Pool
 {
+    /// <summary>
+    /// 对象池设置编辑器
+    /// </summary>
     [CustomEditor(typeof(PoolSetting))]
     public class PoolSettingEditor : Editor
     {

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using XM.Attributes;
 
-namespace XM.Tools
+namespace XM
 {
     /// <summary>
     /// 特性工具

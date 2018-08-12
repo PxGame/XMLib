@@ -7,6 +7,9 @@ using XM.Services;
 
 namespace XMEditor.Services
 {
+    /// <summary>
+    /// 服务设置编辑器
+    /// </summary>
     [CustomEditor(typeof(ServiceSettings))]
     public class ServiceSettingsEditor : Editor
     {
@@ -46,6 +49,10 @@ namespace XMEditor.Services
             }
         }
 
+        /// <summary>
+        /// 检查数据
+        /// </summary>
+        /// <param name="settings">设置</param>
         private void CheckData(SerializedProperty settings)
         {
             bool isError = false;

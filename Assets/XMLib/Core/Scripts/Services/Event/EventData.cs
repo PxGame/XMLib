@@ -9,6 +9,8 @@ namespace XM.Services.Event
     /// </summary>
     public class EventData : IEventData
     {
+        #region 属性
+
         /// <summary>
         /// 事件名
         /// </summary>
@@ -40,6 +42,8 @@ namespace XM.Services.Event
         protected int _invokeMaxCount;
         protected int _currentInvokeCount;
 
+        #endregion 属性
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -61,8 +65,8 @@ namespace XM.Services.Event
         /// <summary>
         /// 调用
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="args">参数</param>
+        /// <returns>结果</returns>
         public object Call(params object[] args)
         {
             ++_currentInvokeCount;
@@ -84,7 +88,7 @@ namespace XM.Services.Event
         /// <summary>
         /// 是否有效
         /// </summary>
-        /// <returns></returns>
+        /// <returns>是否</returns>
         public bool IsVaild()
         {
             if (null == _methodInfo)
@@ -103,7 +107,7 @@ namespace XM.Services.Event
         /// <summary>
         /// 需要移除
         /// </summary>
-        /// <returns></returns>
+        /// <returns>是否移除</returns>
         public bool CheckRemove()
         {
             if ((-1 != _invokeMaxCount)

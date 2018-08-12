@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using XM.Exceptions;
 
 namespace XM.Services.UI
 {
@@ -9,7 +8,7 @@ namespace XM.Services.UI
     /// </summary>
     public abstract class IUIPanel : MonoBehaviour
     {
-        #region protected members
+        #region 属性
 
         [SerializeField]
         protected string _panelName;
@@ -17,15 +16,7 @@ namespace XM.Services.UI
         [SerializeField]
         protected UIPanelStatus _status = UIPanelStatus.Leave;
 
-        #endregion protected members
-
-        #region private members
-
         private IUIService _service;
-
-        #endregion private members
-
-        #region public members
 
         /// <summary>
         /// 面板名字
@@ -47,9 +38,9 @@ namespace XM.Services.UI
         /// </summary>
         public IUIService Service { get { return _service; } }
 
-        #endregion public members
+        #endregion 属性
 
-        #region public Function
+        #region 函数
 
         /// <summary>
         /// 初始化
@@ -107,11 +98,18 @@ namespace XM.Services.UI
             transform.SetParent(root, false);
         }
 
-        #endregion public Function
+        #endregion 函数
 
-        #region Event
+        #region 重写
 
-        #region Base
+        public override string ToString()
+        {
+            return string.Format("UIPanel:{0}", _panelName);
+        }
+
+        #endregion 重写
+
+        #region 回调
 
         /// <summary>
         /// 创建
@@ -137,18 +135,7 @@ namespace XM.Services.UI
             Debug(DebugType.Debug, "OnForceCompleteOperation");
         }
 
-        #endregion Base
-
-        #region override
-
-        public override string ToString()
-        {
-            return string.Format("UIPanel:{0}", _panelName);
-        }
-
-        #endregion override
-
-        #region Enter status
+        #region 进入
 
         /// <summary>
         /// 进入前
@@ -180,9 +167,9 @@ namespace XM.Services.UI
             Debug(DebugType.Debug, "OnLateEnter");
         }
 
-        #endregion Enter status
+        #endregion 进入
 
-        #region Leave status
+        #region 离开
 
         /// <summary>
         /// 退出前
@@ -214,9 +201,9 @@ namespace XM.Services.UI
             Debug(DebugType.Debug, "OnLateLeave");
         }
 
-        #endregion Leave status
+        #endregion 离开
 
-        #region Pause status
+        #region 暂停
 
         /// <summary>
         /// 暂停前
@@ -248,9 +235,9 @@ namespace XM.Services.UI
             Debug(DebugType.Debug, "OnLatePause");
         }
 
-        #endregion Pause status
+        #endregion 暂停
 
-        #region Resume status
+        #region 恢复
 
         /// <summary>
         /// 唤醒前
@@ -282,11 +269,11 @@ namespace XM.Services.UI
             Debug(DebugType.Debug, "OnLateResume");
         }
 
-        #endregion Resume status
+        #endregion 恢复
 
-        #endregion Event
+        #endregion 回调
 
-        #region Editor
+        #region 编辑器
 
 #if UNITY_EDITOR
 
@@ -305,6 +292,6 @@ namespace XM.Services.UI
 
 #endif
 
-        #endregion Editor
+        #endregion 编辑器
     }
 }

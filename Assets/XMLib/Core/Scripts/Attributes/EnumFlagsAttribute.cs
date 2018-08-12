@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XM.Attributes
+namespace XM
 {
     /// <summary>
     /// 枚举多选
