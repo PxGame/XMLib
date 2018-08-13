@@ -9,7 +9,7 @@ namespace XM.Services.UI
     /// UI服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class UIService : SimpleService<AppEntry, UISetting>
+    public class UIService : SimpleService<IAppEntry, UISetting>
     {
         #region 属性
 

@@ -4,7 +4,7 @@
     /// 本地化服务
     /// </summary>
     /// <typeparam name="AE"></typeparam>
-    public class LocalizationService : SimpleService<AppEntry, LocalizationSetting>
+    public class LocalizationService : SimpleService<IAppEntry, LocalizationSetting>
     {
     }
 }

@@ -6,7 +6,7 @@ namespace XM.Services.Scene
     /// 场景服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class SceneService : SimpleService<AppEntry, SceneSetting>
+    public class SceneService : SimpleService<IAppEntry, SceneSetting>
     {
         #region 函数
 

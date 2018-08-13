@@ -6,7 +6,7 @@ namespace XM.Services
     /// <summary>
     /// 服务类型列表
     /// </summary>
-    public class ServiceTypeList<AE> : List<Type> where AE : IAppEntry<AE>
+    public class ServiceTypeList : List<Type>
     {
         public ServiceTypeList() : base()
         {
@@ -24,7 +24,7 @@ namespace XM.Services
         /// 添加
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
-        public void Add<T>() where T : IService<AE>
+        public void Add<T>() where T : IService
         {
             Add(typeof(T));
         }
@@ -34,7 +34,7 @@ namespace XM.Services
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>是否成功</returns>
-        public bool Remove<T>() where T : IService<AE>
+        public bool Remove<T>() where T : IService
         {
             return Remove(typeof(T));
         }

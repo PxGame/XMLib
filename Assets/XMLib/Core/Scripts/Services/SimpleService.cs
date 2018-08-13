@@ -5,7 +5,7 @@
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
     /// <typeparam name="ST">服务配置类型</typeparam>
-    public abstract class SimpleService<AE, ST> : BaseService<AE> where ST : SimpleSetting where AE : IAppEntry<AE>
+    public abstract class SimpleService<AE, ST> : BaseService<AE> where ST : SimpleSetting where AE : IAppEntry
     {
         private ST _setting;
 
@@ -20,7 +20,7 @@
         /// 创建服务
         /// </summary>
         /// <param name="appEntry">入口实例</param>
-        public override void CreateService(AE appEntry)
+        public override void CreateService(IAppEntry appEntry)
         {
             //初始化设置
             _setting = appEntry.Settings.GetSetting<ST>();

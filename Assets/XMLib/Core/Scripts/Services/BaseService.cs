@@ -4,7 +4,7 @@
     /// 服务基类
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public abstract class BaseService<AE> : IService<AE> where AE : IAppEntry<AE>
+    public abstract class BaseService<AE> : IService where AE : IAppEntry
     {
         private AE _entry;
 
@@ -22,9 +22,9 @@
         /// 创建服务
         /// </summary>
         /// <param name="appEntry">入口实例</param>
-        public virtual void CreateService(AE appEntry)
+        public virtual void CreateService(IAppEntry appEntry)
         {
-            _entry = appEntry;
+            _entry = (AE)appEntry;
 
             OnServiceCreate();
         }

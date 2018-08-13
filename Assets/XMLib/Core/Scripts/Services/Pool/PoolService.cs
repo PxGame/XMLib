@@ -10,7 +10,7 @@ namespace XM.Services.Pool
     /// 对象池服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class PoolService : SimpleService<AppEntry, PoolSetting>, IPoolService
+    public class PoolService : SimpleService<IAppEntry, PoolSetting>, IPoolService
     {
         #region 属性
 

@@ -9,7 +9,7 @@ namespace XM.Services.Task
     /// 任务服务
     /// </summary>
     /// <typeparam name="AE">程序入口类型</typeparam>
-    public class TaskService : SimpleService<AppEntry, TaskSetting>, IUpdate
+    public class TaskService : SimpleService<IAppEntry, TaskSetting>, IUpdate
     {
         #region 属性
 

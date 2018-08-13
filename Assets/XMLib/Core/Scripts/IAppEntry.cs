@@ -9,20 +9,10 @@ namespace XM
     /// <summary>
     /// 应用入口
     /// </summary>
-    /// <typeparam name="AE">程序入口类型</typeparam>
-    public abstract class IAppEntry<AE> : MonoBehaviour where AE : IAppEntry<AE>
+    /// <typeparam name="IAppEntry">程序入口类型</typeparam>
+    public abstract class IAppEntry : MonoBehaviour
     {
         #region 属性
-
-        /// <summary>
-        /// 获取单例
-        /// </summary>
-        public static AE Inst { get { return _inst; } }
-
-        /// <summary>
-        /// 是否初始化
-        /// </summary>
-        public static bool IsInit { get { return null != _inst; } }
 
         /// <summary>
         /// 日志输出
@@ -34,10 +24,9 @@ namespace XM
         /// </summary>
         public ServiceSettings Settings { get { return _settings; } }
 
-        private static AE _inst = null;
         private Action<DebugType, string> _onDebugOut;
-        private Dictionary<Type, IService<AE>> _serviceDict = new Dictionary<Type, IService<AE>>();
-        private List<IService<AE>> _serviceList = new List<IService<AE>>();
+        private Dictionary<Type, IService> _serviceDict = new Dictionary<Type, IService>();
+        private List<IService> _serviceList = new List<IService>();
 
         [SerializeField]
         private ServiceSettings _settings;
@@ -55,17 +44,17 @@ namespace XM
         /// 初始化默认服务列表
         /// </summary>
         /// <returns>默认服务类型列表</returns>
-        protected virtual ServiceTypeList<AE> GetDefaultServices()
+        protected virtual ServiceTypeList GetDefaultServices()
         {
             //默认服务
-            return new ServiceTypeList<AE>();
+            return new ServiceTypeList();
         }
 
         /// <summary>
         /// 注册回调
         /// </summary>
         /// <param name="service">服务实例</param>
-        protected void RegistCallback(IService<AE> service)
+        protected void RegistCallback(IService service)
         {
             if (service is IUpdate)
             {
@@ -89,7 +78,7 @@ namespace XM
         /// 反注册回调
         /// </summary>
         /// <param name="service">服务实例</param>
-        protected void UnregistCallback(IService<AE> service)
+        protected void UnregistCallback(IService service)
         {
             if (service is IUpdate)
             {
@@ -113,23 +102,23 @@ namespace XM
         /// 添加服务
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
-        public void Add<T>() where T : IService<AE>
+        public void Add<T>() where T : IService
         {
-            AddRange(new ServiceTypeList<AE>() { typeof(T) });
+            AddRange(new ServiceTypeList() { typeof(T) });
         }
 
         /// <summary>
         /// 添加服务
         /// </summary>
         /// <param name="serviceTypes">服务类型</param>
-        public void AddRange(ServiceTypeList<AE> serviceTypes)
+        public void AddRange(List<Type> serviceTypes)
         {
             Type tmpType;
-            IService<AE> service;
+            IService service;
             Type[] argsTypes = new Type[] { };
             object[] args = new object[] { };
 
-            List<IService<AE>> services = new List<IService<AE>>();
+            List<IService> services = new List<IService>();
             int length = serviceTypes.Count;
 
             //实例化
@@ -142,7 +131,7 @@ namespace XM
                     Checker.IsFalse(Exist(tmpType), "已存在 {0} 服务,不允许重复添加", tmpType.FullName);
 
                     //创建对象
-                    service = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
+                    service = (IService)tmpType.GetConstructor(argsTypes).Invoke(args);
 
                     //添加到初始化列表
                     services.Add(service);
@@ -161,7 +150,7 @@ namespace XM
 
                 try
                 {
-                    service.CreateService((AE)this);
+                    service.CreateService((IAppEntry)this);
                 }
                 catch (Exception ex)
                 {
@@ -230,7 +219,7 @@ namespace XM
         public void ClearAll()
         {
             int length = _serviceList.Count;
-            IService<AE> service;
+            IService service;
             for (int i = 0; i < length; i++)
             {
                 service = _serviceList[i];
@@ -252,7 +241,7 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>是否存在</returns>
-        public bool Exist<T>() where T : IService<AE>
+        public bool Exist<T>() where T : IService
         {
             return Exist(typeof(T));
         }
@@ -272,9 +261,9 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>服务实例</returns>
-        public T Get<T>() where T : IService<AE>
+        public T Get<T>() where T : IService
         {
-            IService<AE> service = null;
+            IService service = null;
 
             if (!_serviceDict.TryGetValue(typeof(T), out service))
             {
@@ -289,7 +278,7 @@ namespace XM
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>
         /// <returns>是否成功</returns>
-        public bool Remove<T>() where T : IService<AE>
+        public bool Remove<T>() where T : IService
         {
             if (!Exist<T>())
             {
@@ -352,7 +341,7 @@ namespace XM
             _serviceList.Reverse();
 
             int length = _serviceList.Count;
-            IService<AE> service;
+            IService service;
 
             //反注册回调
             for (int i = 0; i < length; i++)
@@ -414,19 +403,12 @@ namespace XM
 
         protected virtual void Awake()
         {
-            Checker.IsNull(_inst, "IAppEntry 重复实例化");
-
-            _inst = this as AE;
-            Checker.NotNull(_inst, "单例初始化失败");
-
             Initialize();
         }
 
         protected virtual void OnDestroy()
         {
             Terminal();
-
-            _inst = null;
         }
 
         protected virtual void FixedUpdate()
@@ -523,7 +505,7 @@ namespace XM
         private void InstallDefaultServices()
         {
             //获取默认服务
-            ServiceTypeList<AE> serviceTypes = GetDefaultServices();
+            List<Type> serviceTypes = GetDefaultServices();
 
             if (null == serviceTypes)
             {//没有直接返回
