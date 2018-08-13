@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using XM.Exceptions;
 
 namespace XM.Services.Event
 {

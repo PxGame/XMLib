@@ -6,7 +6,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using XM;
-using XM.Exceptions;
 using XM.Services.Localization;
 
 namespace XMEditor.Services.Localization

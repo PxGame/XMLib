@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace XM.Exceptions
+namespace XM
 {
     /// <summary>
     /// 异常
@@ -26,7 +26,6 @@ namespace XM.Exceptions
         public StringException(string format, params object[] args)
         {
             _message = string.Format("[XM]" + format, args);
-            Debug.LogError(_message);
         }
 
         /// <summary>
@@ -38,7 +37,6 @@ namespace XM.Exceptions
         public StringException(Exception innerExcepation, string format, params object[] args) : base(null, innerExcepation)
         {
             _message = string.Format("[XM]" + format, args);
-            Debug.LogError(_message);
         }
     }
 }

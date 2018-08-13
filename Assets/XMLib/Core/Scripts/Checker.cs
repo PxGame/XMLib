@@ -1,6 +1,4 @@
-﻿using XM.Exceptions;
-
-namespace XM
+﻿namespace XM
 {
     /// <summary>
     /// 检查者
