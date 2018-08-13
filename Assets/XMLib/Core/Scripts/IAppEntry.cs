@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XM.Services;
@@ -41,6 +42,11 @@ namespace XM
         [SerializeField]
         private ServiceSettings _settings;
 
+        private List<IUpdate> _updates = new List<IUpdate>();
+        private List<ILateUpdate> _lateUpdates = new List<ILateUpdate>();
+        private List<IFixedUpdate> _fixedUpdates = new List<IFixedUpdate>();
+        private List<IOnGUI> _onGUIs = new List<IOnGUI>();
+
         #endregion 属性
 
         #region 服务函数
@@ -53,6 +59,54 @@ namespace XM
         {
             //默认服务
             return new ServiceTypeList<AE>();
+        }
+
+        /// <summary>
+        /// 注册回调
+        /// </summary>
+        /// <param name="service">服务实例</param>
+        protected void RegistCallback(IService<AE> service)
+        {
+            if (service is IUpdate)
+            {
+                _updates.Add((IUpdate)service);
+            }
+            if (service is ILateUpdate)
+            {
+                _lateUpdates.Add((ILateUpdate)service);
+            }
+            if (service is IFixedUpdate)
+            {
+                _fixedUpdates.Add((IFixedUpdate)service);
+            }
+            if (service is IOnGUI)
+            {
+                _onGUIs.Add((IOnGUI)service);
+            }
+        }
+
+        /// <summary>
+        /// 反注册回调
+        /// </summary>
+        /// <param name="service">服务实例</param>
+        protected void UnregistCallback(IService<AE> service)
+        {
+            if (service is IUpdate)
+            {
+                _updates.Remove((IUpdate)service);
+            }
+            if (service is ILateUpdate)
+            {
+                _lateUpdates.Remove((ILateUpdate)service);
+            }
+            if (service is IFixedUpdate)
+            {
+                _fixedUpdates.Remove((IFixedUpdate)service);
+            }
+            if (service is IOnGUI)
+            {
+                _onGUIs.Remove((IOnGUI)service);
+            }
         }
 
         /// <summary>
@@ -77,6 +131,8 @@ namespace XM
 
             List<IService<AE>> services = new List<IService<AE>>();
             int length = serviceTypes.Count;
+
+            //实例化
             for (int i = 0; i < length; i++)
             {
                 tmpType = serviceTypes[i];
@@ -129,7 +185,7 @@ namespace XM
                 }
             }
 
-            //添加到已有列表
+            //添加
             length = services.Count;
             for (int i = 0; i < length; i++)
             {
@@ -141,12 +197,29 @@ namespace XM
                     _serviceList.Add(service);
                     //添加到字典
                     _serviceDict.Add(service.GetType(), service);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "添加 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
+            }
+
+            //注册回调
+            length = services.Count;
+            for (int i = 0; i < length; i++)
+            {
+                service = services[i];
+
+                try
+                {
+                    //注册回调
+                    RegistCallback(service);
 
                     Debug(DebugType.Debug, "启动 {0} 服务成功", service.ServiceName);
                 }
                 catch (Exception ex)
                 {
-                    Debug(DebugType.Exception, "添加 {0} 服务异常\n{1}", service.ServiceName, ex);
+                    Debug(DebugType.Exception, "{0} 服务注册回调异常\n{1}", service.ServiceName, ex);
                 }
             }
         }
@@ -227,6 +300,16 @@ namespace XM
 
             try
             {
+                //反注册回调
+                UnregistCallback(service);
+            }
+            catch (Exception ex)
+            {
+                Debug(DebugType.Exception, "{0} 服务反注册回调异常\n{1}", service.ServiceName, ex);
+            }
+
+            try
+            {
                 //开始关闭
                 service.DisposeBeforeService();
             }
@@ -270,6 +353,22 @@ namespace XM
 
             int length = _serviceList.Count;
             IService<AE> service;
+
+            //反注册回调
+            for (int i = 0; i < length; i++)
+            {
+                service = _serviceList[i];
+
+                try
+                {
+                    //注册回调
+                    UnregistCallback(service);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "{0} 服务反注册回调异常\n{1}", service.ServiceName, ex);
+                }
+            }
 
             //开始移除
             for (int i = 0; i < length; i++)
@@ -328,6 +427,90 @@ namespace XM
             Terminal();
 
             _inst = null;
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            if (null != _fixedUpdates)
+            {
+                int length = _fixedUpdates.Count;
+                IFixedUpdate fixedUpdate;
+                for (int i = 0; i < length; i++)
+                {
+                    fixedUpdate = _fixedUpdates[i];
+                    try
+                    {
+                        fixedUpdate.FixedUpdate();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug(DebugType.Exception, "FixedUpdate Exception:{0}\n{1}", fixedUpdate.ServiceName, ex);
+                    }
+                }
+            }
+        }
+
+        protected virtual void LateUpdate()
+        {
+            if (null != _lateUpdates)
+            {
+                int length = _lateUpdates.Count;
+                ILateUpdate lateUpdate;
+                for (int i = 0; i < length; i++)
+                {
+                    lateUpdate = _lateUpdates[i];
+                    try
+                    {
+                        lateUpdate.LateUpdate();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug(DebugType.Exception, "LateUpdate Exception:{0}\n{1}", lateUpdate.ServiceName, ex);
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnGUI()
+        {
+            if (null != _onGUIs)
+            {
+                int length = _onGUIs.Count;
+                IOnGUI onGUI;
+                for (int i = 0; i < length; i++)
+                {
+                    onGUI = _onGUIs[i];
+                    try
+                    {
+                        onGUI.OnGUI();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug(DebugType.Exception, "OnGUI Exception:{0}\n{1}", onGUI.ServiceName, ex);
+                    }
+                }
+            }
+        }
+
+        protected virtual void Update()
+        {
+            if (null != _updates)
+            {
+                int length = _updates.Count;
+                IUpdate update;
+                for (int i = 0; i < length; i++)
+                {
+                    update = _updates[i];
+                    try
+                    {
+                        update.Update();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug(DebugType.Exception, "Update Exception:{0}\n{1}", update.ServiceName, ex);
+                    }
+                }
+            }
         }
 
         #endregion Unity 函数
