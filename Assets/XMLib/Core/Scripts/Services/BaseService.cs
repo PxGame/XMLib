@@ -70,7 +70,7 @@
         /// <param name="args">参数</param>
         public virtual void Debug(DebugType debugType, string format, params object[] args)
         {
-            Entry.Debug(debugType, "[" + ServiceName + "]" + format, args);
+            Entry.Debug(debugType, this, format, args);
         }
 
         /// <summary>

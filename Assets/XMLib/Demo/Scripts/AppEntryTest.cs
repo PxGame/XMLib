@@ -10,6 +10,7 @@ public class AppEntryTest : AppEntry
     {
         var s = base.GetDefaultServices();
         s.Add<TestService>();
+        s.Add<TestService2>();
         return s;
     }
 }

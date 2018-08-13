@@ -3,7 +3,7 @@
     /// <summary>
     /// 序列化工具
     /// </summary>
-    public class SerializationUtils
+    public static class SerializerUtils
     {
         /// <summary>
         /// 序列化方法

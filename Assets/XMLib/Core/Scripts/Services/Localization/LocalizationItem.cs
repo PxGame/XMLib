@@ -25,9 +25,9 @@ namespace XM.Services.Localization
         /// <param name="text">文本</param>
         public void UpdateText(LanguageType languageType, string text, Font font)
         {
-            OnTextUpdate(text);
+            OnTextUpdate(languageType, text, font);
         }
 
-        protected abstract void OnTextUpdate(string text);
+        protected abstract void OnTextUpdate(LanguageType languageType, string text, Font font);
     }
 }

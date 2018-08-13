@@ -3,7 +3,6 @@
     /// <summary>
     /// 服务接口
     /// </summary>
-    /// <typeparam name="AE">程序入口类型</typeparam>
     public interface IService
     {
         /// <summary>

@@ -4,10 +4,26 @@ using UnityEngine;
 using XM;
 using XM.Services;
 
-public class TestService : BaseService<AppEntryTest>
+public class TestService : BaseService<AppEntryTest>, IUpdate, IFixedUpdate, IOnGUI, ILateUpdate
 {
-    protected override void OnServiceCreate()
+    public void FixedUpdate()
     {
-        base.OnServiceCreate();
+        Debug(DebugType.Debug, "TestService FixedUpdate");
+    }
+
+    public void LateUpdate()
+    {
+        Debug(DebugType.Debug, "TestService LateUpdate");
+    }
+
+    public void OnGUI()
+    {
+        Debug(DebugType.Debug, "TestService OnGUI");
+    }
+
+    [Priority(-100)]
+    public void Update()
+    {
+        Debug(DebugType.Debug, "TestService Update");
     }
 }

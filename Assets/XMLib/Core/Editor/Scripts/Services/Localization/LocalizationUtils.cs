@@ -218,7 +218,7 @@ namespace XMEditor.Services.Localization
         {
             string filePath = GetPath(info.Language);
             Debug.LogFormat("导出语言文件:{0}", filePath);
-            byte[] data = SerializationUtils.Serialize(info);
+            byte[] data = SerializerUtils.Serialize(info);
             File.WriteAllBytes(filePath, data);
         }
 
@@ -231,7 +231,7 @@ namespace XMEditor.Services.Localization
         {
             string filePath = GetPath(languageType);
             byte[] data = File.ReadAllBytes(filePath);
-            LanguageInfo info = SerializationUtils.Deserialize<LanguageInfo>(data);
+            LanguageInfo info = SerializerUtils.Deserialize<LanguageInfo>(data);
             return info;
         }
 

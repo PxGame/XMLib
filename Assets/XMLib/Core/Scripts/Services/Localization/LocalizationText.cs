@@ -27,7 +27,7 @@ namespace XM.Services.Localization
 
         #region 重写
 
-        protected override void OnTextUpdate(string text)
+        protected override void OnTextUpdate(LanguageType languageType, string text, Font font)
         {
             _text.text = text;
 

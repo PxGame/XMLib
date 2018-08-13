@@ -31,10 +31,10 @@ namespace XM
         [SerializeField]
         private ServiceSettings _settings;
 
-        private List<IUpdate> _updates = new List<IUpdate>();
-        private List<ILateUpdate> _lateUpdates = new List<ILateUpdate>();
-        private List<IFixedUpdate> _fixedUpdates = new List<IFixedUpdate>();
-        private List<IOnGUI> _onGUIs = new List<IOnGUI>();
+        private IndexList<IUpdate> _updates = new IndexList<IUpdate>();
+        private IndexList<ILateUpdate> _lateUpdates = new IndexList<ILateUpdate>();
+        private IndexList<IFixedUpdate> _fixedUpdates = new IndexList<IFixedUpdate>();
+        private IndexList<IOnGUI> _onGUIs = new IndexList<IOnGUI>();
 
         #endregion 属性
 
@@ -58,19 +58,27 @@ namespace XM
         {
             if (service is IUpdate)
             {
-                _updates.Add((IUpdate)service);
+                int priority = AttributeUtils.GetPriority(service.GetType(), "Update");
+                _updates.Add(priority, (IUpdate)service);
+                _updates.Sort();
             }
             if (service is ILateUpdate)
             {
-                _lateUpdates.Add((ILateUpdate)service);
+                int priority = AttributeUtils.GetPriority(service.GetType(), "LateUpdate");
+                _lateUpdates.Add(priority, (ILateUpdate)service);
+                _lateUpdates.Sort();
             }
             if (service is IFixedUpdate)
             {
-                _fixedUpdates.Add((IFixedUpdate)service);
+                int priority = AttributeUtils.GetPriority(service.GetType(), "FixedUpdate");
+                _fixedUpdates.Add(priority, (IFixedUpdate)service);
+                _fixedUpdates.Sort();
             }
             if (service is IOnGUI)
             {
-                _onGUIs.Add((IOnGUI)service);
+                int priority = AttributeUtils.GetPriority(service.GetType(), "OnGUI");
+                _onGUIs.Add(priority, (IOnGUI)service);
+                _onGUIs.Sort();
             }
         }
 
@@ -82,19 +90,19 @@ namespace XM
         {
             if (service is IUpdate)
             {
-                _updates.Remove((IUpdate)service);
+                _updates.RemoveAll((IUpdate)service);
             }
             if (service is ILateUpdate)
             {
-                _lateUpdates.Remove((ILateUpdate)service);
+                _lateUpdates.RemoveAll((ILateUpdate)service);
             }
             if (service is IFixedUpdate)
             {
-                _fixedUpdates.Remove((IFixedUpdate)service);
+                _fixedUpdates.RemoveAll((IFixedUpdate)service);
             }
             if (service is IOnGUI)
             {
-                _onGUIs.Remove((IOnGUI)service);
+                _onGUIs.RemoveAll((IOnGUI)service);
             }
         }
 
@@ -419,14 +427,14 @@ namespace XM
                 IFixedUpdate fixedUpdate;
                 for (int i = 0; i < length; i++)
                 {
-                    fixedUpdate = _fixedUpdates[i];
+                    fixedUpdate = _fixedUpdates[i].Value;
                     try
                     {
                         fixedUpdate.FixedUpdate();
                     }
                     catch (Exception ex)
                     {
-                        Debug(DebugType.Exception, "FixedUpdate Exception:{0}\n{1}", fixedUpdate.ServiceName, ex);
+                        Debug(DebugType.Exception, "{0} 服务 FixedUpdate 发生异常\n{1}", fixedUpdate.ServiceName, ex);
                     }
                 }
             }
@@ -440,14 +448,14 @@ namespace XM
                 ILateUpdate lateUpdate;
                 for (int i = 0; i < length; i++)
                 {
-                    lateUpdate = _lateUpdates[i];
+                    lateUpdate = _lateUpdates[i].Value;
                     try
                     {
                         lateUpdate.LateUpdate();
                     }
                     catch (Exception ex)
                     {
-                        Debug(DebugType.Exception, "LateUpdate Exception:{0}\n{1}", lateUpdate.ServiceName, ex);
+                        Debug(DebugType.Exception, "{0} 服务 LateUpdate 发生异常\n{1}", lateUpdate.ServiceName, ex);
                     }
                 }
             }
@@ -461,14 +469,14 @@ namespace XM
                 IOnGUI onGUI;
                 for (int i = 0; i < length; i++)
                 {
-                    onGUI = _onGUIs[i];
+                    onGUI = _onGUIs[i].Value;
                     try
                     {
                         onGUI.OnGUI();
                     }
                     catch (Exception ex)
                     {
-                        Debug(DebugType.Exception, "OnGUI Exception:{0}\n{1}", onGUI.ServiceName, ex);
+                        Debug(DebugType.Exception, "{0} 服务 OnGUI 发生异常\n{1}", onGUI.ServiceName, ex);
                     }
                 }
             }
@@ -482,14 +490,14 @@ namespace XM
                 IUpdate update;
                 for (int i = 0; i < length; i++)
                 {
-                    update = _updates[i];
+                    update = _updates[i].Value;
                     try
                     {
                         update.Update();
                     }
                     catch (Exception ex)
                     {
-                        Debug(DebugType.Exception, "Update Exception:{0}\n{1}", update.ServiceName, ex);
+                        Debug(DebugType.Exception, "{0} 服务 Update 发生异常\n{1}", update.ServiceName, ex);
                     }
                 }
             }
@@ -538,6 +546,47 @@ namespace XM
         }
 
         /// <summary>
+        /// 服务 debug 输出
+        /// </summary>
+        /// <param name="debugType">输出类型</param>
+        /// <param name="service">服务</param>
+        /// <param name="format">格式化</param>
+        /// <param name="args">参数</param>
+        public virtual void Debug(DebugType debugType, IService service, string format, params object[] args)
+        {
+            if (0 == (debugType & _settings.DebugType))
+            {//不符合输出要求
+                return;
+            }
+
+            string serviceName = service != null ? service.ServiceName : "未知服务";
+            string msg = string.Format(format, args);
+            string outMsg = string.Format("[XM][{0}][{1}]{2}", debugType, serviceName, msg);
+
+            if (null != _onDebugOut)
+            {
+                _onDebugOut(debugType, outMsg);
+            }
+
+            switch (debugType)
+            {
+                case DebugType.Warning:
+                    UnityEngine.Debug.LogWarning(outMsg);
+                    break;
+
+                case DebugType.Exception:
+                case DebugType.Error:
+                case DebugType.GG:
+                    UnityEngine.Debug.LogError(outMsg);
+                    break;
+
+                default:
+                    UnityEngine.Debug.Log(outMsg);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// debug 输出
         /// </summary>
         /// <param name="debugType">debug 类型</param>
@@ -551,26 +600,27 @@ namespace XM
             }
 
             string msg = string.Format(format, args);
+            string outMsg = string.Format("[XM][{0}]{1}", debugType, msg);
 
             if (null != _onDebugOut)
             {
-                _onDebugOut(debugType, msg);
+                _onDebugOut(debugType, outMsg);
             }
 
             switch (debugType)
             {
                 case DebugType.Warning:
-                    UnityEngine.Debug.LogWarningFormat("[{0}]{1}", debugType, msg);
+                    UnityEngine.Debug.LogWarning(outMsg);
                     break;
 
                 case DebugType.Exception:
                 case DebugType.Error:
                 case DebugType.GG:
-                    UnityEngine.Debug.LogErrorFormat("[{0}]{1}", debugType, msg);
+                    UnityEngine.Debug.LogError(outMsg);
                     break;
 
                 default:
-                    UnityEngine.Debug.LogFormat("[{0}]{1}", debugType, msg);
+                    UnityEngine.Debug.Log(outMsg);
                     break;
             }
         }
