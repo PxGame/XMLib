@@ -247,7 +247,7 @@ namespace XM.Services.Event
         /// <param name="callback"></param>
         public IEventData Add(string eventName, Action callback, int invokeMaxCount = -1)
         {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            EventData eventData = new EventData(this, eventName, callback.Target, callback.Method, invokeMaxCount);
             Add(eventData);
             return eventData;
         }
@@ -260,7 +260,7 @@ namespace XM.Services.Event
         /// <param name="callback"></param>
         public IEventData Add<T>(string eventName, Action<T> callback, int invokeMaxCount = -1)
         {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            EventData eventData = new EventData(this, eventName, callback.Target, callback.Method, invokeMaxCount);
             Add(eventData);
             return eventData;
         }
@@ -274,7 +274,7 @@ namespace XM.Services.Event
         /// <param name="callback"></param>
         public IEventData Add<T1, T2>(string eventName, Action<T1, T2> callback, int invokeMaxCount = -1)
         {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            EventData eventData = new EventData(this, eventName, callback.Target, callback.Method, invokeMaxCount);
             Add(eventData);
             return eventData;
         }
@@ -289,7 +289,7 @@ namespace XM.Services.Event
         /// <param name="callback"></param>
         public IEventData Add<T1, T2, T3>(string eventName, Action<T1, T2, T3> callback, int invokeMaxCount = -1)
         {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            EventData eventData = new EventData(this, eventName, callback.Target, callback.Method, invokeMaxCount);
             Add(eventData);
             return eventData;
         }
@@ -305,7 +305,7 @@ namespace XM.Services.Event
         /// <param name="callback"></param>
         public IEventData Add<T1, T2, T3, T4>(string eventName, Action<T1, T2, T3, T4> callback, int invokeMaxCount = -1)
         {
-            EventData eventData = new EventData(eventName, callback.Target, callback.Method, invokeMaxCount);
+            EventData eventData = new EventData(this, eventName, callback.Target, callback.Method, invokeMaxCount);
             Add(eventData);
             return eventData;
         }

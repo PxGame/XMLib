@@ -36,7 +36,7 @@ namespace XM.Services.Task
         /// <summary>
         /// 一次循环Task处理上限
         /// </summary>
-        private int _maxTaskProcess = 10;
+        private int _maxTaskProcess = int.MaxValue;
 
         #endregion 属性
 
@@ -105,7 +105,7 @@ namespace XM.Services.Task
         /// <param name="task">任务</param>
         public void RunOnMainThread(Action task)
         {
-            TaskData data = new TaskData(task.Target, task.Method, null);
+            TaskData data = new TaskData(this, task.Target, task.Method, null);
             lock (SyncRoot)
             {
                 _tasks.Push(data);
@@ -121,7 +121,7 @@ namespace XM.Services.Task
         /// <param name="methodArgs">函数参数</param>
         public void RunOnMainThread(object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
         {
-            TaskData data = new TaskData(methodTarget, methodInfo, resultCallback, methodArgs);
+            TaskData data = new TaskData(this, methodTarget, methodInfo, resultCallback, methodArgs);
             lock (SyncRoot)
             {
                 _tasks.Push(data);
@@ -176,7 +176,7 @@ namespace XM.Services.Task
         /// <param name="methodArgs">函数参数</param>
         public void RunOnThreadPool(object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
         {
-            TaskData data = new TaskData(methodTarget, methodInfo, resultCallback, methodArgs);
+            TaskData data = new TaskData(this, methodTarget, methodInfo, resultCallback, methodArgs);
             RunOnThreadPool(data);
         }
 

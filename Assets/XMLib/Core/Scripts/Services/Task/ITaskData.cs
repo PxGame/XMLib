@@ -6,6 +6,11 @@
     public interface ITaskData
     {
         /// <summary>
+        /// 服务引用
+        /// </summary>
+        TaskService Service { get; }
+
+        /// <summary>
         /// 执行
         /// </summary>
         void Call();

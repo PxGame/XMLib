@@ -11,6 +11,11 @@
         string EventName { get; }
 
         /// <summary>
+        /// 服务引用
+        /// </summary>
+        EventService Service { get; }
+
+        /// <summary>
         /// 事件调用
         /// </summary>
         /// <param name="args"></param>

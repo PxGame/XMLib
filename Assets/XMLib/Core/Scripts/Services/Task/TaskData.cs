@@ -31,6 +31,13 @@ namespace XM.Services.Task
         /// </summary>
         public Action<object> ResultCallback { get { return _resultCallback; } }
 
+        /// <summary>
+        /// 服务引用
+        /// </summary>
+        public TaskService Service { get { return _service; } }
+
+        protected TaskService _service;
+
         protected object[] _methodArgs;
 
         protected object _methodTarget;
@@ -44,14 +51,16 @@ namespace XM.Services.Task
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="service">服务引用</param>
         /// <param name="methodTarget">函数目标对象</param>
         /// <param name="methodInfo">函数信息</param>
         /// <param name="resultCallback">结果回调函数</param>
         /// <param name="methodArgs">函数参数</param>
-        public TaskData(object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
+        public TaskData(TaskService service, object methodTarget, MethodInfo methodInfo, Action<object> resultCallback, params object[] methodArgs)
         {
             Checker.IsFalse(null == methodTarget && !methodInfo.IsStatic, "非静态函数，Target不能为null");
 
+            _service = service;
             _methodArgs = methodArgs;
             _methodTarget = methodTarget;
             _methodInfo = methodInfo;

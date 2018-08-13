@@ -71,15 +71,21 @@ namespace XM
             for (int i = 0; i < length; i++)
             {
                 tmpType = serviceTypes[i];
-                Checker.IsFalse(Exist(tmpType), "已存在该服务 {0}", tmpType.FullName);
 
-                //创建对象
-                service = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
+                try
+                {
+                    Checker.IsFalse(Exist(tmpType), "已存在 {0} 服务,不允许重复添加", tmpType.FullName);
 
-                Debug(DebugType.Debug, "添加服务 {0}", service.ServiceName);
+                    //创建对象
+                    service = (IService<AE>)tmpType.GetConstructor(argsTypes).Invoke(args);
 
-                //添加到初始化列表
-                services.Add(service);
+                    //添加到初始化列表
+                    services.Add(service);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "实例化 {0} 服务异常\n{1}", tmpType.FullName, ex);
+                }
             }
 
             //创建
@@ -88,7 +94,14 @@ namespace XM
             {
                 service = services[i];
 
-                service.CreateService((AE)this);
+                try
+                {
+                    service.CreateService((AE)this);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "创建 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
 
             //初始化
@@ -97,7 +110,14 @@ namespace XM
             {
                 service = services[i];
 
-                service.InitService();
+                try
+                {
+                    service.InitService();
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "初始化 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
 
             //添加到已有列表
@@ -106,15 +126,24 @@ namespace XM
             {
                 service = services[i];
 
-                //添加到列表
-                _serviceList.Add(service);
-                //添加到字典
-                _serviceDict.Add(service.GetType(), service);
+                try
+                {
+                    //添加到列表
+                    _serviceList.Add(service);
+                    //添加到字典
+                    _serviceDict.Add(service.GetType(), service);
+
+                    Debug(DebugType.Debug, "启动 {0} 服务成功", service.ServiceName);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "添加 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
         }
 
         /// <summary>
-        /// 清理所有服务
+        /// ` 清理所有服务
         /// </summary>
         public void ClearAll()
         {
@@ -124,8 +153,15 @@ namespace XM
             {
                 service = _serviceList[i];
 
-                Debug(DebugType.Debug, "清理服务 {0}", service.ServiceName);
-                service.ClearService();
+                try
+                {
+                    service.ClearService();
+                    Debug(DebugType.Debug, "清理 {0} 服务成功", service.ServiceName);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "清理 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
         }
 
@@ -180,10 +216,37 @@ namespace XM
 
             T service = Get<T>();
 
-            //开始关闭
-            service.DisposeBeforeService();
-            //完成关闭
-            service.DisposedService();
+            try
+            {
+                //开始关闭
+                service.DisposeBeforeService();
+            }
+            catch (Exception ex)
+            {
+                Debug(DebugType.Exception, "开始关闭 {0} 服务异常\n{1}", service.ServiceName, ex);
+            }
+
+            try
+            {
+                //完成关闭
+                service.DisposedService();
+                Debug(DebugType.Debug, "关闭 {0} 服务成功", service.ServiceName);
+            }
+            catch (Exception ex)
+            {
+                Debug(DebugType.Exception, "完成关闭 {0} 服务异常\n{1}", service.ServiceName, ex);
+            }
+
+            try
+            {
+                //移除
+                _serviceDict.Remove(typeof(T));
+                _serviceList.Remove(service);
+            }
+            catch (Exception ex)
+            {
+                Debug(DebugType.Exception, "移除 {0} 服务异常\n{1}", service.ServiceName, ex);
+            }
 
             return true;
         }
@@ -204,8 +267,15 @@ namespace XM
             {
                 service = _serviceList[i];
 
-                Debug(DebugType.Debug, "开始移除服务 {0}", service.ServiceName);
-                service.DisposeBeforeService();
+                try
+                {
+                    //开始关闭
+                    service.DisposeBeforeService();
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "开始关闭 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
 
             //完成移除
@@ -213,8 +283,16 @@ namespace XM
             {
                 service = _serviceList[i];
 
-                Debug(DebugType.Debug, "完成移除服务 {0}", service.ServiceName);
-                service.DisposedService();
+                try
+                {
+                    //完成关闭
+                    service.DisposedService();
+                    Debug(DebugType.Debug, "关闭 {0} 服务成功", service.ServiceName);
+                }
+                catch (Exception ex)
+                {
+                    Debug(DebugType.Exception, "完成关闭 {0} 服务异常\n{1}", service.ServiceName, ex);
+                }
             }
 
             //清理

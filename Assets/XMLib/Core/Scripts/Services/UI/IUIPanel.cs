@@ -16,7 +16,7 @@ namespace XM.Services.UI
         [SerializeField]
         protected UIPanelStatus _status = UIPanelStatus.Leave;
 
-        private IUIService _service;
+        private UIService _service;
 
         /// <summary>
         /// 面板名字
@@ -36,7 +36,7 @@ namespace XM.Services.UI
         /// <summary>
         /// UI服务
         /// </summary>
-        public IUIService Service { get { return _service; } }
+        public UIService Service { get { return _service; } }
 
         #endregion 属性
 
@@ -53,7 +53,7 @@ namespace XM.Services.UI
         /// 创建
         /// </summary>
         /// <param name="service">UI服务</param>
-        public void Create(IUIService service)
+        public void Create(UIService service)
         {
             _service = service;
             OnCreate();

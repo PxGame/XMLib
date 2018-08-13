@@ -36,6 +36,12 @@ namespace XM.Services.Event
         /// </summary>
         public int CurrentInvokeCount { get { return _currentInvokeCount; } }
 
+        /// <summary>
+        /// 服务引用
+        /// </summary>
+        public EventService Service { get { return _service; } }
+
+        protected EventService _service;
         protected string _eventName;
         protected object _methodTarget;
         protected MethodInfo _methodInfo;
@@ -47,14 +53,16 @@ namespace XM.Services.Event
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="service">服务</param>
         /// <param name="eventName"></param>
         /// <param name="methodTarget">静态函数可以设置为null</param>
         /// <param name="methodInfo">函数信息</param>
         /// <param name="invokeMaxCount">达到最大调用次数后移除</param>
-        public EventData(string eventName, object methodTarget, MethodInfo methodInfo, int invokeMaxCount)
+        public EventData(EventService service, string eventName, object methodTarget, MethodInfo methodInfo, int invokeMaxCount)
         {
             Checker.IsFalse(null == methodTarget && !methodInfo.IsStatic, "非静态函数，Target不能为null");
 
+            _service = service;
             _eventName = eventName;
             _methodTarget = methodTarget;
             _methodInfo = methodInfo;
