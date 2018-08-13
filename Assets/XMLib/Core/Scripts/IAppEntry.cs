@@ -58,6 +58,15 @@ namespace XM
         /// <summary>
         /// 添加服务
         /// </summary>
+        /// <typeparam name="T">服务类型</typeparam>
+        public void Add<T>() where T : IService<AE>
+        {
+            AddRange(new ServiceTypeList<AE>() { typeof(T) });
+        }
+
+        /// <summary>
+        /// 添加服务
+        /// </summary>
         /// <param name="serviceTypes">服务类型</param>
         public void AddRange(ServiceTypeList<AE> serviceTypes)
         {
@@ -383,9 +392,22 @@ namespace XM
                 _onDebugOut(debugType, msg);
             }
 
-#if UNITY_EDITOR
-            UnityEngine.Debug.LogFormat("[{0}]{1}", debugType, msg);
-#endif
+            switch (debugType)
+            {
+                case DebugType.Warning:
+                    UnityEngine.Debug.LogWarningFormat("[{0}]{1}", debugType, msg);
+                    break;
+
+                case DebugType.Exception:
+                case DebugType.Error:
+                case DebugType.GG:
+                    UnityEngine.Debug.LogErrorFormat("[{0}]{1}", debugType, msg);
+                    break;
+
+                default:
+                    UnityEngine.Debug.LogFormat("[{0}]{1}", debugType, msg);
+                    break;
+            }
         }
 
         #endregion 入口操作

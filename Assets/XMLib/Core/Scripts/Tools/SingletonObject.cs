@@ -23,11 +23,7 @@ namespace XM
 
         protected virtual void Awake()
         {
-            if (_instance != null)
-            {//重复实例化
-                throw new StringException("重复实例化单实例 {0}", GetType().Name);
-            }
-
+            Checker.IsNull(_instance, "重复实例化单实例 {0}", GetType().Name);
             _instance = (T)this;
         }
 
