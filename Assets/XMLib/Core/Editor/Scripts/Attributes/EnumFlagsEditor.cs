@@ -2,7 +2,7 @@
 using UnityEngine;
 using XM;
 
-namespace XMEditor.Attributes
+namespace XMEditor
 {
     /// <summary>
     /// 枚举多选
