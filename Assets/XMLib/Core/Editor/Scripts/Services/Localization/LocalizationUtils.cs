@@ -257,10 +257,10 @@ namespace XMEditor.Services.Localization
         /// 更新场景中的语言
         /// </summary>
         /// <param name="scene">场景</param>
-        /// <param name="languageType">语言类型</param>
-        public static void UpdateScene(Scene scene, LanguageType languageType)
+        /// <param name="setting">语言配置</param>
+        public static void UpdateScene(Scene scene, LanguageSetting setting)
         {
-            LanguageInfo info = ReadFile(languageType);
+            LanguageInfo info = ReadFile(setting.Language);
             List<LocalizationItem> items = SceneUtils.FindAllComponent<LocalizationItem>(scene, true);
             int length = items.Count;
             LocalizationItem item;
@@ -270,28 +270,7 @@ namespace XMEditor.Services.Localization
                 item = items[i];
 
                 text = info.Get(item.ID);
-                items[i].UpdateText(languageType, text, null);
-            }
-        }
-
-        /// <summary>
-        /// 更新场景中的语言，使用默认语言
-        /// </summary>
-        /// <param name="scene">场景</param>
-        public static void UpdateScene(Scene scene)
-        {
-            LanguageType languageType = LocalizationWindow.Language;
-            LanguageInfo info = ReadFile(languageType);
-            List<LocalizationItem> items = SceneUtils.FindAllComponent<LocalizationItem>(scene, true);
-            int length = items.Count;
-            LocalizationItem item;
-            string text;
-            for (int i = 0; i < length; i++)
-            {
-                item = items[i];
-
-                text = info.Get(item.ID);
-                items[i].UpdateText(languageType, text, null);
+                items[i].UpdateText(setting, text);
             }
         }
 
@@ -300,21 +279,10 @@ namespace XMEditor.Services.Localization
         /// </summary>
         /// <param name="item">元素</param>
         /// <param name="languageType">语言类型</param>
-        public static void UpdateItem(LocalizationItem item, LanguageType languageType)
+        public static void UpdateItem(LocalizationItem item, LanguageSetting setting)
         {
-            string text = Get(item.ID, languageType);
-            item.UpdateText(languageType, text, null);
-        }
-
-        /// <summary>
-        /// 更新元素,使用默认语言
-        /// </summary>
-        /// <param name="item">本地对象</param>
-        public static void UpdateItem(LocalizationItem item)
-        {
-            LanguageType languageType = LocalizationWindow.Language;
-            string text = Get(item.ID, languageType);
-            item.UpdateText(languageType, text, null);
+            string text = Get(item.ID, setting.Language);
+            item.UpdateText(setting, text);
         }
     }
 }

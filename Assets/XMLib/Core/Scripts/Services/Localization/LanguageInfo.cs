@@ -27,6 +27,10 @@ namespace XM.Services.Localization
         {
         }
 
+        #region 数据操作
+
+        private Dictionary<string, string> _dict;
+
         /// <summary>
         /// 获取语言
         /// </summary>
@@ -34,14 +38,39 @@ namespace XM.Services.Localization
         /// <returns>文本</returns>
         public string Get(string id)
         {
+            if (null == _dict)
+            {
+                UpdateDict();
+            }
+
             string str = "";
 
-            LanguageItem item = Items.Find((t) => { return t.ID == id; });
-            Checker.NotNull(item, "{0} 语言中不存在 ID:{1}", Language, id);
-            str = item.Text;
+            if (!_dict.TryGetValue(id, out str))
+            {
+                Checker.IsTrue(false, "{0} 语言中不存在 ID:{1}", Language, id);
+            }
 
             return str;
         }
+
+        /// <summary>
+        /// 更新字典
+        /// </summary>
+        public void UpdateDict()
+        {
+            _dict = new Dictionary<string, string>();
+
+            LanguageItem item;
+            int length = Items.Count;
+            for (int i = 0; i < length; i++)
+            {
+                item = Items[i];
+
+                _dict.Add(item.ID, item.Text);
+            }
+        }
+
+        #endregion 数据操作
 
         public override string ToString()
         {

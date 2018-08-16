@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using XM;
 using XM.Services.Localization;
 
 namespace XMEditor.Services.Localization
@@ -27,40 +30,19 @@ namespace XMEditor.Services.Localization
         {
             public List<string> FontPaths = new List<string>();
             public LanguageType Language = LanguageType.Chinese;
+            public string ImportPath = "Resources/Languages/";
+            public string SettingPath = "";
         }
 
-        private SerializedObject _serializedObject;
         private Data _data = new Data();
 
-        [SerializeField]
-        private List<Font> _fonts = new List<Font>();
-
-        protected SerializedProperty _fontsProp;
-        protected ReorderableList _fontsPropList;
-
         protected const string DataFlag = "XM_LocalizationWindow";
+
+        private LocalizationSetting _localizationSetting;
 
         #endregion 属性
 
         #region 编辑器数据
-
-        /// <summary>
-        /// 当前语言
-        /// </summary>
-        public static LanguageType Language
-        {
-            get
-            {
-                Data data = new Data();
-                if (EditorPrefs.HasKey(DataFlag))
-                {
-                    string json = EditorPrefs.GetString(DataFlag);
-                    EditorJsonUtility.FromJsonOverwrite(json, data);
-                }
-
-                return data.Language;
-            }
-        }
 
         private void LoadData()
         {
@@ -74,50 +56,18 @@ namespace XMEditor.Services.Localization
                 }
             }
 
-            _fonts.Clear();
-
-            List<string> fontPaths = _data.FontPaths;
-            Font font;
-            string path;
-            int length = fontPaths.Count;
-            for (int i = 0; i < length; i++)
+            if (!string.IsNullOrEmpty(_data.SettingPath))
             {
-                path = fontPaths[i];
-                if (string.IsNullOrEmpty(path))
-                {
-                    continue;
-                }
-
-                font = AssetDatabase.LoadAssetAtPath<Font>(path);
-                _fonts.Add(font);
+                _localizationSetting = AssetDatabase.LoadAssetAtPath<LocalizationSetting>(_data.SettingPath);
             }
-
-            _serializedObject = new SerializedObject(this);
-
-            _fontsProp = _serializedObject.FindProperty("_fonts");
-            _fontsPropList = new ReorderableList(_serializedObject, _fontsProp, true, true, true, true);
-            _fontsPropList.drawElementCallback += OnDrawFontElement;
-            _fontsPropList.drawHeaderCallback += OnDrawFontHeader;
         }
 
         private void SaveData()
         {
-            List<string> fontPaths = new List<string>();
-            Font font;
-            string path;
-            int length = _fonts.Count;
-            for (int i = 0; i < length; i++)
+            if (null != _localizationSetting)
             {
-                font = _fonts[i];
-                if (null == font)
-                {
-                    continue;
-                }
-
-                path = AssetDatabase.GetAssetPath(font);
-                fontPaths.Add(path);
+                _data.SettingPath = AssetDatabase.GetAssetPath(_localizationSetting);
             }
-            _data.FontPaths = fontPaths;
 
             string json = EditorJsonUtility.ToJson(_data);
             EditorPrefs.SetString(DataFlag, json);
@@ -137,29 +87,15 @@ namespace XMEditor.Services.Localization
             SaveData();
         }
 
-        private void OnDrawFontHeader(Rect rect)
-        {
-            EditorGUI.LabelField(rect, "字体列表");
-        }
-
-        private void OnDrawFontElement(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            SerializedProperty itemData = _fontsProp.GetArrayElementAtIndex(index);
-            rect.y += 2;
-            rect.height = EditorGUIUtility.singleLineHeight;
-
-            using (var gor = new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUI.PropertyField(rect, itemData, new GUIContent(index + ""));
-            }
-        }
-
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
 
-            //_fontsPropList.DoLayoutList();
+            _localizationSetting = (LocalizationSetting)EditorGUILayout.ObjectField("本地化配置:", _localizationSetting, typeof(LocalizationSetting), false);
 
+            _data.ImportPath = EditorGUILayout.TextField("导入目录:", _data.ImportPath);
+
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("导出语言"))
             {
                 ExportLanguage();
@@ -169,17 +105,19 @@ namespace XMEditor.Services.Localization
             {
                 CreateTemplate();
             }
+            GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
             _data.Language = (LanguageType)EditorGUILayout.EnumPopup("选择语言:", _data.Language);
 
             if (GUILayout.Button("更新当前场景语言"))
             {
                 UpdateScene();
             }
+            GUILayout.EndHorizontal();
 
             if (EditorGUI.EndChangeCheck())
             {
-                _serializedObject.ApplyModifiedProperties();
                 SaveData();
             }
         }
@@ -190,8 +128,18 @@ namespace XMEditor.Services.Localization
 
         private void UpdateScene()
         {
+            if (null == _localizationSetting)
+            {
+                EditorUtility.DisplayDialog("错误", "本地化设置不能为空！", "确定");
+                return;
+            }
+
             Scene scene = SceneManager.GetActiveScene();
-            LocalizationUtils.UpdateScene(scene, _data.Language);
+
+            LanguageSetting languageSetting = _localizationSetting.Get(_data.Language);
+            Checker.NotNull(languageSetting, "语言配置为空:{0}", _data.Language);
+
+            LocalizationUtils.UpdateScene(scene, languageSetting);
 
             if (!EditorApplication.isPlaying)
             {//标记修改
@@ -207,6 +155,34 @@ namespace XMEditor.Services.Localization
         private void ExportLanguage()
         {
             LocalizationUtils.ExportConfigFile();
+
+            if (!string.IsNullOrEmpty(_data.ImportPath))
+            {//导出到目录
+                //
+                //检查目录
+                string outPath = Path.Combine("Assets", _data.ImportPath);
+                if (Directory.Exists(outPath))
+                {
+                    Directory.CreateDirectory(outPath);
+                }
+
+                Debug.LogFormat("复制语言文件到该目录:{0}", outPath);
+
+                Array types = Enum.GetValues(typeof(LanguageType));
+
+                foreach (LanguageType type in types)
+                {
+                    string path = LocalizationUtils.GetPath(type);
+                    if (File.Exists(path))
+                    {
+                        string fileName = Path.GetFileName(path);
+                        string filePath = Path.Combine(outPath, fileName);
+                        File.Copy(path, filePath, true);
+                    }
+                }
+
+                AssetDatabase.Refresh();
+            }
         }
 
         #endregion 函数

@@ -15,10 +15,11 @@ MonoBehaviour:
   _languages:
   - _language: 0
     _font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
-    _srcPath: 31
+    _srcPath: Languages/Chinese
   - _language: 1
     _font: {fileID: 12800000, guid: 390fb49fd0b849543bf2a8623ac68466, type: 3}
-    _srcPath: 4234
+    _srcPath: Languages/English
   - _language: 2
     _font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    _srcPath: 4234
+    _srcPath: Languages/Japanese
+  _defualtLanguage: 0

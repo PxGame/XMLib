@@ -18,5 +18,20 @@ namespace XM.Services.Localization
 
         [SerializeField]
         protected string _srcPath;
+
+        /// <summary>
+        /// 语言类型
+        /// </summary>
+        public LanguageType Language { get { return _language; } }
+
+        /// <summary>
+        /// 语言字体
+        /// </summary>
+        public Font Font { get { return _font; } }
+
+        /// <summary>
+        /// 语言资源路径
+        /// </summary>
+        public string SrcPath { get { return _srcPath; } }
     }
 }

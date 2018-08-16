@@ -33,26 +33,10 @@ namespace XMEditor.Services.Localization
 
             EditorGUILayout.PropertyField(_id);
 
-            if (GUILayout.Button("刷新"))
-            {
-                UpdateItems();
-            }
-
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
                 OnValueChanged();
-            }
-        }
-
-        /// <summary>
-        /// 更新对象
-        /// </summary>
-        private void UpdateItems()
-        {
-            foreach (var item in targets)
-            {
-                LocalizationUtils.UpdateItem((LocalizationItem)item);
             }
         }
 

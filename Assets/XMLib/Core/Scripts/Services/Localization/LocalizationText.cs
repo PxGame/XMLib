@@ -28,9 +28,14 @@ namespace XM.Services.Localization
 
         #region 重写
 
-        protected override void OnTextUpdate(LanguageType languageType, string text, Font font)
+        protected override void OnTextUpdate(LanguageSetting setting, string text)
         {
             _text.text = text;
+
+            if (null != setting.Font)
+            {
+                _text.font = setting.Font;
+            }
 
 #if UNITY_EDITOR
             //编辑器模式下必须设置，否则将无法及时显示修改

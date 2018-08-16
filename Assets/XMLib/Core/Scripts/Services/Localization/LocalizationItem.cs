@@ -27,17 +27,23 @@ namespace XM.Services.Localization
         protected virtual void Awake()
         {
             _service = AppEntry.Inst.Get<LocalizationService>();
+            _service.RegistItem(this);
+        }
+
+        private void OnDestroy()
+        {
+            _service.UnRegistItem(this);
         }
 
         /// <summary>
         /// 更新文本
         /// </summary>
         /// <param name="text">文本</param>
-        public void UpdateText(LanguageType languageType, string text, Font font)
+        public void UpdateText(LanguageSetting setting, string text)
         {
-            OnTextUpdate(languageType, text, font);
+            OnTextUpdate(setting, text);
         }
 
-        protected abstract void OnTextUpdate(LanguageType languageType, string text, Font font);
+        protected abstract void OnTextUpdate(LanguageSetting setting, string text);
     }
 }
