@@ -17,8 +17,9 @@ namespace XM.Services.Localization
         /// </summary>
         public Text Text { get { return _text; } }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             if (null == _text)
             {//掉引用，重新获取
                 _text = GetComponent<Text>();

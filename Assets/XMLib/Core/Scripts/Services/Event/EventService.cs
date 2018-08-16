@@ -6,7 +6,7 @@ namespace XM.Services.Event
     /// <summary>
     /// 事件服务
     /// </summary>
-    public class EventService : SimpleService<IAppEntry, EventSetting>
+    public class EventService : SimpleService<AppEntry, EventSetting>
     {
         #region 属性
 

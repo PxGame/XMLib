@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace XM.Services.Localization
 {
@@ -9,5 +10,7 @@ namespace XM.Services.Localization
     [CreateAssetMenu(menuName = "XMLib/Localization Setting")]
     public class LocalizationSetting : SimpleSetting
     {
+        [SerializeField]
+        protected List<LanguageSetting> _languages = new List<LanguageSetting>();
     }
 }

@@ -14,7 +14,7 @@
         /// 添加服务
         /// </summary>
         /// <param name="appEntry">入口实例</param>
-        void CreateService(IAppEntry appEntry);
+        void CreateService(AppEntry appEntry);
 
         /// <summary>
         /// 初始化服务

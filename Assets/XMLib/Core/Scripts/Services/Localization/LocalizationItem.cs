@@ -20,6 +20,16 @@ namespace XM.Services.Localization
         public string ID { get { return _id; } }
 
         /// <summary>
+        /// 服务
+        /// </summary>
+        protected LocalizationService _service;
+
+        protected virtual void Awake()
+        {
+            _service = AppEntry.Inst.Get<LocalizationService>();
+        }
+
+        /// <summary>
         /// 更新文本
         /// </summary>
         /// <param name="text">文本</param>

@@ -9,5 +9,12 @@ namespace XM.Services.Input
     [CreateAssetMenu(menuName = "XMLib/Input Setting")]
     public class InputSetting : SimpleSetting
     {
+        [SerializeField]
+        protected ActiveInputMethod _inputMethod;
+
+        /// <summary>
+        /// 输入模式
+        /// </summary>
+        public ActiveInputMethod InputMethod { get { return _inputMethod; } }
     }
 }
