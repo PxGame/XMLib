@@ -1,4 +1,7 @@
-﻿namespace XM.Services
+﻿using System.Collections;
+using UnityEngine;
+
+namespace XM.Services
 {
     /// <summary>
     /// 服务接口
@@ -35,5 +38,18 @@
         /// 清理服务
         /// </summary>
         void ClearService();
+
+        /// <summary>
+        /// 开启协程
+        /// </summary>
+        /// <param name="routine">协程</param>
+        /// <returns>协程</returns>
+        Coroutine StartCoroutine(IEnumerator routine);
+
+        /// <summary>
+        /// 关闭协程
+        /// </summary>
+        /// <param name="routine">协程</param>
+        void StopCoroutine(Coroutine routine);
     }
 }

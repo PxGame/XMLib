@@ -1,4 +1,7 @@
-﻿namespace XM.Services
+﻿using System.Collections;
+using UnityEngine;
+
+namespace XM.Services
 {
     /// <summary>
     /// 服务基类
@@ -71,6 +74,25 @@
         public virtual void Debug(DebugType debugType, string format, params object[] args)
         {
             Entry.Debug(debugType, this, format, args);
+        }
+
+        /// <summary>
+        /// 开启协程
+        /// </summary>
+        /// <param name="routine">协程</param>
+        /// <returns>协程</returns>
+        public Coroutine StartCoroutine(IEnumerator routine)
+        {
+            return Entry.StartCoroutine(routine);
+        }
+
+        /// <summary>
+        /// 关闭协程
+        /// </summary>
+        /// <param name="routine">协程</param>
+        public void StopCoroutine(Coroutine routine)
+        {
+            Entry.StopCoroutine(routine);
         }
 
         /// <summary>
