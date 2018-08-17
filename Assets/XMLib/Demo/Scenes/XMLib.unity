@@ -278,7 +278,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -290,7 +290,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u904E\u53BB\u306E\u82E6\u3057\u307F\u306F\u559C\u3073\u3060\u3063\u305F\u3002"
+  m_Text: "\u8FC7\u53BB\u7684\u75DB\u82E6\u5C31\u662F\u5FEB\u4E50\u3002"
 --- !u!222 &253015972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1001,7 +1001,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -1013,7 +1013,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5FC3\u306E\u9858\u3044\u306F,\u3060\u3081\u306B\u306A\u3089\u306A\u3044\u3002"
+  m_Text: "\u5FC3\u4E4B\u6240\u613F\uFF0C\u65E0\u6240\u4E0D\u6210\u3002"
 --- !u!222 &1218782172
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1089,7 +1089,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ac120a3d04bff2a4baacf4cfbe0fd279, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -1101,7 +1101,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u751F\u547D\u304C\u3042\u308C\u3070\u5E0C\u671B\u304C\u3042\u308B\u3002"
+  m_Text: "\u6709\u751F\u547D\u5C31\u6709\u5E0C\u671B"
 --- !u!222 &1864015420
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -86,15 +86,6 @@ namespace XMEditor.Services.Localization
             rect.height = EditorGUIUtility.singleLineHeight;
             rect.width -= 10;
 
-            Rect rt = new Rect(rect)
-            {
-                y = rect.y + 56,
-                height = 1,
-                width = rect.width
-            };
-
-            EditorGUI.DrawRect(rt, Color.black);
-
             SerializedProperty language = property.FindPropertyRelative("_language");
             SerializedProperty font = property.FindPropertyRelative("_font");
             SerializedProperty srcPath = property.FindPropertyRelative("_srcPath");
@@ -113,7 +104,7 @@ namespace XMEditor.Services.Localization
                 y = fontRt.y + EditorGUIUtility.singleLineHeight + 2
             };
 
-            EditorGUI.LabelField(languageRt, "" + (LanguageType)language.enumValueIndex);
+            EditorGUI.LabelField(languageRt, "" + (LanguageType)language.enumValueIndex, GUI.skin.FindStyle("BoldLabel"));
             EditorGUI.PropertyField(fontRt, font);
             EditorGUI.PropertyField(srcRt, srcPath);
         }

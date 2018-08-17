@@ -32,11 +32,7 @@ namespace XM.Services.Localization
         protected override void OnTextUpdate(LanguageSetting setting, string text)
         {
             _text.text = text;
-
-            if (null != setting.Font)
-            {
-                _text.font = setting.Font;
-            }
+            _text.font = setting.Font;
 
 #if UNITY_EDITOR
             //编辑器模式下必须设置，否则将无法及时显示修改
