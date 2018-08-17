@@ -19,11 +19,12 @@ namespace XM.Services.Localization
 
         protected override void Awake()
         {
-            base.Awake();
             if (null == _text)
             {//掉引用，重新获取
                 _text = GetComponent<Text>();
             }
+
+            base.Awake();
         }
 
         #region 重写

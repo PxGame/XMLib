@@ -23,7 +23,7 @@ namespace XM.Services.Localization
         {
             base.CreateService(appEntry);
 
-            UpdateData(Setting.DefualtLanguage);
+            UpdateLanguage(Setting.DefualtLanguage);
         }
 
         #endregion 重写
@@ -64,6 +64,40 @@ namespace XM.Services.Localization
             item.UpdateText(_languageSetting, text);
         }
 
+        /// <summary>
+        /// 更新所有元素
+        /// </summary>
+        public void UpdateAllItem()
+        {
+            int length = _items.Count;
+            LocalizationItem item;
+
+            for (int i = 0; i < length; i++)
+            {
+                item = _items[i];
+                if (item == null)
+                {
+                    _items.RemoveAt(i);
+
+                    i--;
+                    length--;
+                    continue;
+                }
+
+                item.UpdateText(_languageSetting, _languageInfo.Get(item.ID));
+            }
+        }
+
+        /// <summary>
+        /// 更新语言
+        /// </summary>
+        /// <param name="languageType">语言类型</param>
+        public void UpdateLanguage(LanguageType languageType)
+        {
+            UpdateData(languageType);
+            UpdateAllItem();
+        }
+
         #endregion 元素操作
 
         #region 读取配置
@@ -71,7 +105,7 @@ namespace XM.Services.Localization
         /// <summary>
         /// 更新语言数据
         /// </summary>
-        /// <param name="languageType"></param>
+        /// <param name="languageType">语言类型</param>
         private void UpdateData(LanguageType languageType)
         {
             _languageSetting = Setting.Get(languageType);

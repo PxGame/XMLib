@@ -16,12 +16,14 @@ namespace XMEditor.Services.Localization
     {
         private SerializedProperty _languages;
         private SerializedProperty _debugType;
+        private SerializedProperty _defualtLanguage;
         private ReorderableList _languagesReorder;
 
         private void OnEnable()
         {
             _languages = serializedObject.FindProperty("_languages");
             _debugType = serializedObject.FindProperty("_debugType");
+            _defualtLanguage = serializedObject.FindProperty("_defualtLanguage");
             _languagesReorder = new ReorderableList(serializedObject, _languages, false, true, true, true);
             _languagesReorder.drawElementCallback = OnDrawElement;
             _languagesReorder.drawHeaderCallback = OnDrawHeader;
@@ -123,6 +125,7 @@ namespace XMEditor.Services.Localization
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_debugType);
+            EditorGUILayout.PropertyField(_defualtLanguage);
 
             _languagesReorder.DoLayoutList();
 

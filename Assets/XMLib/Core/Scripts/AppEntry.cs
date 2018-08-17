@@ -9,6 +9,7 @@ namespace XM
     /// <summary>
     /// 应用入口
     /// </summary>
+    [DefaultExecutionOrder(-1000)]
     public abstract class AppEntry : MonoBehaviour
     {
         #region 属性
@@ -92,7 +93,7 @@ namespace XM
         /// 反注册回调
         /// </summary>
         /// <param name="service">服务实例</param>
-        protected void UnregistCallback(IService service)
+        protected void UnRegistCallback(IService service)
         {
             if (service is IUpdate)
             {
@@ -304,7 +305,7 @@ namespace XM
             try
             {
                 //反注册回调
-                UnregistCallback(service);
+                UnRegistCallback(service);
             }
             catch (Exception ex)
             {
@@ -365,7 +366,7 @@ namespace XM
                 try
                 {
                     //注册回调
-                    UnregistCallback(service);
+                    UnRegistCallback(service);
                 }
                 catch (Exception ex)
                 {

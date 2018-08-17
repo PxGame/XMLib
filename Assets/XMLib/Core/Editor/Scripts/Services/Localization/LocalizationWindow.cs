@@ -89,36 +89,53 @@ namespace XMEditor.Services.Localization
 
         private void OnGUI()
         {
-            EditorGUI.BeginChangeCheck();
-
-            _localizationSetting = (LocalizationSetting)EditorGUILayout.ObjectField("本地化配置:", _localizationSetting, typeof(LocalizationSetting), false);
-
-            _data.ImportPath = EditorGUILayout.TextField("导入目录:", _data.ImportPath);
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("导出语言"))
+            using (var check = new EditorGUI.ChangeCheckScope())
             {
-                ExportLanguage();
-            }
+                _localizationSetting = (LocalizationSetting)EditorGUILayout.ObjectField("本地化配置:", _localizationSetting, typeof(LocalizationSetting), false);
+                if (null == _localizationSetting)
+                {
+                    GUILayout.Label("必须先配置本地化设置");
+                    return;
+                }
 
-            if (GUILayout.Button("创建模板"))
-            {
-                CreateTemplate();
-            }
-            GUILayout.EndHorizontal();
+                _data.ImportPath = EditorGUILayout.TextField("导入目录:", _data.ImportPath);
 
-            GUILayout.BeginHorizontal();
-            _data.Language = (LanguageType)EditorGUILayout.EnumPopup("选择语言:", _data.Language);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("导出语言"))
+                {
+                    ExportLanguage();
+                }
 
-            if (GUILayout.Button("更新当前场景语言"))
-            {
-                UpdateScene();
-            }
-            GUILayout.EndHorizontal();
+                if (GUILayout.Button("创建模板"))
+                {
+                    CreateTemplate();
+                }
+                GUILayout.EndHorizontal();
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                SaveData();
+                _data.Language = (LanguageType)EditorGUILayout.EnumPopup("选择语言:", _data.Language);
+                GUILayout.BeginHorizontal();
+
+                if (EditorApplication.isPlaying)
+                {
+                    if (GUILayout.Button("更新游戏内语言"))
+                    {
+                        UpdateGame();
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("更新当前场景语言"))
+                    {
+                        UpdateScene();
+                    }
+                }
+
+                GUILayout.EndHorizontal();
+
+                if (check.changed)
+                {
+                    SaveData();
+                }
             }
         }
 
@@ -126,6 +143,22 @@ namespace XMEditor.Services.Localization
 
         #region 函数
 
+        /// <summary>
+        /// 更新游戏内语言
+        /// </summary>
+        private void UpdateGame()
+        {
+            Checker.NotNull(AppEntry.Inst, "AppEntry 未创建");
+
+            LocalizationService service = AppEntry.Inst.Get<LocalizationService>();
+            Checker.NotNull(service, "LocalizationService 未创建");
+
+            service.UpdateLanguage(_data.Language);
+        }
+
+        /// <summary>
+        /// 更新当前场景语言
+        /// </summary>
         private void UpdateScene()
         {
             if (null == _localizationSetting)
