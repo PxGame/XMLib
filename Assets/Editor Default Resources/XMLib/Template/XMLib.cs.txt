@@ -1,0 +1,17 @@
+﻿/*
+ * 作者：#AUTHOR#
+ * 联系方式：#CONTACT#
+ * 文档: #DOC#
+ * 创建时间: #CREATEDATE#
+ */
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace XMLib
+{
+    public class #SCRIPTNAME# : MonoBehaviour 
+    {
+    }
+}
