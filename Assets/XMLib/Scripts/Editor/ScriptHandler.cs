@@ -71,6 +71,8 @@ namespace XMLib.Editor
     {
         public static string ScriptTemplate = "XMLib/Template/XMLib.cs.txt";
         public static string ScriptEditorTemplate = "XMLib/Template/XMLibEditor.cs.txt";
+        public static string TestScriptTemplate = "XMLib/Template/TestXMLib.cs.txt";
+        public static string TestScriptEditorTemplate = "XMLib/Template/TestXMLibEditor.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
         /// <summary>
@@ -79,15 +81,19 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Script")]
         public static void CreateScript()
         {
-            string filePath = GetFilePath();
-            string templatePath = ScriptTemplate;
+            string dir = GetSelectDir();
+            bool isEditor = false;
 
             //
             Regex reg = new Regex(CheckEditorPath, RegexOptions.IgnoreCase);
-            if (reg.IsMatch(filePath))
+            if (reg.IsMatch(dir))
             {//编辑器脚本
-                templatePath = ScriptEditorTemplate;
+                isEditor = true;
             }
+
+            string fileName = "XMLib";
+            string templatePath = isEditor ? ScriptEditorTemplate : ScriptTemplate;
+            string filePath = CreateFilePath(dir, fileName, isEditor);
 
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
                 ScriptableObject.CreateInstance<ScriptCreatorAction>(),
@@ -96,10 +102,50 @@ namespace XMLib.Editor
         }
 
         /// <summary>
-        /// 获取文件路径
+        /// 创建新测试脚本
         /// </summary>
-        /// <returns>  </returns>
-        private static string GetFilePath()
+        [MenuItem("Assets/XMLib/Create/Test Script")]
+        public static void CreateTestScript()
+        {
+            string dir = GetSelectDir();
+            bool isEditor = false;
+
+            //
+            Regex reg = new Regex(CheckEditorPath, RegexOptions.IgnoreCase);
+            if (reg.IsMatch(dir))
+            {//编辑器脚本
+                isEditor = true;
+            }
+
+            string fileName = "TestXMLib";
+            string templatePath = isEditor ? TestScriptEditorTemplate : TestScriptTemplate;
+            string filePath = CreateFilePath(dir, fileName, isEditor);
+
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
+                ScriptableObject.CreateInstance<ScriptCreatorAction>(),
+                filePath, null, templatePath
+                );
+        }
+
+        private static string CreateFilePath(string dir, string fileName, bool isEditor)
+        {
+            if (isEditor)
+            {
+                fileName += "Editor";
+            }
+
+            fileName += ".cs";
+
+            string filePath = Path.Combine(dir, fileName);
+
+            return filePath;
+        }
+
+        /// <summary>
+        /// 获取文件夹
+        /// </summary>
+        /// <returns> 相对路径 </returns>
+        private static string GetSelectDir()
         {
             string dir = "Assets";
 
@@ -119,10 +165,14 @@ namespace XMLib.Editor
                 }
             }
 
-            //文件路径
-            string filePath = Path.Combine(dir, "XMLib.cs").Replace('\\', '/');
+            //文件路径优化
+            dir = dir.Replace('\\', '/');
+            if (!dir.EndsWith("/"))
+            {//添加末尾斜线
+                dir += '/';
+            }
 
-            return filePath;
+            return dir;
         }
     }
 }
