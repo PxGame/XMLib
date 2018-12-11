@@ -8,7 +8,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace XMLib
 {
@@ -16,8 +15,8 @@ namespace XMLib
     /// 有序List
     /// </summary>
     /// <typeparam name="TValue"> 值类型 </typeparam>
-    /// <typeparam name="TWeight"> 权重 </typeparam>
-    public sealed class SortList<TValue, TWeight> : IEnumerable<TValue>
+    /// <typeparam name="TWeight"> 权重类型 </typeparam>
+    public sealed class SortList<TValue, TWeight> : IEnumerable<TValue>, ISortList<TValue, TWeight>
         where TWeight : IComparable<TWeight>
     {
         #region 定义
@@ -66,8 +65,14 @@ namespace XMLib
             public Enumerator(SortList<TValue, TWeight> sortlist, bool forward)
             {
                 _sortlist = sortlist;
-                _list = _sortlist._list;
                 _forward = forward;
+
+                //排序
+                _sortlist.Sort();
+
+                _list = _sortlist._list;
+
+                //重置游标
                 _index = _forward ? -1 : _list.Count;
             }
 
@@ -96,19 +101,20 @@ namespace XMLib
             public bool MoveNext()
             {
                 if (_forward)
-                {
+                {//向前
                     _index++;
                     return _index < _list.Count;
                 }
                 else
-                {
+                {//向后
                     _index--;
-                    return _index > 0;
+                    return _index >= 0;
                 }
             }
 
             public void Reset()
             {
+                //重置游标
                 _index = _forward ? -1 : _list.Count;
             }
         }
@@ -119,15 +125,6 @@ namespace XMLib
         /// 迭代器迭代方向
         /// </summary>
         public bool Forward { get { return _forward; } set { _forward = value; } }
-
-        /// <summary>
-        /// 比较方法
-        /// </summary>
-        public Comparison<TWeight> ComparerWeight
-        {
-            get { return _comparerWeight; }
-            set { _comparerWeight = value; }
-        }
 
         /// <summary>
         /// 数量
@@ -148,9 +145,11 @@ namespace XMLib
             _list = new List<ValueWeightPair>(capacity);
             _dict = new Dictionary<TValue, ValueWeightPair>(capacity);
             _forward = true;
-            _sorted = false;
             _syncRoot = new object();
             _comparerWeight = OnComparerWeight;
+
+            //需要重排
+            _sorted = false;
         }
 
         /// <summary>
@@ -190,22 +189,38 @@ namespace XMLib
             Checker.Requires<ArgumentNullException>(weight != null);
 
             //移除已存在的
-            RemoveElement(value);
+            Remove(value);
+
             //添加新的
-            AddElement(value, weight);
+            ValueWeightPair item = new ValueWeightPair(value, weight);
+            _dict.Add(value, item);
+            _list.Add(item);
+
+            //需要重排
+            _sorted = false;
         }
 
         /// <summary>
         /// 移除
         /// </summary>
         /// <param name="value"> 值 </param>
-        /// <returns> 是否成功 </returns>
+        /// <returns> 是否存在 </returns>
         public bool Remove(TValue value)
         {
             Checker.Requires<ArgumentNullException>(value != null);
 
-            //移除已存在的
-            return RemoveElement(value);
+            bool isRemoved = false;
+            ValueWeightPair item;
+            if (_dict.TryGetValue(value, out item))
+            {
+                _dict.Remove(value);
+                _list.Remove(item);
+
+                //需要重排
+                _sorted = false;
+                isRemoved = true;
+            }
+            return isRemoved;
         }
 
         /// <summary>
@@ -224,6 +239,9 @@ namespace XMLib
             ValueWeightPair pair = _list[index];
             _dict.Remove(pair.Value);
             _list.RemoveAt(index);
+
+            //需要重排
+            _sorted = false;
         }
 
         /// <summary>
@@ -233,6 +251,8 @@ namespace XMLib
         {
             _dict.Clear();
             _list.Clear();
+
+            //需要重排
             _sorted = false;
         }
 
@@ -244,11 +264,13 @@ namespace XMLib
             Checker.Requires<InvalidOperationException>(_comparerWeight != null);
 
             if (_sorted)
-            {
+            {//已排序
                 return;
             }
 
+            //排序
             _list.Sort(OnComparerPair);
+
             _sorted = true;
         }
 
@@ -319,7 +341,29 @@ namespace XMLib
             return _list.IndexOf(pair);
         }
 
+        /// <summary>
+        /// 转换为列表
+        /// </summary>
+        /// <returns> 列表 </returns>
+        public List<TValue> ToList()
+        {
+            //检查排序
+            Sort();
+
+            List<TValue> list = new List<TValue>(this);
+            return list;
+        }
+
         #region 私有
+
+        /// <summary>
+        /// 比较方法，先不开放
+        /// </summary>
+        private Comparison<TWeight> ComparerWeight
+        {
+            get { return _comparerWeight; }
+            set { _comparerWeight = value; }
+        }
 
         private readonly List<ValueWeightPair> _list;
         private readonly Dictionary<TValue, ValueWeightPair> _dict;
@@ -349,40 +393,6 @@ namespace XMLib
         private int OnComparerWeight(TWeight x, TWeight y)
         {
             return x.CompareTo(y);
-        }
-
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="value">  值 </param>
-        /// <param name="weight"> 权重 </param>
-        private void AddElement(TValue value, TWeight weight)
-        {
-            //添加新的
-            ValueWeightPair item = new ValueWeightPair(value, weight);
-            _dict.Add(value, item);
-            _list.Add(item);
-
-            _sorted = false;
-        }
-
-        /// <summary>
-        /// 移除
-        /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 是否成功 </returns>
-        private bool RemoveElement(TValue value)
-        {
-            bool isRemoved = false;
-            ValueWeightPair item;
-            if (_dict.TryGetValue(value, out item))
-            {
-                _dict.Remove(value);
-                _list.Remove(item);
-                _sorted = false;
-                isRemoved = true;
-            }
-            return isRemoved;
         }
 
         #endregion 私有
