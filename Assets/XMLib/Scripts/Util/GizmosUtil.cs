@@ -17,12 +17,12 @@ namespace XMLib
         /// <summary>
         /// 绘制扇形
         /// </summary>
-        /// <param name="position">   世界坐标 </param>
-        /// <param name="radius">     半径 </param>
-        /// <param name="color">      颜色 </param>
-        /// <param name="smoothness"> 平滑 </param>
-        /// <param name="angle">      角度 </param>
-        /// <param name="rotate">     旋转 </param>
+        /// <param name="position">世界坐标</param>
+        /// <param name="radius">半径</param>
+        /// <param name="color">颜色</param>
+        /// <param name="smoothness">平滑</param>
+        /// <param name="angle">角度</param>
+        /// <param name="rotate">旋转</param>
         public static void DrawSector2D(Vector3 position, float radius, Color color, float smoothness = 30, float angle = 0, float rotate = 0)
         {
             #region 校验数据
@@ -94,9 +94,9 @@ namespace XMLib
         /// <summary>
         /// 画线
         /// </summary>
-        /// <param name="start"> 起点 </param>
-        /// <param name="end">   终点 </param>
-        /// <param name="color"> 颜色 </param>
+        /// <param name="start">起点</param>
+        /// <param name="end">终点</param>
+        /// <param name="color">颜色</param>
         public static void DrawLine(Vector3 start, Vector3 end, Color color)
         {
             //设置颜色
@@ -112,9 +112,9 @@ namespace XMLib
         /// <summary>
         /// 画线
         /// </summary>
-        /// <param name="start"> 起点 </param>
-        /// <param name="end">   终点 </param>
-        /// <param name="color"> 颜色 </param>
+        /// <param name="start">起点</param>
+        /// <param name="end">终点</param>
+        /// <param name="color">颜色</param>
         public static void DrawLine(Vector2 start, Vector2 end, Color color)
         {
             //设置颜色
@@ -130,10 +130,10 @@ namespace XMLib
         /// <summary>
         /// 画圆
         /// </summary>
-        /// <param name="position">   世界坐标 </param>
-        /// <param name="radius">     半径 </param>
-        /// <param name="color">      颜色 </param>
-        /// <param name="smoothness"> 平滑 </param>
+        /// <param name="position">世界坐标</param>
+        /// <param name="radius">半径</param>
+        /// <param name="color">颜色</param>
+        /// <param name="smoothness">平滑</param>
         public static void DrawCircle2D(Vector3 position, float radius, Color color, float smoothness = 30)
         {
             #region 校验数据
@@ -191,12 +191,12 @@ namespace XMLib
         /// <summary>
         /// 绘制方块
         /// </summary>
-        /// <param name="position"> 世界坐标 </param>
-        /// <param name="rotate">   旋转 </param>
-        /// <param name="scale">    缩放 </param>
-        /// <param name="size">     大小 </param>
-        /// <param name="center">   中心点 </param>
-        /// <param name="color">    颜色 </param>
+        /// <param name="position">世界坐标</param>
+        /// <param name="rotate">旋转</param>
+        /// <param name="scale">缩放</param>
+        /// <param name="size">大小</param>
+        /// <param name="center">中心点</param>
+        /// <param name="color">颜色</param>
         public static void DrawCube2D(Vector3 position, Quaternion rotate, Vector2 scale, Vector2 size, Vector3 center, Color color)
         {
             Vector3 offset = position - center;
@@ -248,9 +248,9 @@ namespace XMLib
         /// <summary>
         /// 绘制箭头
         /// </summary>
-        /// <param name="start"> 起点 </param>
-        /// <param name="end">   终点 </param>
-        /// <param name="color"> 颜色 </param>
+        /// <param name="start">起点</param>
+        /// <param name="end">终点</param>
+        /// <param name="color">颜色</param>
         public static void DrawArrow(Vector3 start, Vector3 end, Color color)
         {
             //设置颜色
@@ -268,12 +268,12 @@ namespace XMLib
         /// <summary>
         /// 绘制箭头
         /// </summary>
-        /// <param name="start">  起点 </param>
-        /// <param name="end">    终点 </param>
-        /// <param name="rotate"> 旋转 </param>
-        /// <param name="scale">  缩放 </param>
-        /// <param name="center"> 中心点 </param>
-        /// <param name="color">  颜色 </param>
+        /// <param name="start">起点</param>
+        /// <param name="end">终点</param>
+        /// <param name="rotate">旋转</param>
+        /// <param name="scale">缩放</param>
+        /// <param name="center">中心点</param>
+        /// <param name="color">颜色</param>
         public static void DrawArrow(Vector3 start, Vector3 end, Quaternion rotate, Vector2 scale, Vector3 center, Color color)
         {
             Vector3 vtLineCenter = (end + start) / 2;
@@ -294,13 +294,13 @@ namespace XMLib
         /// <summary>
         /// 绘制箭头
         /// </summary>
-        /// <param name="position">  世界坐标 </param>
-        /// <param name="rotate">    旋转 </param>
-        /// <param name="scale">     缩放 </param>
-        /// <param name="size">      大小 </param>
-        /// <param name="center">    中心点 </param>
-        /// <param name="direction"> 方向 </param>
-        /// <param name="color">     颜色 </param>
+        /// <param name="position">世界坐标</param>
+        /// <param name="rotate">旋转</param>
+        /// <param name="scale">缩放</param>
+        /// <param name="size">大小</param>
+        /// <param name="center">中心点</param>
+        /// <param name="direction">方向</param>
+        /// <param name="color">颜色</param>
         public static void DrawCubeArrow2D(Vector3 position, Quaternion rotate, Vector2 scale, Vector2 size, Vector3 center, int direction, Color color)
         {
             //绘制方框

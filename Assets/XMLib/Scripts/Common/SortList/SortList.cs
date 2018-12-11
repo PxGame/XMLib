@@ -14,8 +14,8 @@ namespace XMLib
     /// <summary>
     /// 有序List
     /// </summary>
-    /// <typeparam name="TValue"> 值类型 </typeparam>
-    /// <typeparam name="TWeight"> 权重类型 </typeparam>
+    /// <typeparam name="TValue">值类型</typeparam>
+    /// <typeparam name="TWeight">权重类型</typeparam>
     public sealed class SortList<TValue, TWeight> : IEnumerable<TValue>, ISortList<TValue, TWeight>
         where TWeight : IComparable<TWeight>
     {
@@ -39,8 +39,8 @@ namespace XMLib
             /// <summary>
             /// 构造函数
             /// </summary>
-            /// <param name="value">  值 </param>
-            /// <param name="weight"> 权重 </param>
+            /// <param name="value">值</param>
+            /// <param name="weight">权重</param>
             public ValueWeightPair(TValue value, TWeight weight)
             {
                 this.Value = value;
@@ -139,7 +139,7 @@ namespace XMLib
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="capacity"> 默认容器大小 </param>
+        /// <param name="capacity">默认容器大小</param>
         public SortList(int capacity = 10)
         {
             _list = new List<ValueWeightPair>(capacity);
@@ -155,8 +155,8 @@ namespace XMLib
         /// <summary>
         /// 获取权重
         /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 权重 </returns>
+        /// <param name="value">值</param>
+        /// <returns>权重</returns>
         public TWeight this[TValue value]
         {
             get
@@ -168,8 +168,8 @@ namespace XMLib
         /// <summary>
         /// 获取值
         /// </summary>
-        /// <param name="index"> 序号 </param>
-        /// <returns> 值 </returns>
+        /// <param name="index">序号</param>
+        /// <returns>值</returns>
         public TValue this[int index]
         {
             get
@@ -181,8 +181,8 @@ namespace XMLib
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="value">  值 </param>
-        /// <param name="weight"> 权重 </param>
+        /// <param name="value">值</param>
+        /// <param name="weight">权重</param>
         public void Add(TValue value, TWeight weight)
         {
             Checker.Requires<ArgumentNullException>(value != null);
@@ -203,8 +203,8 @@ namespace XMLib
         /// <summary>
         /// 移除
         /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 是否存在 </returns>
+        /// <param name="value">值</param>
+        /// <returns>是否存在</returns>
         public bool Remove(TValue value)
         {
             Checker.Requires<ArgumentNullException>(value != null);
@@ -226,7 +226,7 @@ namespace XMLib
         /// <summary>
         /// 移除
         /// </summary>
-        /// <param name="index"> 序号 </param>
+        /// <param name="index">序号</param>
         public void RemoveIndex(int index)
         {
             Checker.Requires<ArgumentOutOfRangeException>(index >= 0);
@@ -277,8 +277,8 @@ namespace XMLib
         /// <summary>
         /// 是否包含
         /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 是否包含 </returns>
+        /// <param name="value">值</param>
+        /// <returns>是否包含</returns>
         public bool Contains(TValue value)
         {
             Checker.Requires<ArgumentNullException>(value != null);
@@ -288,8 +288,8 @@ namespace XMLib
         /// <summary>
         /// 获取权重
         /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 权重 </returns>
+        /// <param name="value">值</param>
+        /// <returns>权重</returns>
         public TWeight GetWeight(TValue value)
         {
             Checker.Requires<ArgumentNullException>(value != null);
@@ -304,8 +304,8 @@ namespace XMLib
         /// <summary>
         /// 获取值
         /// </summary>
-        /// <param name="index"> 序号 </param>
-        /// <returns> 值 </returns>
+        /// <param name="index">序号</param>
+        /// <returns>值</returns>
         public TValue GetValue(int index)
         {
             Checker.Requires<ArgumentOutOfRangeException>(index >= 0);
@@ -322,8 +322,8 @@ namespace XMLib
         /// <summary>
         /// 获取排名
         /// </summary>
-        /// <param name="value"> 值 </param>
-        /// <returns> 从 0 开始，未找到为-1 </returns>
+        /// <param name="value">值</param>
+        /// <returns>从 0 开始，未找到为-1</returns>
         public int GetIndex(TValue value)
         {
             Checker.Requires<ArgumentNullException>(value != null);
@@ -344,7 +344,7 @@ namespace XMLib
         /// <summary>
         /// 转换为列表
         /// </summary>
-        /// <returns> 列表 </returns>
+        /// <returns>列表</returns>
         public List<TValue> ToList()
         {
             //检查排序
@@ -376,9 +376,9 @@ namespace XMLib
         /// <summary>
         /// 比较
         /// </summary>
-        /// <param name="x">  </param>
-        /// <param name="y">  </param>
-        /// <returns>  </returns>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private int OnComparerPair(ValueWeightPair x, ValueWeightPair y)
         {
             return _comparerWeight(x.Weight, y.Weight);
@@ -387,9 +387,9 @@ namespace XMLib
         /// <summary>
         /// 默认比较权重
         /// </summary>
-        /// <param name="x">  </param>
-        /// <param name="y">  </param>
-        /// <returns>  </returns>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private int OnComparerWeight(TWeight x, TWeight y)
         {
             return x.CompareTo(y);
@@ -402,7 +402,7 @@ namespace XMLib
         /// <summary>
         /// 获取迭代器
         /// </summary>
-        /// <returns> 迭代器 </returns>
+        /// <returns>迭代器</returns>
         public Enumerator GetEnumerator()
         {
             //检查排序

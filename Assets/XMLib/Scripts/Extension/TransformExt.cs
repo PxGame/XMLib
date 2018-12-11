@@ -18,8 +18,8 @@ namespace XMLib
         /// <summary>
         /// 遍历每个子节点
         /// </summary>
-        /// <param name="transform"> 实例 </param>
-        /// <param name="callback">  返回子节点 </param>
+        /// <param name="transform">实例</param>
+        /// <param name="callback">返回子节点</param>
         public static void ForeachChild(this Transform transform, Action<Transform> callback)
         {
             foreach (Transform child in transform)
@@ -33,8 +33,8 @@ namespace XMLib
         /// <summary>
         /// 遍历每个子节点及自身
         /// </summary>
-        /// <param name="transform"> 实例 </param>
-        /// <param name="callback">  返回子节点和自身 </param>
+        /// <param name="transform">实例</param>
+        /// <param name="callback">返回子节点和自身</param>
         public static void ForeachChildWithSelf(this Transform transform, Action<Transform> callback)
         {
             callback(transform);

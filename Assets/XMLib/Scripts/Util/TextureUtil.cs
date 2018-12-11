@@ -17,10 +17,10 @@ namespace XMLib
         /// <summary>
         /// 获取图片指定范围内的像素的灰度在指定灰度范围内的比例
         /// </summary>
-        /// <param name="texture">   图片 </param>
-        /// <param name="rect">      检测区域 </param>
-        /// <param name="grayRange"> 灰度范围 </param>
-        /// <returns> 比例 </returns>
+        /// <param name="texture">图片</param>
+        /// <param name="rect">检测区域</param>
+        /// <param name="grayRange">灰度范围</param>
+        /// <returns>比例</returns>
         public static float GetGrayRatio(Texture2D texture, RectInt rect, Vector2 grayRange)
         {
             float ratio = 0;

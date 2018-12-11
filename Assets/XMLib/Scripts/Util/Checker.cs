@@ -18,8 +18,8 @@ namespace XMLib
         /// <summary>
         /// 验证一个条件,并在该协定的条件失败时引发异常。
         /// </summary>
-        /// <typeparam name="TException"> 异常 </typeparam>
-        /// <param name="condition"> 条件 </param>
+        /// <typeparam name="TException">异常</typeparam>
+        /// <param name="condition">条件</param>
         [System.Diagnostics.DebuggerNonUserCode]
         public static void Requires<TException>(bool condition) where TException : Exception, new()
         {
@@ -33,8 +33,8 @@ namespace XMLib
         /// <summary>
         /// 不为空或者null
         /// </summary>
-        /// <param name="argumentValue"> 参数值 </param>
-        /// <param name="argumentName">  参数名 </param>
+        /// <param name="argumentValue">参数值</param>
+        /// <param name="argumentName">参数名</param>
         [System.Diagnostics.DebuggerNonUserCode]
         public static void NotEmptyOrNull(string argumentValue, string argumentName)
         {
@@ -47,9 +47,9 @@ namespace XMLib
         /// <summary>
         /// 长度大于0
         /// </summary>
-        /// <typeparam name="T"> 类型 </typeparam>
-        /// <param name="argumentValue"> 参数值 </param>
-        /// <param name="argumentName">  参数名 </param>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="argumentValue">参数值</param>
+        /// <param name="argumentName">参数名</param>
         [System.Diagnostics.DebuggerNonUserCode]
         public static void CountGreaterZero<T>(IList<T> argumentValue, string argumentName)
         {
@@ -62,8 +62,8 @@ namespace XMLib
         /// <summary>
         /// 元素部位空或者null
         /// </summary>
-        /// <param name="argumentValue"> 参数值 </param>
-        /// <param name="argumentName">  参数名 </param>
+        /// <param name="argumentValue">参数值</param>
+        /// <param name="argumentName">参数名</param>
         [System.Diagnostics.DebuggerNonUserCode]
         public static void ElementNotEmptyOrNull(IList<string> argumentValue, string argumentName)
         {
@@ -79,8 +79,8 @@ namespace XMLib
         /// <summary>
         /// 内容不为空
         /// </summary>
-        /// <param name="argumentValue"> 参数值 </param>
-        /// <param name="argumentName">  参数名 </param>
+        /// <param name="argumentValue">参数值</param>
+        /// <param name="argumentName">参数名</param>
         [System.Diagnostics.DebuggerNonUserCode]
         public static void NotNull(object argumentValue, string argumentName)
         {

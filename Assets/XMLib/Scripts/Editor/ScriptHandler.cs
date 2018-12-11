@@ -31,9 +31,9 @@ namespace XMLib.Editor
         /// <summary>
         /// 创建文件
         /// </summary>
-        /// <param name="filePath">      </param>
-        /// <param name="resourceFile">  </param>
-        /// <returns>  </returns>
+        /// <param name="filePath"></param>
+        /// <param name="resourceFile"></param>
+        /// <returns></returns>
         private static Object CreateFile(string filePath, string resourceFile)
         {
             TextAsset text = (TextAsset)EditorGUIUtility.Load(resourceFile);
@@ -73,6 +73,7 @@ namespace XMLib.Editor
         public static string ScriptEditorTemplate = "XMLib/Template/XMLibEditor.cs.txt";
         public static string TestScriptTemplate = "XMLib/Template/TestXMLib.cs.txt";
         public static string TestScriptEditorTemplate = "XMLib/Template/TestXMLibEditor.cs.txt";
+        public static string SimpleScriptTemplate = "XMLib/Template/SimpleXMLib.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
         /// <summary>
@@ -81,18 +82,49 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Script")]
         public static void CreateScript()
         {
+            CreateFIle("XMLib", ScriptTemplate, ScriptEditorTemplate);
+        }
+
+        /// <summary>
+        /// 创建新测试脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Test Script")]
+        public static void CreateTestScript()
+        {
+            CreateFIle("TestXMLib", TestScriptTemplate, TestScriptEditorTemplate);
+        }
+
+        /// <summary>
+        /// 创建新测试脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Simple Script")]
+        public static void CreateSimpleScript()
+        {
+            CreateFIle("SimpleXMLib", SimpleScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建文件
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <param name="scriptTmp">模板文件</param>
+        /// <param name="scriptEditorTmp">编辑模板文件</param>
+        private static void CreateFIle(string fileName, string scriptTmp, string scriptEditorTmp = null)
+        {
             string dir = GetSelectDir();
             bool isEditor = false;
 
             //
-            Regex reg = new Regex(CheckEditorPath, RegexOptions.IgnoreCase);
-            if (reg.IsMatch(dir))
-            {//编辑器脚本
-                isEditor = true;
+            if (!string.IsNullOrEmpty(scriptEditorTmp))
+            {
+                Regex reg = new Regex(CheckEditorPath, RegexOptions.IgnoreCase);
+                if (reg.IsMatch(dir))
+                {//编辑器脚本
+                    isEditor = true;
+                }
             }
 
-            string fileName = "XMLib";
-            string templatePath = isEditor ? ScriptEditorTemplate : ScriptTemplate;
+            string templatePath = isEditor ? scriptEditorTmp : scriptTmp;
             string filePath = CreateFilePath(dir, fileName, isEditor);
 
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
@@ -102,31 +134,12 @@ namespace XMLib.Editor
         }
 
         /// <summary>
-        /// 创建新测试脚本
+        /// 创建文件路径
         /// </summary>
-        [MenuItem("Assets/XMLib/Create/Test Script")]
-        public static void CreateTestScript()
-        {
-            string dir = GetSelectDir();
-            bool isEditor = false;
-
-            //
-            Regex reg = new Regex(CheckEditorPath, RegexOptions.IgnoreCase);
-            if (reg.IsMatch(dir))
-            {//编辑器脚本
-                isEditor = true;
-            }
-
-            string fileName = "TestXMLib";
-            string templatePath = isEditor ? TestScriptEditorTemplate : TestScriptTemplate;
-            string filePath = CreateFilePath(dir, fileName, isEditor);
-
-            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
-                ScriptableObject.CreateInstance<ScriptCreatorAction>(),
-                filePath, null, templatePath
-                );
-        }
-
+        /// <param name="dir">目标文件夹</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="isEditor">是否是编辑器脚本</param>
+        /// <returns></returns>
         private static string CreateFilePath(string dir, string fileName, bool isEditor)
         {
             if (isEditor)
@@ -144,7 +157,7 @@ namespace XMLib.Editor
         /// <summary>
         /// 获取文件夹
         /// </summary>
-        /// <returns> 相对路径 </returns>
+        /// <returns>相对路径</returns>
         private static string GetSelectDir()
         {
             string dir = "Assets";

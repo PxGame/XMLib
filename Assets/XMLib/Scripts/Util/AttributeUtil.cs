@@ -18,9 +18,9 @@ namespace XMLib
         /// <summary>
         /// 获取优先级
         /// </summary>
-        /// <param name="type">   类型 </param>
-        /// <param name="method"> 函数 </param>
-        /// <returns> 优先级 </returns>
+        /// <param name="type">类型</param>
+        /// <param name="method">函数</param>
+        /// <returns>优先级</returns>
         public static int GetPriority(Type type, string method = null)
         {
             Checker.Requires<ArgumentNullException>(type != null);
@@ -45,9 +45,9 @@ namespace XMLib
         /// <summary>
         /// 获取优先级
         /// </summary>
-        /// <typeparam name="T"> 类型 </typeparam>
-        /// <param name="method"> 函数 </param>
-        /// <returns> 优先级 </returns>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="method">函数</param>
+        /// <returns>优先级</returns>
         public static int GetPriority<T>(string method = null)
         {
             return GetPriority(typeof(T), method);

@@ -23,7 +23,7 @@ namespace XMLib
         /// <summary>
         /// 优先级(0最高)
         /// </summary>
-        /// <param name="priority"> 优先级(0为最优先) </param>
+        /// <param name="priority">优先级(0为最优先)</param>
         public PriorityAttribute(int priority = int.MaxValue)
         {
             Priorities = Math.Max(priority, 0);
