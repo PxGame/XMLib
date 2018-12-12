@@ -27,7 +27,7 @@ namespace XMLib
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="args">参数</param>
-        /// <returns>时间结果</returns>
+        /// <returns>结果集合</returns>
         List<object> Trigger(string eventName, params object[] args);
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace XMLib
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="args">参数</param>
-        /// <returns></returns>
+        /// <returns>结果</returns>
         object TriggerHalt(string eventName, params object[] args);
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace XMLib
         /// <param name="eventName">事件名</param>
         /// <param name="func">事件调用方法</param>
         /// <param name="group">事件分组</param>
-        /// <returns></returns>
+        /// <returns>监听</returns>
         IEvent On(string eventName, Func<string, object[], object> func, object group = null);
 
         /// <summary>

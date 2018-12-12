@@ -69,17 +69,18 @@ namespace XMLib.Editor
     /// </summary>
     public class ScriptHandler
     {
-        public static string ScriptTemplate = "XMLib/Template/XMLib.cs.txt";
+        public static string ScriptTemplate = "XMLib/Template/MonoXMLib.cs.txt";
         public static string ScriptEditorTemplate = "XMLib/Template/XMLibEditor.cs.txt";
-        public static string TestScriptTemplate = "XMLib/Template/TestXMLib.cs.txt";
+        public static string TestScriptTemplate = "XMLib/Template/TestMonoXMLib.cs.txt";
         public static string TestScriptEditorTemplate = "XMLib/Template/TestXMLibEditor.cs.txt";
         public static string SimpleScriptTemplate = "XMLib/Template/SimpleXMLib.cs.txt";
+        public static string TestSimpleScriptTemplate = "XMLib/Template/TestSimpleXMLib.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
         /// <summary>
         /// 创建新脚本
         /// </summary>
-        [MenuItem("Assets/XMLib/Create/Script")]
+        [MenuItem("Assets/XMLib/Create/Unity Script")]
         public static void CreateScript()
         {
             CreateFIle("XMLib", ScriptTemplate, ScriptEditorTemplate);
@@ -88,7 +89,7 @@ namespace XMLib.Editor
         /// <summary>
         /// 创建新测试脚本
         /// </summary>
-        [MenuItem("Assets/XMLib/Create/Test Script")]
+        [MenuItem("Assets/XMLib/Create/Test Unity Script")]
         public static void CreateTestScript()
         {
             CreateFIle("TestXMLib", TestScriptTemplate, TestScriptEditorTemplate);
@@ -101,6 +102,15 @@ namespace XMLib.Editor
         public static void CreateSimpleScript()
         {
             CreateFIle("SimpleXMLib", SimpleScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建新测试脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Test Simple Script")]
+        public static void CreateTestSimpleScript()
+        {
+            CreateFIle("TestSimpleXMLib", TestSimpleScriptTemplate);
         }
 
         /// <summary>

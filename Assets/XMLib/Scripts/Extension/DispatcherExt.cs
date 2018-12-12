@@ -36,7 +36,31 @@ namespace XMLib
                 Checker.Requires<ArgumentNullException>(target != null);
             }
 
-            return dispatcher.On(eventName, (_, args) => methodInfo.Invoke(target, args), group);
+            return dispatcher.On(eventName, (_, args) => FixedInvoke(target, methodInfo, args), group);
+        }
+
+        /// <summary>
+        /// 修复调用,用于支持有参的事件变无参事件调用
+        /// </summary>
+        /// <param name="target">目标对象</param>
+        /// <param name="methodInfo">调用函数</param>
+        /// <param name="args">参数</param>
+        /// <returns>结果</returns>
+        private static object FixedInvoke(object target, MethodInfo methodInfo, object[] args)
+        {
+            object[] targetArgs;
+            //获取函数参数
+            ParameterInfo[] argInfos = methodInfo.GetParameters();
+            if (0 == argInfos.Length && 0 < args.Length)
+            {//函数为无参,且有参数输入时,忽略输入的参数
+                targetArgs = new object[0];
+            }
+            else
+            {
+                targetArgs = args;
+            }
+
+            return methodInfo.Invoke(target, targetArgs);
         }
 
         /// <summary>

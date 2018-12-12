@@ -14,6 +14,7 @@ namespace XMLib
     {
         /// <summary>
         /// 引导程序接口
+        /// <para>可设置优先级</para>
         /// </summary>
         void Bootstrap();
     }
