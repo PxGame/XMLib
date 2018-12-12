@@ -30,11 +30,6 @@ namespace XMLib
         /// </summary>
         private object _syncRoot;
 
-        /// <summary>
-        /// 事件跳出标记
-        /// </summary>
-        protected virtual object BreakFlag { get { return false; } }
-
         public Dispatcher()
         {
             _groupMapping = new Dictionary<object, List<IEvent>>();
@@ -61,7 +56,7 @@ namespace XMLib
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="args">参数</param>
-        /// <returns>时间结果</returns>
+        /// <returns>结果</returns>
         public List<object> Trigger(string eventName, params object[] args)
         {
             Checker.NotEmptyOrNull(eventName, "eventName");
@@ -73,7 +68,7 @@ namespace XMLib
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="args">参数</param>
-        /// <returns></returns>
+        /// <returns>结果</returns>
         public object TriggerHalt(string eventName, params object[] args)
         {
             Checker.NotEmptyOrNull(eventName, "eventName");
@@ -86,7 +81,7 @@ namespace XMLib
         /// <param name="eventName">事件名</param>
         /// <param name="func">事件调用方法</param>
         /// <param name="group">事件分组</param>
-        /// <returns></returns>
+        /// <returns>事件</returns>
         public IEvent On(string eventName, Func<string, object[], object> func, object group = null)
         {
             Checker.NotEmptyOrNull(eventName, "eventName");
@@ -94,23 +89,23 @@ namespace XMLib
 
             lock (_syncRoot)
             {
-                IEvent result = SetupListener(eventName, func, group);
+                IEvent evt = SetupListener(eventName, func, group);
 
                 if (null == group)
                 {//无分组则直接返回
-                    return result;
+                    return evt;
                 }
 
                 //添加到分组
                 List<IEvent> events;
-                if (!_groupMapping.TryGetValue(eventName, out events))
+                if (!_groupMapping.TryGetValue(group, out events))
                 {
                     events = new List<IEvent>();
                     _groupMapping[group] = events;
                 }
-                events.Add(result);
+                events.Add(evt);
 
-                return result;
+                return evt;
             }
         }
 
@@ -131,14 +126,14 @@ namespace XMLib
             {
                 IEvent evt = target as IEvent;
                 if (null != evt)
-                {//如果是事件
-                    ForgetEvent(evt);
+                {//移除监听
+                    ForgetListen(evt);
                     return;
                 }
 
                 if (target is string)
-                {//如果是事件名
-                    ForgetListener((string)target);
+                {//移除事件
+                    ForgetEvent((string)target);
                 }
 
                 //移除分组
@@ -147,17 +142,19 @@ namespace XMLib
         }
 
         /// <summary>
-        /// 移除事件对象
+        /// 移除监听
         /// </summary>
         /// <param name="evt">事件对象</param>
-        private void ForgetEvent(IEvent evt)
+        private void ForgetListen(IEvent evt)
         {
             lock (_syncRoot)
             {
-                List<IEvent> events = null; ;
+                List<IEvent> events;
 
+                //移除分组中的监听
+                events = null;
                 if (null != evt.Group)
-                {//移除分组中的事件
+                {
                     if (_groupMapping.TryGetValue(evt.Group, out events))
                     {
                         events.Remove(evt);
@@ -168,7 +165,7 @@ namespace XMLib
                     }
                 }
 
-                //移除事件
+                //移除监听
                 events = null;
                 if (_listeners.TryGetValue(evt.Name, out events))
                 {
@@ -185,7 +182,7 @@ namespace XMLib
         /// 移除事件
         /// </summary>
         /// <param name="eventName">事件名</param>
-        private void ForgetListener(string eventName)
+        private void ForgetEvent(string eventName)
         {
             List<IEvent> events;
             if (!_listeners.TryGetValue(eventName, out events))
@@ -193,9 +190,10 @@ namespace XMLib
                 return;
             }
 
-            foreach (IEvent evt in events)
+            IEvent[] eventArray = events.ToArray();
+            foreach (IEvent evt in eventArray)
             {
-                ForgetEvent(evt);
+                ForgetListen(evt);
             }
         }
 
@@ -211,19 +209,20 @@ namespace XMLib
                 return;
             }
 
-            foreach (IEvent evt in events)
+            IEvent[] eventArray = events.ToArray();
+            foreach (IEvent evt in eventArray)
             {
-                ForgetEvent(evt);
+                ForgetListen(evt);
             }
         }
 
         /// <summary>
-        /// 设置事件对象
+        /// 设置监听对象
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="func">响应函数</param>
         /// <param name="group">分组</param>
-        /// <returns>实例</returns>
+        /// <returns>监听</returns>
         private IEvent SetupListener(string eventName, Func<string, object[], object> func, object group)
         {
             List<IEvent> events;
@@ -233,18 +232,18 @@ namespace XMLib
                 _listeners[eventName] = events;
             }
 
-            IEvent output = MakeEvent(eventName, func, group);
-            events.Add(output);
-            return output;
+            IEvent evt = MakeEvent(eventName, func, group);
+            events.Add(evt);
+            return evt;
         }
 
         /// <summary>
-        /// 创建事件对象
+        /// 创建监听对象
         /// </summary>
         /// <param name="eventName">事件名</param>
         /// <param name="func">响应函数</param>
         /// <param name="group">分组</param>
-        /// <returns>实例</returns>
+        /// <returns>监听</returns>
         protected virtual IEvent MakeEvent(string eventName, Func<string, object[], object> func, object group)
         {
             return new Event(eventName, group, func);
@@ -259,7 +258,7 @@ namespace XMLib
         /// <returns>结果</returns>
         private object Dispatch(bool half, string eventName, object[] args)
         {
-            Checker.Requires<ArgumentNullException>(string.IsNullOrEmpty(eventName));
+            Checker.NotEmptyOrNull(eventName, "eventName");
 
             lock (_syncRoot)
             {
@@ -273,12 +272,6 @@ namespace XMLib
                     if (half && result != null)
                     {
                         return result;
-                    }
-
-                    //遇到事件终止标记
-                    if (result != null && result.Equals(BreakFlag))
-                    {
-                        break;
                     }
 
                     outputs.Add(result);
@@ -299,7 +292,7 @@ namespace XMLib
 
             List<IEvent> result;
             if (_listeners.TryGetValue(eventName, out result))
-            {
+            {//添加到调用监听列表
                 events.AddRange(result);
             }
 
