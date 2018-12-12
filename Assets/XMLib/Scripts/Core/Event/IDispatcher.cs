@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace XMLib
 {
@@ -42,10 +43,11 @@ namespace XMLib
         /// 注册一个事件监听器
         /// </summary>
         /// <param name="eventName">事件名</param>
-        /// <param name="func">事件调用方法</param>
-        /// <param name="group">事件分组</param>
+        /// <param name="target">目标对象</param>
+        /// <param name="methodInfo">调用方法</param>
+        /// <param name="group">分组</param>
         /// <returns>监听</returns>
-        IEvent On(string eventName, Func<string, object[], object> func, object group = null);
+        IEvent On(string eventName, object target, MethodInfo methodInfo, object group = null);
 
         /// <summary>
         /// 解除注册的事件监听器

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace XMLib
 {
@@ -79,17 +80,23 @@ namespace XMLib
         /// 注册一个事件监听器
         /// </summary>
         /// <param name="eventName">事件名</param>
-        /// <param name="func">事件调用方法</param>
-        /// <param name="group">事件分组</param>
-        /// <returns>事件</returns>
-        public IEvent On(string eventName, Func<string, object[], object> func, object group = null)
+        /// <param name="target">目标对象</param>
+        /// <param name="methodInfo">调用方法</param>
+        /// <param name="group">分组</param>
+        /// <returns>监听</returns>
+        public IEvent On(string eventName, object target, MethodInfo methodInfo, object group = null)
         {
             Checker.NotEmptyOrNull(eventName, "eventName");
-            Checker.Requires<ArgumentException>(func != null);
+            Checker.Requires<ArgumentException>(methodInfo != null);
+
+            if (!methodInfo.IsStatic)
+            {//非静态函数,必须有实例
+                Checker.Requires<ArgumentNullException>(target != null);
+            }
 
             lock (_syncRoot)
             {
-                IEvent evt = SetupListener(eventName, func, group);
+                IEvent evt = SetupListener(eventName, target, methodInfo, group);
 
                 if (null == group)
                 {//无分组则直接返回
@@ -223,7 +230,7 @@ namespace XMLib
         /// <param name="func">响应函数</param>
         /// <param name="group">分组</param>
         /// <returns>监听</returns>
-        private IEvent SetupListener(string eventName, Func<string, object[], object> func, object group)
+        private IEvent SetupListener(string eventName, object target, MethodInfo methodInfo, object group)
         {
             List<IEvent> events;
             if (!_listeners.TryGetValue(eventName, out events))
@@ -232,7 +239,7 @@ namespace XMLib
                 _listeners[eventName] = events;
             }
 
-            IEvent evt = MakeEvent(eventName, func, group);
+            IEvent evt = MakeEvent(eventName, target, methodInfo, group);
             events.Add(evt);
             return evt;
         }
@@ -244,9 +251,9 @@ namespace XMLib
         /// <param name="func">响应函数</param>
         /// <param name="group">分组</param>
         /// <returns>监听</returns>
-        protected virtual IEvent MakeEvent(string eventName, Func<string, object[], object> func, object group)
+        protected virtual IEvent MakeEvent(string eventName, object target, MethodInfo methodInfo, object group)
         {
-            return new Event(eventName, group, func);
+            return new Event(eventName, target, methodInfo, group);
         }
 
         /// <summary>

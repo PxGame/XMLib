@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Reflection;
 
 namespace XMLib
 {
@@ -25,15 +26,29 @@ namespace XMLib
         public object Group { get; private set; }
 
         /// <summary>
-        /// 调用方法
+        /// 目标对象
         /// </summary>
-        private readonly Func<string, object[], object> _func;
+        private readonly object _target;
 
-        public Event(string eventName, object group, Func<string, object[], object> func)
+        /// <summary>
+        /// 调用函数
+        /// </summary>
+        private readonly MethodInfo _methodInfo;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="eventName">事件名</param>
+        /// <param name="target">目标对象</param>
+        /// <param name="methodInfo">目标函数</param>
+        /// <param name="group">分组</param>
+        public Event(string eventName, object target, MethodInfo methodInfo, object group)
         {
             Name = eventName;
             Group = group;
-            _func = func;
+
+            _target = target;
+            _methodInfo = methodInfo;
         }
 
         /// <summary>
@@ -41,18 +56,10 @@ namespace XMLib
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="args"></param>
-        /// <returns></returns>
+        /// <returns>结果</returns>
         public object Call(string eventName, params object[] args)
         {
-            try
-            {
-                return _func(eventName, args);
-            }
-            catch (Exception ex)
-            {
-                string errMsg = string.Format("调用 {0} 事件异常", eventName);
-                throw new RuntimeException(errMsg, ex);
-            }
+            return App.Call(_target, _methodInfo, args);
         }
     }
 }

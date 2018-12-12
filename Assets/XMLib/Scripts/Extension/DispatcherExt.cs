@@ -23,52 +23,6 @@ namespace XMLib
         /// <param name="dispatcher">调度器</param>
         /// <param name="eventName">名</param>
         /// <param name="target">调用目标</param>
-        /// <param name="methodInfo">处理函数</param>
-        /// <param name="group">分组</param>
-        /// <returns>对象</returns>
-        public static IEvent On(this IDispatcher dispatcher, string eventName, object target, MethodInfo methodInfo, object group = null)
-        {
-            Checker.NotEmptyOrNull(eventName, "eventName");
-            Checker.Requires<ArgumentNullException>(methodInfo != null);
-
-            if (!methodInfo.IsStatic)
-            {//非静态函数,必须有实例
-                Checker.Requires<ArgumentNullException>(target != null);
-            }
-
-            return dispatcher.On(eventName, (_, args) => FixedInvoke(target, methodInfo, args), group);
-        }
-
-        /// <summary>
-        /// 修复调用,用于支持有参的事件变无参事件调用
-        /// </summary>
-        /// <param name="target">目标对象</param>
-        /// <param name="methodInfo">调用函数</param>
-        /// <param name="args">参数</param>
-        /// <returns>结果</returns>
-        private static object FixedInvoke(object target, MethodInfo methodInfo, object[] args)
-        {
-            object[] targetArgs;
-            //获取函数参数
-            ParameterInfo[] argInfos = methodInfo.GetParameters();
-            if (0 == argInfos.Length && 0 < args.Length)
-            {//函数为无参,且有参数输入时,忽略输入的参数
-                targetArgs = new object[0];
-            }
-            else
-            {
-                targetArgs = args;
-            }
-
-            return methodInfo.Invoke(target, targetArgs);
-        }
-
-        /// <summary>
-        /// 注册监听
-        /// </summary>
-        /// <param name="dispatcher">调度器</param>
-        /// <param name="eventName">名</param>
-        /// <param name="target">调用目标</param>
         /// <param name="method">处理函数名</param>
         /// <returns>对象</returns>
         public static IEvent On(this IDispatcher dispatcher, string eventName, object target, string method = null)

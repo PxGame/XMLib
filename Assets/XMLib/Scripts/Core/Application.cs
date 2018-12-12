@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 
 namespace XMLib
@@ -108,6 +109,11 @@ namespace XMLib
             get { return _process; }
             private set { _process = value; }
         }
+
+        /// <summary>
+        /// 是否正在释放
+        /// </summary>
+        public bool IsFlushing { get { return _isFlushing; } }
 
         /// <summary>
         /// 启动流程
@@ -344,6 +350,34 @@ namespace XMLib
             return _serviceProviderTypes.Contains(serviceProvider.GetType());
         }
 
+        /// <summary>
+        /// 调用函数,函数无参时将清空输入参数以完成调用
+        /// </summary>
+        /// <param name="target">方法对象</param>
+        /// <param name="methodInfo">方法信息</param>
+        /// <param name="userParams">用户传入的参数</param>
+        /// <returns>方法返回值</returns>
+        public object Call(object target, MethodInfo methodInfo, params object[] args)
+        {
+            object[] targetArgs = args;
+            //获取函数参数
+            ParameterInfo[] argInfos = methodInfo.GetParameters();
+            if (0 >= argInfos.Length)
+            {//函数为无参,忽略输入的参数
+                targetArgs = new object[0];
+            }
+
+            try
+            {
+                return methodInfo.Invoke(target, targetArgs);
+            }
+            catch (Exception ex)
+            {
+                string msg = string.Format("<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1})</color>", target, methodInfo);
+                throw new RuntimeException(msg, ex);
+            }
+        }
+
         #region IDispatcher
 
         /// <summary>
@@ -382,12 +416,13 @@ namespace XMLib
         /// 注册一个事件监听器
         /// </summary>
         /// <param name="eventName">事件名</param>
-        /// <param name="func">事件调用方法</param>
-        /// <param name="group">事件分组</param>
+        /// <param name="target">目标对象</param>
+        /// <param name="methodInfo">调用方法</param>
+        /// <param name="group">分组</param>
         /// <returns>监听</returns>
-        public IEvent On(string eventName, Func<string, object[], object> func, object group = null)
+        public IEvent On(string eventName, object target, MethodInfo methodInfo, object group = null)
         {
-            return _dispatcher.On(eventName, func, group);
+            return _dispatcher.On(eventName, target, methodInfo, group);
         }
 
         /// <summary>
