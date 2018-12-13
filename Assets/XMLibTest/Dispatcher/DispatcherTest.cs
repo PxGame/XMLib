@@ -13,11 +13,32 @@ using Debug = UnityEngine.Debug;
 
 namespace XMLib.Test
 {
+    internal class EventTest
+    {
+        private Dispatcher _dispatcher;
+
+        public EventTest(Dispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+            OnFun();
+        }
+
+        public void OnFun()
+        {
+            _dispatcher.On("5", () =>
+            {
+                throw new System.Exception("GG");
+            });
+        }
+    }
+
     public class DispatcherTest : MonoBehaviour
     {
         private Dispatcher dispatcher = new Dispatcher();
 
         private IEvent _test;
+
+        private EventTest t;
 
         private void Awake()
         {
@@ -31,10 +52,15 @@ namespace XMLib.Test
             //dispatcher.On("5", OnPriority1);
             //dispatcher.On("5", OnPriority2);
             //dispatcher.On("5", OnPriority3);
-            dispatcher.On("5", () =>
-            {
-                //Debug.Log("OnPriority4");
-            });
+            //dispatcher.On("5", () =>
+            //{
+            //    throw new System.Exception("GG");
+            //    Debug.Log("OnPriority4");
+            //});
+
+            t = new EventTest(dispatcher);
+
+            //dispatcher.On("5", t.OnFun);
         }
 
         private void OnAction(string msg)
@@ -56,12 +82,14 @@ namespace XMLib.Test
         [Priority(1002)]
         private void OnPriority2()
         {
+            throw new System.Exception("GG");
             //Debug.Log("OnPriority2");
         }
 
         [Priority(999)]
         private static void OnPriority3()
         {
+            throw new System.Exception("GG");
             //Debug.Log("OnPriority3");
         }
 
@@ -118,7 +146,7 @@ namespace XMLib.Test
             {
                 Stopwatch watch = Stopwatch.StartNew();
 
-                int length = 10000;
+                int length = 1;//0000;
                 for (int i = 0; i < length; i++)
                 {
                     dispatcher.Trigger("5");

@@ -40,7 +40,11 @@ namespace XMLib
             }
             catch (Exception ex)
             {
-                string msg = string.Format("<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1})</color>", target, methodInfo);
+                string msg = string.Format(
+                    "<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1}) , 声明类型({2})</color>",
+                    target,
+                    methodInfo,
+                    methodInfo.DeclaringType);
                 throw new RuntimeException(msg, ex);
             }
         }
