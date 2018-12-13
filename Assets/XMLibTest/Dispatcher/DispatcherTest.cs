@@ -7,7 +7,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace XMLib.Test
 {
@@ -25,6 +27,14 @@ namespace XMLib.Test
             dispatcher.On("3", this, "OnFunc");
             dispatcher.Listen<string, string>("4", OnFunc);
             _test = dispatcher.Listen<string, string>("4", OnFunc);
+
+            //dispatcher.On("5", OnPriority1);
+            //dispatcher.On("5", OnPriority2);
+            //dispatcher.On("5", OnPriority3);
+            dispatcher.On("5", () =>
+            {
+                //Debug.Log("OnPriority4");
+            });
         }
 
         private void OnAction(string msg)
@@ -35,6 +45,24 @@ namespace XMLib.Test
         public string OnFunc(string msg)
         {
             return "Func:" + msg;
+        }
+
+        [Priority(1000)]
+        private void OnPriority1()
+        {
+            //Debug.Log("OnPriority1");
+        }
+
+        [Priority(1002)]
+        private void OnPriority2()
+        {
+            //Debug.Log("OnPriority2");
+        }
+
+        [Priority(999)]
+        private static void OnPriority3()
+        {
+            //Debug.Log("OnPriority3");
         }
 
         private void Update()
@@ -84,6 +112,28 @@ namespace XMLib.Test
             if (Input.GetKeyDown(KeyCode.Alpha8))
             {
                 dispatcher.Off(this);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                Stopwatch watch = Stopwatch.StartNew();
+
+                int length = 10000;
+                for (int i = 0; i < length; i++)
+                {
+                    dispatcher.Trigger("5");
+                }
+
+                watch.Stop();
+
+                float sec = watch.ElapsedMilliseconds;
+                float freq = sec / length;
+
+                Debug.LogFormat("1个事件 执行 {0} 次 共 {1} ms 平均每次 {2} ms", length, sec, freq);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                dispatcher.Off("5");
             }
         }
     }

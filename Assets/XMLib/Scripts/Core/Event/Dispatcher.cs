@@ -24,17 +24,20 @@ namespace XMLib
         /// <summary>
         /// 事件监听
         /// </summary>
-        private readonly Dictionary<string, List<IEvent>> _listeners;
+        private readonly Dictionary<string, SortList<IEvent, int>> _listeners;
 
         /// <summary>
         /// 同步锁
         /// </summary>
         private object _syncRoot;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public Dispatcher()
         {
             _groupMapping = new Dictionary<object, List<IEvent>>();
-            _listeners = new Dictionary<string, List<IEvent>>();
+            _listeners = new Dictionary<string, SortList<IEvent, int>>();
             _syncRoot = new object();
         }
 
@@ -156,10 +159,8 @@ namespace XMLib
         {
             lock (_syncRoot)
             {
-                List<IEvent> events;
-
                 //移除分组中的监听
-                events = null;
+                List<IEvent> events = null;
                 if (null != evt.Group)
                 {
                     if (_groupMapping.TryGetValue(evt.Group, out events))
@@ -173,11 +174,11 @@ namespace XMLib
                 }
 
                 //移除监听
-                events = null;
-                if (_listeners.TryGetValue(evt.Name, out events))
+                SortList<IEvent, int> sortEvents = null;
+                if (_listeners.TryGetValue(evt.Name, out sortEvents))
                 {
-                    events.Remove(evt);
-                    if (events.Count <= 0)
+                    sortEvents.Remove(evt);
+                    if (sortEvents.Count <= 0)
                     {
                         _listeners.Remove(evt.Name);
                     }
@@ -191,7 +192,7 @@ namespace XMLib
         /// <param name="eventName">事件名</param>
         private void ForgetEvent(string eventName)
         {
-            List<IEvent> events;
+            SortList<IEvent, int> events;
             if (!_listeners.TryGetValue(eventName, out events))
             {
                 return;
@@ -232,15 +233,22 @@ namespace XMLib
         /// <returns>监听</returns>
         private IEvent SetupListener(string eventName, object target, MethodInfo methodInfo, object group)
         {
-            List<IEvent> events;
+            SortList<IEvent, int> events;
             if (!_listeners.TryGetValue(eventName, out events))
             {
-                events = new List<IEvent>();
+                events = new SortList<IEvent, int>();
                 _listeners[eventName] = events;
             }
 
+            //创建事件对象
             IEvent evt = MakeEvent(eventName, target, methodInfo, group);
-            events.Add(evt);
+
+            //获取优先级
+            int priority = AttributeUtil.GetPriority(methodInfo);
+
+            //添加到事件列表
+            events.Add(evt, priority);
+
             return evt;
         }
 
@@ -271,17 +279,22 @@ namespace XMLib
             {
                 List<object> outputs = new List<object>();
 
-                foreach (IEvent evt in GetListener(eventName))
+                IEnumerable<IEvent> events = GetListener(eventName);
+
+                if (null != events)
                 {
-                    object result = evt.Call(eventName, args);
-
-                    //只取一个结果时
-                    if (half && result != null)
+                    foreach (IEvent evt in events)
                     {
-                        return result;
-                    }
+                        object result = evt.Call(eventName, args);
 
-                    outputs.Add(result);
+                        //只取一个结果时
+                        if (half && result != null)
+                        {
+                            return result;
+                        }
+
+                        outputs.Add(result);
+                    }
                 }
 
                 return half ? null : outputs;
@@ -295,15 +308,17 @@ namespace XMLib
         /// <returns>事件对象列表</returns>
         private IEnumerable<IEvent> GetListener(string eventName)
         {
-            List<IEvent> events = new List<IEvent>();
+            //目前不需要将获取到的监听器对象另存列表
+            //这样可以减少性能开销
+            //但需要在函数调用出判断结果是否为null
+            //List<IEvent> events = new List<IEvent>();
 
-            List<IEvent> result;
+            SortList<IEvent, int> result = null;
             if (_listeners.TryGetValue(eventName, out result))
             {//添加到调用监听列表
-                events.AddRange(result);
             }
 
-            return events;
+            return result;
         }
     }
 }

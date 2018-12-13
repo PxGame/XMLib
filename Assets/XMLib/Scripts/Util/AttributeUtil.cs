@@ -52,5 +52,23 @@ namespace XMLib
         {
             return GetPriority(typeof(T), method);
         }
+
+        /// <summary>
+        /// 获取函数优先级
+        /// </summary>
+        /// <param name="method">函数</param>
+        /// <returns>优先级</returns>
+        public static int GetPriority(MethodInfo method)
+        {
+            Type priority = typeof(PriorityAttribute);
+            int currentPriority = int.MaxValue;
+
+            if (method.IsDefined(priority, false))
+            {
+                currentPriority = ((PriorityAttribute)method.GetCustomAttributes(priority, false)[0]).Priorities;
+            }
+
+            return currentPriority;
+        }
     }
 }

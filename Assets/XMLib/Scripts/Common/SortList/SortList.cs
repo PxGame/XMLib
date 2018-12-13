@@ -16,7 +16,7 @@ namespace XMLib
     /// </summary>
     /// <typeparam name="TValue">值类型</typeparam>
     /// <typeparam name="TWeight">权重类型</typeparam>
-    public sealed class SortList<TValue, TWeight> : IEnumerable<TValue>, ISortList<TValue, TWeight>
+    public sealed class SortList<TValue, TWeight> : ISortList<TValue, TWeight>
         where TWeight : IComparable<TWeight>
     {
         #region 定义
@@ -201,6 +201,22 @@ namespace XMLib
         }
 
         /// <summary>
+        /// 添加一组
+        /// </summary>
+        /// <param name="sortList">一组数据</param>
+        public void AddRange(ISortList<TValue, TWeight> sortList)
+        {
+            int length = sortList.Count;
+            for (int i = 0; i < length; i++)
+            {
+                TValue value = sortList[i];
+                TWeight weight = sortList[value];
+
+                Add(value, weight);
+            }
+        }
+
+        /// <summary>
         /// 移除
         /// </summary>
         /// <param name="value">值</param>
@@ -352,6 +368,22 @@ namespace XMLib
 
             List<TValue> list = new List<TValue>(this);
             return list;
+        }
+
+        /// <summary>
+        /// 转换为数组
+        /// </summary>
+        /// <returns>列表</returns>
+        public TValue[] ToArray()
+        {
+            int length = Count;
+            TValue[] ary = new TValue[length];
+            for (int i = 0; i < length; i++)
+            {
+                ary[i] = this[i];
+            }
+
+            return ary;
         }
 
         #region 私有

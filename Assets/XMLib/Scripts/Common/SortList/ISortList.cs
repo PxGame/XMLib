@@ -15,7 +15,8 @@ namespace XMLib
     /// </summary>
     /// <typeparam name="TValue">值类型</typeparam>
     /// <typeparam name="TWeight">权重类型</typeparam>
-    public interface ISortList<TValue, TWeight> where TWeight : IComparable<TWeight>
+    public interface ISortList<TValue, TWeight> : IEnumerable<TValue>
+        where TWeight : IComparable<TWeight>
     {
         /// <summary>
         /// 获取值
@@ -52,6 +53,12 @@ namespace XMLib
         /// <param name="value">值</param>
         /// <param name="weight">权重</param>
         void Add(TValue value, TWeight weight);
+
+        /// <summary>
+        /// 添加一组
+        /// </summary>
+        /// <param name="sortList">一组数据</param>
+        void AddRange(ISortList<TValue, TWeight> sortList);
 
         /// <summary>
         /// 清理
@@ -109,5 +116,11 @@ namespace XMLib
         /// </summary>
         /// <returns>列表</returns>
         List<TValue> ToList();
+
+        /// <summary>
+        /// 转换为数组
+        /// </summary>
+        /// <returns>列表</returns>
+        TValue[] ToArray();
     }
 }
