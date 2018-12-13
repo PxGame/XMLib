@@ -18,8 +18,6 @@ namespace XMLib.Test
         public void Bootstrap()
         {
             App.Log("BootstrapTest1");
-
-            App.Register(new ServiceProviders1());
             App.Register(new ServiceProviders2());
         }
     }

@@ -48,10 +48,16 @@ namespace XMLib
         public static readonly string OnInit = "XMLib.ApplicationEvents.OnInit";
 
         /// <summary>
-        /// 当初始化进行时
+        /// 当服务提供者初始化进行前
         /// <para>void Func(IServiceProvider serviceProvider)</para>
         /// </summary>
-        public static readonly string OnIniting = "XMLib.ApplicationEvents.OnIniting";
+        public static readonly string OnProviderInit = "XMLib.ApplicationEvents.OnProviderInit";
+
+        /// <summary>
+        /// 当服务提供者初始化结束后
+        /// <para>void Func(IServiceProvider serviceProvider)</para>
+        /// </summary>
+        public static readonly string OnProviderInited = "XMLib.ApplicationEvents.OnProviderInited";
 
         /// <summary>
         /// 当初始化完成之后

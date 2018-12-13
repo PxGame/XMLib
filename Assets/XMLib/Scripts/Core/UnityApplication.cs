@@ -16,5 +16,35 @@ namespace XMLib
     /// </summary>
     public class UnityApplication : Application
     {
+        /// <summary>
+        /// Unity 对象
+        /// </summary>
+        private readonly MonoBehaviour _behaviour;
+
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="behaviour"></param>
+        public UnityApplication(MonoBehaviour behaviour)
+        {
+            _behaviour = behaviour;
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public override void Init()
+        {//使用Unity的协程
+            _behaviour.StartCoroutine(CoroutineInit());
+        }
+
+        /// <summary>
+        /// 注册服务
+        /// </summary>
+        /// <param name="serviceProvider">服务实例</param>
+        public override void Register(IServiceProvider serviceProvider)
+        {//使用Unity的协程
+            _behaviour.StartCoroutine(CoroutineRegister(serviceProvider));
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace XMLib
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            _application = new UnityApplication();
+            _application = new UnityApplication(this);
             _application.Bootstrap(GetBootstraps());
             _application.Init();
         }
@@ -50,12 +50,17 @@ namespace XMLib
         /// <summary>
         /// 入口引导
         /// </summary>
-        [Priority(0)]
+        [Priority(-10000)]
         public virtual void Bootstrap()
         {
-            App.On(ApplicationEvents.OnStartCompleted, OnStartCompleted);
+            App.On(ApplicationEvents.OnBootstrap, OnBootstrap);
+            App.On<IServiceProvider>(ApplicationEvents.OnRegisterProvider, OnRegisterProvider);
             App.On(ApplicationEvents.OnBootstraped, OnBootstraped);
-            App.On<IServiceProvider>(ApplicationEvents.OnIniting, OnIniting);
+            App.On(ApplicationEvents.OnInit, OnInit);
+            App.On<IServiceProvider>(ApplicationEvents.OnProviderInit, OnProviderInit);
+            App.On<IServiceProvider>(ApplicationEvents.OnProviderInited, OnProviderInited);
+            App.On(ApplicationEvents.OnInited, OnInited);
+            App.On(ApplicationEvents.OnStartCompleted, OnStartCompleted);
             App.On(ApplicationEvents.OnTerminate, OnTerminate);
             App.On(ApplicationEvents.OnTerminated, OnTerminated);
         }
@@ -73,20 +78,62 @@ namespace XMLib
         #region 事件
 
         /// <summary>
+        ///  当引导程序开始之前
+        /// </summary>
+        protected virtual void OnBootstrap()
+        {
+            App.Log("框架引导开始");
+        }
+
+        /// <summary>
+        ///  当注册服务提供者
+        /// </summary>
+        /// <param name="serviceProvider">服务提供者</param>
+        protected virtual void OnRegisterProvider(IServiceProvider serviceProvider)
+        {
+            App.Log("{0} 服务注册中", serviceProvider.GetType());
+        }
+
+        /// <summary>
         /// 所有引导完成
         /// </summary>
         protected virtual void OnBootstraped()
         {
-            App.Log("框架引导完成");
+            App.Log("框架引导结束");
         }
 
         /// <summary>
-        /// 服务初始化之前
+        /// 当初始化开始之前
         /// </summary>
-        /// <param name="serviceProvider">服务</param>
-        protected virtual void OnIniting(IServiceProvider serviceProvider)
+        protected virtual void OnInit()
         {
-            App.Log("{0} 服务初始化中", serviceProvider.GetType());
+            App.Log("框架初始化开始");
+        }
+
+        /// <summary>
+        /// 当服务提供者初始化结束后
+        /// </summary>
+        /// <param name="serviceProvider">服务提供者</param>
+        protected virtual void OnProviderInit(IServiceProvider serviceProvider)
+        {
+            App.Log("{0} 服务初始化开始", serviceProvider.GetType());
+        }
+
+        /// <summary>
+        /// 当服务提供者初始化进行前
+        /// </summary>
+        /// <param name="serviceProvider">服务提供者</param>
+        protected virtual void OnProviderInited(IServiceProvider serviceProvider)
+        {
+            App.Log("{0} 服务初始化结束", serviceProvider.GetType());
+        }
+
+        /// <summary>
+        /// 当初始化完成之后
+        /// </summary>
+        protected virtual void OnInited()
+        {
+            App.Log("框架初始化完成");
         }
 
         /// <summary>

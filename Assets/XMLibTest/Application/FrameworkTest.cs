@@ -17,27 +17,7 @@ namespace XMLib.Test
         {
             base.OnBootstraped();
 
-            throw new Exception("OnBootstraped 异常");
-        }
-
-        protected override void OnIniting(IServiceProvider serviceProvider)
-        {
-            base.OnIniting(serviceProvider);
-        }
-
-        protected override void OnStartCompleted()
-        {
-            base.OnStartCompleted();
-        }
-
-        protected override void OnTerminate()
-        {
-            base.OnTerminate();
-        }
-
-        protected override void OnTerminated()
-        {
-            base.OnTerminated();
+            //throw new Exception("OnBootstraped 异常");
         }
     }
 }

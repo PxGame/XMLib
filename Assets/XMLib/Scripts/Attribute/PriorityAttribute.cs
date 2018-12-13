@@ -23,10 +23,10 @@ namespace XMLib
         /// <summary>
         /// 优先级(0最高)
         /// </summary>
-        /// <param name="priority">优先级(0为最优先)</param>
-        public PriorityAttribute(int priority = int.MaxValue)
+        /// <param name="priority">优先级(0为默认级别)，值越小，优先级越高</param>
+        public PriorityAttribute(int priority = 0)
         {
-            Priorities = Math.Max(priority, 0);
+            Priorities = priority;
         }
     }
 }

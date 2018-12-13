@@ -12,7 +12,7 @@ namespace XMLib
     /// <summary>
     /// 应用程序接口
     /// </summary>
-    public interface IApplication : IDispatcher
+    public interface IApplication : IDispatcher, IContainer
     {
         /// <summary>
         /// 是否是主线程
@@ -36,14 +36,5 @@ namespace XMLib
         /// <param name="provider">服务提供者</param>
         /// <returns>服务提供者是否已经注册过</returns>
         bool IsRegisted(IServiceProvider serviceProvider);
-
-        /// <summary>
-        /// 调用函数,函数无参时将清空输入参数以完成调用
-        /// </summary>
-        /// <param name="target">方法对象</param>
-        /// <param name="methodInfo">方法信息</param>
-        /// <param name="userParams">用户传入的参数</param>
-        /// <returns>方法返回值</returns>
-        object Call(object target, MethodInfo methodInfo, params object[] args);
     }
 }

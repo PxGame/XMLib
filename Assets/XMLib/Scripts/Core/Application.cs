@@ -6,13 +6,17 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 
 namespace XMLib
 {
-    public class Application : IApplication
+    /// <summary>
+    /// 应用程序类
+    /// </summary>
+    public class Application : Container, IApplication
     {
         #region 类型定义
 
@@ -87,7 +91,7 @@ namespace XMLib
         /// <summary>
         /// 主线程id
         /// </summary>
-        private int _mainThreadId;
+        private readonly int _mainThreadId;
 
         /// <summary>
         /// 事件系统
@@ -116,6 +120,11 @@ namespace XMLib
         public bool IsFlushing { get { return _isFlushing; } }
 
         /// <summary>
+        /// 是否正在注册
+        /// </summary>
+        public bool IsRegistering { get { return _isRegistering; } }
+
+        /// <summary>
         /// 启动流程
         /// </summary>
         private LaunchProcess _process;
@@ -135,11 +144,23 @@ namespace XMLib
         /// </summary>
         private bool _isInited;
 
+        /// <summary>
+        /// 是否正在注册
+        /// </summary>
+        private bool _isRegistering;
+
         #endregion 状态
 
         #region 服务
 
+        /// <summary>
+        /// 服务提供者列表
+        /// </summary>
         private readonly SortList<IServiceProvider, int> _serviceProviders;
+
+        /// <summary>
+        /// 服务提供者类型列表
+        /// </summary>
         private readonly HashSet<Type> _serviceProviderTypes;
 
         #endregion 服务
@@ -164,6 +185,7 @@ namespace XMLib
             _isBootstraped = false;
             _isFlushing = false;
             _isInited = false;
+            _isRegistering = false;
 
             //设置启动进程
             _process = LaunchProcess.Construct;
@@ -267,6 +289,63 @@ namespace XMLib
         /// </summary>
         public virtual void Init()
         {
+            StartCoroutine(CoroutineInit());
+        }
+
+        /// <summary>
+        /// 注册服务
+        /// </summary>
+        /// <param name="serviceProvider">服务实例</param>
+        public virtual void Register(IServiceProvider serviceProvider)
+        {
+            StartCoroutine(CoroutineRegister(serviceProvider));
+        }
+
+        /// <summary>
+        /// 服务是否已注册
+        /// </summary>
+        /// <param name="serviceProvider">服务实例</param>
+        /// <returns>是否注册</returns>
+        public bool IsRegisted(IServiceProvider serviceProvider)
+        {
+            Checker.Requires<ArgumentNullException>(serviceProvider != null);
+            return _serviceProviderTypes.Contains(serviceProvider.GetType());
+        }
+
+        #region Coroutine
+
+        /// <summary>
+        /// 默认协程启动器
+        /// </summary>
+        /// <param name="coroutine">协程</param>
+        private void StartCoroutine(IEnumerator coroutine)
+        {
+            Stack<IEnumerator> stack = new Stack<IEnumerator>();
+            stack.Push(coroutine);
+            do
+            {
+                coroutine = stack.Pop();
+                while (coroutine.MoveNext())
+                {
+                    if (coroutine.Current is IEnumerator)
+                    {
+                        continue;
+                    }
+
+                    IEnumerator nextCoroutine = (IEnumerator)coroutine.Current;
+
+                    stack.Push(coroutine);
+                    coroutine = nextCoroutine;
+                }
+            } while (stack.Count > 0);
+        }
+
+        /// <summary>
+        /// 启动服务初始化携程
+        /// </summary>
+        /// <returns></returns>
+        protected IEnumerator CoroutineInit()
+        {
             if (!_isBootstraped)
             {
                 throw new RuntimeException("Bootstrap() 引导程序必须在此之前调用");
@@ -284,8 +363,7 @@ namespace XMLib
             //初始化服务
             foreach (var serviceProvider in _serviceProviders)
             {
-                Trigger(ApplicationEvents.OnIniting, serviceProvider);
-                serviceProvider.Init();
+                yield return InitProvider(serviceProvider);
             }
 
             _isInited = true;
@@ -297,10 +375,31 @@ namespace XMLib
         }
 
         /// <summary>
-        /// 注册服务
+        /// 初始化服务提供者
         /// </summary>
-        /// <param name="serviceProvider">服务实例</param>
-        public virtual void Register(IServiceProvider serviceProvider)
+        /// <param name="serviceProvider">服务提供者</param>
+        /// <returns>迭代器</returns>
+        private IEnumerator InitProvider(IServiceProvider serviceProvider)
+        {
+            //开始事件
+            Trigger(ApplicationEvents.OnProviderInit, serviceProvider);
+
+            serviceProvider.Init();
+            if (serviceProvider is ICoroutineInit)
+            {//存在则调用
+                yield return ((ICoroutineInit)serviceProvider).CoroutineInit();
+            }
+
+            //结束事件
+            Trigger(ApplicationEvents.OnProviderInited, serviceProvider);
+        }
+
+        /// <summary>
+        /// 注册服务提供者
+        /// </summary>
+        /// <param name="serviceProvider">服务提供者</param>
+        /// <returns>迭代器</returns>
+        protected IEnumerator CoroutineRegister(IServiceProvider serviceProvider)
         {
             Checker.Requires<ArgumentNullException>(serviceProvider != null);
 
@@ -323,10 +422,18 @@ namespace XMLib
             bool allowed = TriggerHalt(ApplicationEvents.OnRegisterProvider, serviceProvider) == null;
             if (!allowed)
             {
-                return;
+                yield break;
             }
 
-            serviceProvider.Register();
+            try
+            {
+                _isRegistering = true;
+                serviceProvider.Register();
+            }
+            finally
+            {
+                _isRegistering = false;
+            }
 
             int priority = AttributeUtil.GetPriority(serviceProvider.GetType(), "Init");//获取优先级
             _serviceProviders.Add(serviceProvider, priority);//添加到服务列表
@@ -334,49 +441,11 @@ namespace XMLib
 
             if (_isInited)
             {//如果程序已初始化,则立即调用服务初始化
-                Trigger(ApplicationEvents.OnIniting, serviceProvider);
-                serviceProvider.Init();
+                yield return InitProvider(serviceProvider);
             }
         }
 
-        /// <summary>
-        /// 服务是否已注册
-        /// </summary>
-        /// <param name="serviceProvider">服务实例</param>
-        /// <returns>是否注册</returns>
-        public bool IsRegisted(IServiceProvider serviceProvider)
-        {
-            Checker.Requires<ArgumentNullException>(serviceProvider != null);
-            return _serviceProviderTypes.Contains(serviceProvider.GetType());
-        }
-
-        /// <summary>
-        /// 调用函数,函数无参时将清空输入参数以完成调用
-        /// </summary>
-        /// <param name="target">方法对象</param>
-        /// <param name="methodInfo">方法信息</param>
-        /// <param name="userParams">用户传入的参数</param>
-        /// <returns>方法返回值</returns>
-        public object Call(object target, MethodInfo methodInfo, params object[] args)
-        {
-            object[] targetArgs = args;
-            //获取函数参数
-            ParameterInfo[] argInfos = methodInfo.GetParameters();
-            if (0 >= argInfos.Length)
-            {//函数为无参,忽略输入的参数
-                targetArgs = new object[0];
-            }
-
-            try
-            {
-                return methodInfo.Invoke(target, targetArgs);
-            }
-            catch (Exception ex)
-            {
-                string msg = string.Format("<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1})</color>", target, methodInfo);
-                throw new RuntimeException(msg, ex);
-            }
-        }
+        #endregion Coroutine
 
         #region IDispatcher
 

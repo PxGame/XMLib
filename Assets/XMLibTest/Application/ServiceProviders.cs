@@ -8,34 +8,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace XMLib.Test
 {
-    public class ServiceProviders1 : IServiceProvider
+    public class ServiceProviders1 : IServiceProvider, ICoroutineInit
     {
         [Priority(3)]
         public void Init()
         {
-            App.Log("ServiceProviders1 Inited");
+            App.Log("ServiceProviders1 Init");
         }
 
         public void Register()
         {
-            App.Log("ServiceProviders1 Registered");
+            App.Log("ServiceProviders1 Register");
+        }
+
+        public IEnumerator CoroutineInit()
+        {
+            int index = 3;
+            while (index > 0)
+            {
+                App.Log("ServiceProviders1 init> {0}", index);
+                yield return new WaitForSeconds(1);
+                index--;
+            }
         }
     }
 
-    public class ServiceProviders2 : IServiceProvider
+    public class ServiceProviders2 : IServiceProvider, ICoroutineInit
     {
         [Priority(2)]
         public void Init()
         {
-            App.Log("ServiceProviders2 Inited");
+            App.Log("ServiceProviders2 Init");
         }
 
         public void Register()
         {
-            App.Log("ServiceProviders2 Registered");
+            App.Log("ServiceProviders2 Register");
+        }
+
+        public IEnumerator CoroutineInit()
+        {
+            int index = 4;
+            while (index > 0)
+            {
+                App.Log("ServiceProviders2 init> {0}", index);
+                yield return new WaitForSeconds(1);
+                index--;
+            }
         }
     }
 }
