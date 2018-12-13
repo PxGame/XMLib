@@ -103,6 +103,17 @@ namespace XMLib
             }
         }
 
+        /// <summary>
+        /// 获取优先级
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="method">函数</param>
+        /// <returns>优先级</returns>
+        public static int GetPriority(Type type, string method = null)
+        {
+            return Handler.GetPriority(type, method);
+        }
+
         #endregion Application API
 
         #region Dispatcher API

@@ -5,6 +5,7 @@
  * 创建时间: 12/11/2018 4:54:03 PM
  */
 
+using System;
 using System.Reflection;
 
 namespace XMLib
@@ -36,5 +37,14 @@ namespace XMLib
         /// <param name="provider">服务提供者</param>
         /// <returns>服务提供者是否已经注册过</returns>
         bool IsRegisted(IServiceProvider serviceProvider);
+
+        /// <summary>
+        /// 获取优先级，如果存在方法优先级定义那么优先返回方法的优先级
+        /// 如果不存在优先级定义那么返回<c>int.MaxValue</c>
+        /// </summary>
+        /// <param name="type">获取优先级的类型</param>
+        /// <param name="method">获取优先级的调用方法</param>
+        /// <returns>优先级</returns>
+        int GetPriority(Type type, string method = null);
     }
 }

@@ -201,6 +201,17 @@ namespace XMLib
         }
 
         /// <summary>
+        /// 获取优先级
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="method">函数</param>
+        /// <returns>优先级</returns>
+        public int GetPriority(Type type, string method = null)
+        {
+            return AttributeUtil.GetPriority(type, method);
+        }
+
+        /// <summary>
         /// 终止
         /// </summary>
         public virtual void Terminate()
@@ -263,7 +274,7 @@ namespace XMLib
             //构建引导顺序
             foreach (IBootstrap bootstrap in bootstraps)
             {
-                int priority = AttributeUtil.GetPriority(bootstrap.GetType(), "Bootstrap");
+                int priority = GetPriority(bootstrap.GetType(), "Bootstrap");
                 sorting.Add(bootstrap, priority);
             }
 
@@ -435,7 +446,7 @@ namespace XMLib
                 _isRegistering = false;
             }
 
-            int priority = AttributeUtil.GetPriority(serviceProvider.GetType(), "Init");//获取优先级
+            int priority = GetPriority(serviceProvider.GetType(), "Init");//获取优先级
             _serviceProviders.Add(serviceProvider, priority);//添加到服务列表
             _serviceProviderTypes.Add(serviceProvider.GetType());//添加到服务类型列表
 
