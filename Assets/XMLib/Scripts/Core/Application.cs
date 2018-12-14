@@ -232,7 +232,7 @@ namespace XMLib
         /// <summary>
         /// 清理
         /// </summary>
-        public virtual void Flush()
+        public override void Flush()
         {
             lock (_syncRoot)
             {
@@ -241,6 +241,7 @@ namespace XMLib
                     _isFlushing = true;
 
                     //释放服务
+                    base.Flush();
 
                     //清理
                     _serviceProviders.Clear();
