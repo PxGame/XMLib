@@ -2,7 +2,7 @@
  * 作者：Peter Xiang
  * 联系方式：565067150@qq.com
  * 文档: https://github.com/xiangmu110/XMLib/wiki
- * 创建时间: 12/12/2018 3:50:09 PM
+ * 创建时间: 12/14/2018 12:09:23 PM
  */
 
 using System.Collections;
@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib.Test
+namespace XMLib.Test.ApplicationTest
 {
-    public class ServiceProviders1 : IServiceProvider, ICoroutineInit
+    public class ServiceProvider1 : IServiceProvider, ICoroutineInit
     {
         [Priority(3)]
         public void Init()
@@ -37,7 +37,7 @@ namespace XMLib.Test
         }
     }
 
-    public class ServiceProviders2 : IServiceProvider, ICoroutineInit
+    public class ServiceProvider2 : IServiceProvider, ICoroutineInit
     {
         [Priority(2)]
         public void Init()

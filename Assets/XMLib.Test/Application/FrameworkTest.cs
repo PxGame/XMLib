@@ -11,10 +11,20 @@ using System;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace XMLib.Test
+namespace XMLib.Test.ApplicationTest
 {
     public class FrameworkTest : Framework
     {
+        protected override IBootstrap[] GetBootstraps()
+        {
+            return ArrayUtil.Merge(base.GetBootstraps(),
+                new IBootstrap[] {
+                    new BootstrapTest1(),
+                    new BootstrapTest2()
+                }
+            );
+        }
+
         protected override void OnBootstraped()
         {
             base.OnBootstraped();

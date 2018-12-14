@@ -5,14 +5,16 @@
  * 创建时间: 12/11/2018 11:28:16 AM
  */
 
+using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.Test
+namespace XMLib.Test.SortListTest
 {
-    public class SortListTest : MonoBehaviour
+    public class TestRunner
     {
-        private void Awake()
+        [Test]
+        public void Run()
         {
             SortList<string, int> data = new SortList<string, int>();
             data.Add("6", 6);

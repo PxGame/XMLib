@@ -9,16 +9,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace XMLib.Test
+namespace XMLib.Test.ApplicationTest
 {
-    public class ApplicationRunner
+    public class TestRunner
     {
         [UnityTest]
         public IEnumerator Run()
         {
             GameObject obj = new GameObject();
-            obj.AddComponent<BootstrapTest1>();
-            obj.AddComponent<BootstrapTest2>();
             obj.AddComponent<FrameworkTest>();
 
             bool waitFlag = false;

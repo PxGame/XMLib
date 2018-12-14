@@ -5,20 +5,16 @@
  * 创建时间: 12/12/2018 10:03:51 AM
  */
 
-using System;
 using NUnit.Framework;
 using System.Diagnostics;
-using UnityEngine;
-using UnityEngine.TestTools;
 using Debug = UnityEngine.Debug;
-using System.Collections;
 
-namespace XMLib.Test
+namespace XMLib.Test.DispatcherTest
 {
-    public class DispatcherTest
+    public class TestRunner
     {
         [Test]
-        public void Test()
+        public void Run()
         {
             Application app = new Application();
             app.Bootstrap();
