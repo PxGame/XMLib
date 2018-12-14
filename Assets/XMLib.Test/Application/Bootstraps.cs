@@ -5,10 +5,6 @@
  * 创建时间: 12/14/2018 12:09:49 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
-
 namespace XMLib.Test.ApplicationTest
 {
     public class BootstrapTest1 : IBootstrap

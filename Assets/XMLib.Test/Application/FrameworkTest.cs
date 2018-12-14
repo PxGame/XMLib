@@ -5,12 +5,6 @@
  * 创建时间: 12/12/2018 4:18:47 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using NUnit.Framework;
-using UnityEngine;
-
 namespace XMLib.Test.ApplicationTest
 {
     public class FrameworkTest : Framework

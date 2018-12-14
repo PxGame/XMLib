@@ -5,10 +5,6 @@
  * 创建时间: 12/12/2018 11:35:33 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
-
 namespace XMLib
 {
     /// <summary>
