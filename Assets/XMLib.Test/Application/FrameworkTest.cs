@@ -8,6 +8,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using NUnit.Framework;
+using UnityEngine;
 
 namespace XMLib.Test
 {
@@ -16,8 +18,6 @@ namespace XMLib.Test
         protected override void OnBootstraped()
         {
             base.OnBootstraped();
-
-            //throw new Exception("OnBootstraped 异常");
         }
     }
 }

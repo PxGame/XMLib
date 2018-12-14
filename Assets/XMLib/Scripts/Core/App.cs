@@ -36,29 +36,21 @@ namespace XMLib
         {
             get
             {
-                if (_instance == null)
-                {
-                    return New();
-                }
                 return _instance;
             }
             set
             {
+                if (_instance != null && value != null)
+                {
+                    throw new RuntimeException("App.Handler 重复赋值");
+                }
+
                 _instance = value;
                 if (OnNewApplication != null)
                 {
                     OnNewApplication.Invoke(_instance);
                 }
             }
-        }
-
-        /// <summary>
-        /// 创建一个实例
-        /// </summary>
-        /// <returns>实例</returns>
-        private static IApplication New()
-        {
-            return Application.New();
         }
 
         #endregion 基础

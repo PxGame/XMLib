@@ -1,0 +1,8 @@
+{
+    "name": "XMLib.Test",
+    "references": [
+        "XMLib"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

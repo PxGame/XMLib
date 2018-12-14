@@ -25,9 +25,10 @@ namespace XMLib
         /// <summary>
         /// 调用事件
         /// </summary>
+        /// <param name="app">调用应用</param>
         /// <param name="eventName">事件名</param>
         /// <param name="args">参数</param>
         /// <returns>结果</returns>
-        object Call(string eventName, params object[] args);
+        object Call(IApplication app, string eventName, params object[] args);
     }
 }

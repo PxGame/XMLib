@@ -179,7 +179,7 @@ namespace XMLib
 
             //初始化参数
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
-            _dispatcher = new Dispatcher();
+            _dispatcher = new Dispatcher(this);
 
             //初始化状态
             _isBootstraped = false;
@@ -223,6 +223,7 @@ namespace XMLib
             //释放资源
             Flush();
 
+            //销毁全局句柄
             App.Handler = null;
             _process = LaunchProcess.Terminated;
             Trigger(ApplicationEvents.OnTerminated, this);

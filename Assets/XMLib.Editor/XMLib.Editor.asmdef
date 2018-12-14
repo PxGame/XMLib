@@ -1,0 +1,8 @@
+{
+    "name": "XMLib.Editor",
+    "references": [
+        "XMLib"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

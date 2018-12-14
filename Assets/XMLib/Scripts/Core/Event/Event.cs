@@ -52,14 +52,15 @@ namespace XMLib
         }
 
         /// <summary>
-        /// 事件调用
+        /// 调用事件
         /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="args"></param>
+        /// <param name="app">调用应用</param>
+        /// <param name="eventName">事件名</param>
+        /// <param name="args">参数</param>
         /// <returns>结果</returns>
-        public object Call(string eventName, params object[] args)
+        public object Call(IApplication app, string eventName, params object[] args)
         {
-            return App.Call(_target, _methodInfo, args);
+            return app.Call(_target, _methodInfo, args);
         }
     }
 }

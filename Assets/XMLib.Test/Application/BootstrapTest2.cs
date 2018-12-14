@@ -12,13 +12,17 @@ using UnityEngine;
 
 namespace XMLib.Test
 {
-    public class BootstrapTest1 : MonoBehaviour, IBootstrap
+    public class BootstrapTest2 : MonoBehaviour, IBootstrap
     {
-        [Priority(3)]
+        private void Awake()
+        {
+        }
+
+        [Priority(2)]
         public void Bootstrap()
         {
-            App.Log("BootstrapTest1");
-            App.Register(new ServiceProviders2());
+            App.Log("BootstrapTest2");
+            App.Register(new ServiceProviders1());
         }
     }
 }

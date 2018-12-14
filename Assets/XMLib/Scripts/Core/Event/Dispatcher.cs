@@ -32,10 +32,17 @@ namespace XMLib
         private object _syncRoot;
 
         /// <summary>
+        /// 绑定的应用实例
+        /// </summary>
+        private IApplication _app;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
-        public Dispatcher()
+        /// <param name="app">应用实例</param>
+        public Dispatcher(IApplication app)
         {
+            _app = app;
             _groupMapping = new Dictionary<object, List<IEvent>>();
             _listeners = new Dictionary<string, SortList<IEvent, int>>();
             _syncRoot = new object();
@@ -285,7 +292,7 @@ namespace XMLib
                 {
                     foreach (IEvent evt in events)
                     {
-                        object result = evt.Call(eventName, args);
+                        object result = evt.Call(_app, eventName, args);
 
                         //只取一个结果时
                         if (half && result != null)

@@ -20,7 +20,7 @@ namespace XMLib
     {
         #region Unity
 
-        private void Awake()
+        protected virtual void Awake()
         {
             DontDestroyOnLoad(gameObject);
             _application = new UnityApplication(this);
@@ -28,7 +28,7 @@ namespace XMLib
             _application.Init();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             _application.Terminate();
         }
