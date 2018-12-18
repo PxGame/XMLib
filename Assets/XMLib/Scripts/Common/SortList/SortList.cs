@@ -132,11 +132,6 @@ namespace XMLib
         public int Count { get { return _list.Count; } }
 
         /// <summary>
-        /// 同步锁
-        /// </summary>
-        public object SyncRoot { get { return _syncRoot; } }
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="capacity">默认容器大小</param>
@@ -145,7 +140,6 @@ namespace XMLib
             _list = new List<ValueWeightPair>(capacity);
             _dict = new Dictionary<TValue, ValueWeightPair>(capacity);
             _forward = true;
-            _syncRoot = new object();
             _comparerWeight = OnComparerWeight;
 
             //需要重排
@@ -403,7 +397,6 @@ namespace XMLib
         private Comparison<TWeight> _comparerWeight;
         private bool _forward;
         private bool _sorted;
-        private object _syncRoot;
 
         /// <summary>
         /// 比较

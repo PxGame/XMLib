@@ -164,31 +164,28 @@ namespace XMLib
         /// <param name="evt">事件对象</param>
         private void ForgetListen(IEvent evt)
         {
-            lock (_syncRoot)
+            //移除分组中的监听
+            List<IEvent> events = null;
+            if (null != evt.Group)
             {
-                //移除分组中的监听
-                List<IEvent> events = null;
-                if (null != evt.Group)
+                if (_groupMapping.TryGetValue(evt.Group, out events))
                 {
-                    if (_groupMapping.TryGetValue(evt.Group, out events))
+                    events.Remove(evt);
+                    if (events.Count <= 0)
                     {
-                        events.Remove(evt);
-                        if (events.Count <= 0)
-                        {
-                            _groupMapping.Remove(evt.Group);
-                        }
+                        _groupMapping.Remove(evt.Group);
                     }
                 }
+            }
 
-                //移除监听
-                SortList<IEvent, int> sortEvents = null;
-                if (_listeners.TryGetValue(evt.Name, out sortEvents))
+            //移除监听
+            SortList<IEvent, int> sortEvents = null;
+            if (_listeners.TryGetValue(evt.Name, out sortEvents))
+            {
+                sortEvents.Remove(evt);
+                if (sortEvents.Count <= 0)
                 {
-                    sortEvents.Remove(evt);
-                    if (sortEvents.Count <= 0)
-                    {
-                        _listeners.Remove(evt.Name);
-                    }
+                    _listeners.Remove(evt.Name);
                 }
             }
         }

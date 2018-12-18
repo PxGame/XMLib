@@ -1,0 +1,31 @@
+﻿/*
+ * 作者：#AUTHOR#
+ * 联系方式：#CONTACT#
+ * 文档: #DOC#
+ * 创建时间: #CREATEDATE#
+ */
+
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using UnityEngine.TestTools;
+using NUnit.Framework;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
+
+namespace XMLib.Test
+{
+    public class #SCRIPTNAME#
+    {
+        [Test]
+        public void Run()
+        {
+        }
+
+        [UnityTest]
+        public IEnumerator RunSync()
+        {
+            yield break;
+        }
+    }
+}

@@ -3,6 +3,8 @@
     "references": [
         "XMLib"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": []
 }

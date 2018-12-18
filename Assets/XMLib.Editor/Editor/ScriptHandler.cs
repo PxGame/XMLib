@@ -45,7 +45,7 @@ namespace XMLib.Editor
 
             string scriptStr = text.text;
 
-            string className = Path.GetFileNameWithoutExtension(filePath);
+            string className = Path.GetFileNameWithoutExtension(filePath).Trim();
 
             //更新信息
             scriptStr = scriptStr.Replace("#SCRIPTNAME#", className);
@@ -69,30 +69,31 @@ namespace XMLib.Editor
     /// </summary>
     public class ScriptHandler
     {
-        public static string ScriptTemplate = "XMLib/Template/MonoXMLib.cs.txt";
-        public static string ScriptEditorTemplate = "XMLib/Template/XMLibEditor.cs.txt";
-        public static string TestScriptTemplate = "XMLib/Template/TestMonoXMLib.cs.txt";
-        public static string TestScriptEditorTemplate = "XMLib/Template/TestXMLibEditor.cs.txt";
-        public static string SimpleScriptTemplate = "XMLib/Template/SimpleXMLib.cs.txt";
-        public static string TestSimpleScriptTemplate = "XMLib/Template/TestSimpleXMLib.cs.txt";
+        public static string ScriptTemplate = "XMLib/Template/Mono.XMLib.cs.txt";
+        public static string ScriptEditorTemplate = "XMLib/Template/Mono Editor.XMLib.cs.txt";
+        public static string TestScriptTemplate = "XMLib/Template/Test Mono.XMLib.cs.txt";
+        public static string TestScriptEditorTemplate = "XMLib/Template/Test Mono Editor.XMLib.cs.txt";
+        public static string SimpleScriptTemplate = "XMLib/Template/Simple.XMLib.cs.txt";
+        public static string TestSimpleScriptTemplate = "XMLib/Template/Test Simple.XMLib.cs.txt";
+        public static string TestRunnerScriptTemplate = "XMLib/Template/Test Runner.XMLib.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
         /// <summary>
         /// 创建新脚本
         /// </summary>
-        [MenuItem("Assets/XMLib/Create/Unity Script")]
+        [MenuItem("Assets/XMLib/Create/Mono Script")]
         public static void CreateScript()
         {
-            CreateFIle("XMLib", ScriptTemplate, ScriptEditorTemplate);
+            CreateFIle("Mono", ScriptTemplate, ScriptEditorTemplate);
         }
 
         /// <summary>
         /// 创建新测试脚本
         /// </summary>
-        [MenuItem("Assets/XMLib/Create/Test Unity Script")]
+        [MenuItem("Assets/XMLib/Create/Test Mono Script")]
         public static void CreateTestScript()
         {
-            CreateFIle("TestXMLib", TestScriptTemplate, TestScriptEditorTemplate);
+            CreateFIle("Test Mono", TestScriptTemplate, TestScriptEditorTemplate);
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Simple Script")]
         public static void CreateSimpleScript()
         {
-            CreateFIle("SimpleXMLib", SimpleScriptTemplate);
+            CreateFIle("Simple", SimpleScriptTemplate);
         }
 
         /// <summary>
@@ -110,7 +111,16 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Test Simple Script")]
         public static void CreateTestSimpleScript()
         {
-            CreateFIle("TestSimpleXMLib", TestSimpleScriptTemplate);
+            CreateFIle("Test Simple", TestSimpleScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建新测试脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Test Runner Script")]
+        public static void CreateTestRunnerScript()
+        {
+            CreateFIle("Test Runner", TestRunnerScriptTemplate);
         }
 
         /// <summary>
@@ -154,7 +164,7 @@ namespace XMLib.Editor
         {
             if (isEditor)
             {
-                fileName += "Editor";
+                fileName += " Editor";
             }
 
             fileName += ".cs";

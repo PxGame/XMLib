@@ -98,11 +98,6 @@ namespace XMLib
         /// </summary>
         private readonly IDispatcher _dispatcher;
 
-        /// <summary>
-        /// 同步锁
-        /// </summary>
-        private readonly object _syncRoot = new object();
-
         #region 状态
 
         /// <summary>
@@ -113,11 +108,6 @@ namespace XMLib
             get { return _process; }
             private set { _process = value; }
         }
-
-        /// <summary>
-        /// 是否正在释放
-        /// </summary>
-        public bool IsFlushing { get { return _isFlushing; } }
 
         /// <summary>
         /// 是否正在注册
@@ -133,11 +123,6 @@ namespace XMLib
         /// 是否引导完成
         /// </summary>
         private bool _isBootstraped;
-
-        /// <summary>
-        /// 是否正在释放
-        /// </summary>
-        private bool _isFlushing;
 
         /// <summary>
         /// 是否已经初始化
@@ -183,7 +168,6 @@ namespace XMLib
 
             //初始化状态
             _isBootstraped = false;
-            _isFlushing = false;
             _isInited = false;
             _isRegistering = false;
 
@@ -227,31 +211,6 @@ namespace XMLib
             App.Handler = null;
             _process = LaunchProcess.Terminated;
             Trigger(ApplicationEvents.OnTerminated, this);
-        }
-
-        /// <summary>
-        /// 清理
-        /// </summary>
-        public override void Flush()
-        {
-            lock (_syncRoot)
-            {
-                try
-                {
-                    _isFlushing = true;
-
-                    //释放服务
-                    base.Flush();
-
-                    //清理
-                    _serviceProviders.Clear();
-                    _serviceProviderTypes.Clear();
-                }
-                finally
-                {
-                    _isFlushing = false;
-                }
-            }
         }
 
         /// <summary>

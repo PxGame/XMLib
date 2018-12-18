@@ -43,11 +43,6 @@ namespace XMLib
         bool Forward { get; set; }
 
         /// <summary>
-        /// 同步锁
-        /// </summary>
-        object SyncRoot { get; }
-
-        /// <summary>
         /// 添加
         /// </summary>
         /// <param name="value">值</param>
