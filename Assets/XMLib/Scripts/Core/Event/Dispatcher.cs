@@ -260,12 +260,13 @@ namespace XMLib
         /// 创建监听对象
         /// </summary>
         /// <param name="eventName">事件名</param>
-        /// <param name="func">响应函数</param>
+        /// <param name="target">目标</param>
+        /// <param name="methodInfo">响应函数</param>
         /// <param name="group">分组</param>
         /// <returns>监听</returns>
         protected virtual IEvent MakeEvent(string eventName, object target, MethodInfo methodInfo, object group)
         {
-            return new Event(eventName, target, methodInfo, group);
+            return new Event(_app, eventName, target, methodInfo, group);
         }
 
         /// <summary>
@@ -287,9 +288,28 @@ namespace XMLib
 
                 if (null != events)
                 {
+                    List<IEvent> invalidEvents = null;
                     foreach (IEvent evt in events)
                     {
-                        object result = evt.Call(_app, eventName, args);
+                        if (!evt.IsValid())
+                        {//非有效事件,移除
+                            if (null == invalidEvents)
+                            {
+                                invalidEvents = new List<IEvent>();
+                            }
+
+                            //添加到无效列表
+                            invalidEvents.Add(evt);
+                            continue;
+                        }
+
+                        if (!evt.IsActiveAndEnabled())
+                        {//非激活状态事件
+                            continue;
+                        }
+
+                        //调用事件
+                        object result = evt.Call(_app, args);
 
                         //只取一个结果时
                         if (half && result != null)
@@ -298,6 +318,14 @@ namespace XMLib
                         }
 
                         outputs.Add(result);
+                    }
+
+                    if (null != invalidEvents)
+                    {//移除无效事件
+                        foreach (IEvent evt in invalidEvents)
+                        {
+                            ForgetListen(evt);
+                        }
                     }
                 }
 
