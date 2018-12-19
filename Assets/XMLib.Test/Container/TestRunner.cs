@@ -33,6 +33,7 @@ namespace XMLib.Test.ContainerTest
                 .OnRelease((data, obj) => { Debug.Log("Container OnRelease:" + obj); });
 
             container.Bind(services[0], typeof(Service1), false).Alias("1")
+                .Alias<IService1>()
                 .OnResolving((data, obj) => { Debug.Log("OnResolving:" + obj); })
                 .OnAfterResolving((data, obj) => { Debug.Log("OnAfterResolving:" + obj); })
                 ;//.OnRelease((data, obj) => { Debug.Log("OnRelease:" + obj); });
@@ -42,17 +43,15 @@ namespace XMLib.Test.ContainerTest
                 .OnAfterResolving((data, obj) => { Debug.Log("OnAfterResolving:" + obj); })
                 .OnRelease((data, obj) => { Debug.Log("OnRelease:" + obj); });
 
-            object obj1 = container.Make("1");
-            Debug.Log(obj1);
+            container.Instance("msg", "我是谁??");
 
-            object obj3 = container.Make("1", "我是参数");
-            Debug.Log(obj3);
+            object obj1 = container.Make("1", "我是参数");
+            Debug.Log(obj1);
 
             object obj2 = container.Make(services[1]);
             Debug.Log(obj2);
 
-            container.Release(services[1]);
-            container.Release(services[0]);
+            container.Release("1");
 
             container.Flush();
         }

@@ -12,16 +12,11 @@ using UnityEngine;
 
 namespace XMLib.Test.ContainerTest
 {
-    public class Service1 : IDisposable
+    public class Service1 : IDisposable, IService1
     {
         private string _msg = "";
 
-        public Service1()
-        {
-            _msg = "木有参数";
-        }
-
-        public Service1(string msg)
+        public Service1([Inject("msg")]string msg)
         {
             _msg = msg;
         }
@@ -31,14 +26,31 @@ namespace XMLib.Test.ContainerTest
             Debug.LogFormat("{0} 被释放了，呜呜呜...", this);
         }
 
+        public string Get()
+        {
+            return "Service 1 Get";
+        }
+
         public override string ToString()
         {
             return "我是" + GetType().Name + ">" + _msg;
         }
     }
 
+    public interface IService1
+    {
+        string Get();
+    }
+
     public class Service2 : IDisposable
     {
+        private IService1 _service1;
+
+        public Service2(IService1 service1)
+        {
+            _service1 = service1;
+        }
+
         public void Dispose()
         {
             Debug.LogFormat("{0} 被释放了，呜呜呜...", this);
@@ -46,7 +58,7 @@ namespace XMLib.Test.ContainerTest
 
         public override string ToString()
         {
-            return "我是" + GetType().Name;
+            return "我是" + GetType().Name + ">" + _service1.Get();
         }
     }
 }

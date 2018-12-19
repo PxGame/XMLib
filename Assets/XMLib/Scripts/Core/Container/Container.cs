@@ -499,22 +499,22 @@ namespace XMLib
         /// 获取参数依赖
         /// </summary>
         /// <param name="bindData">绑定数据</param>
-        /// <param name="parameterInfo">参数信息</param>
+        /// <param name="infos">参数信息</param>
         /// <param name="args">用户参数</param>
         /// <returns>参数列表</returns>
-        private object[] GetDependencies(Bindable bindData, ParameterInfo[] parameterInfo, object[] args)
+        private object[] GetDependencies(Bindable bindData, ParameterInfo[] infos, object[] args)
         {
-            if (0 >= parameterInfo.Length)
+            if (0 >= infos.Length)
             {
                 return null;
             }
 
-            object[] results = new object[parameterInfo.Length];
+            object[] results = new object[infos.Length];
 
             int length = results.Length;
             for (int i = 0; i < length; i++)
             {
-                ParameterInfo info = parameterInfo[i];
+                ParameterInfo info = infos[i];
 
                 object arg = null;
                 if (null == arg)
@@ -527,6 +527,22 @@ namespace XMLib
                     arg = GetDependenciesFromUserParams(info, ref args);
                 }
 
+                string needService = null;
+                if (null == arg)
+                {
+                    needService = GetParamNeedsService(info);
+
+                    if (info.ParameterType.IsClass
+                        || info.ParameterType.IsInterface)
+                    {
+                        arg = ResolveClass(bindData, needService, info);
+                    }
+                    else
+                    {
+                        arg = ResolvePrimitive(bindData, needService, info);
+                    }
+                }
+
                 if (null == arg)
                 {
                     throw new RuntimeException("未匹配到参数");
@@ -536,6 +552,42 @@ namespace XMLib
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// 解决基本类型
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="service">服务名</param>
+        /// <param name="info">参数信息</param>
+        /// <returns></returns>
+        private object ResolvePrimitive(Bindable bindData, string service, ParameterInfo info)
+        {
+            if (CanMake(service))
+            {//可以创建
+                return Make(service);
+            }
+
+            //获取默认值，不一定有效，
+            //在.net 4.7.2版本中有HasDefaultValue的方法可以判断
+            if (info.IsOptional)
+            {
+                return info.DefaultValue;
+            }
+
+            throw new RuntimeException("未能解决基本类型");
+        }
+
+        /// <summary>
+        /// 解决类类型
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="service">服务名</param>
+        /// <param name="info">参数信息</param>
+        /// <returns>结果</returns>
+        private object ResolveClass(Bindable bindData, string service, ParameterInfo info)
+        {
+            return Make(service);
         }
 
         /// <summary>
