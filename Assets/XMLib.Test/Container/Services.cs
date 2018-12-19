@@ -14,6 +14,18 @@ namespace XMLib.Test.ContainerTest
 {
     public class Service1 : IDisposable
     {
+        private string _msg = "";
+
+        public Service1()
+        {
+            _msg = "木有参数";
+        }
+
+        public Service1(string msg)
+        {
+            _msg = msg;
+        }
+
         public void Dispose()
         {
             Debug.LogFormat("{0} 被释放了，呜呜呜...", this);
@@ -21,7 +33,7 @@ namespace XMLib.Test.ContainerTest
 
         public override string ToString()
         {
-            return "我是" + GetType().Name;
+            return "我是" + GetType().Name + ">" + _msg;
         }
     }
 

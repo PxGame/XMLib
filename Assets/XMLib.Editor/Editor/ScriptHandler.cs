@@ -45,7 +45,7 @@ namespace XMLib.Editor
 
             string scriptStr = text.text;
 
-            string className = Path.GetFileNameWithoutExtension(filePath).Trim();
+            string className = Path.GetFileNameWithoutExtension(filePath).Replace(" ", "");
 
             //更新信息
             scriptStr = scriptStr.Replace("#SCRIPTNAME#", className);

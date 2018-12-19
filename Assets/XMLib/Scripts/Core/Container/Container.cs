@@ -118,27 +118,7 @@ namespace XMLib
             _syncRoot = new object();
         }
 
-        /// <summary>
-        ///  触发消息
-        /// </summary>
-        /// <param name="bindData">绑定实例</param>
-        /// <param name="instance">服务实例</param>
-        /// <param name="list">事件列表</param>
-        /// <returns>服务实例</returns>
-        internal object Trigger(IBindData bindData, object instance, List<Action<IBindData, object>> list)
-        {
-            if (null == list || 0 >= list.Count)
-            {
-                return instance;
-            }
-
-            foreach (var evt in list)
-            {
-                evt(bindData, instance);
-            }
-
-            return instance;
-        }
+        #region 构造绑定相关
 
         /// <summary>
         /// 解绑服务
@@ -203,22 +183,6 @@ namespace XMLib
         }
 
         /// <summary>
-        /// 添加事件到列表
-        /// </summary>
-        /// <param name="closure">事件对象</param>
-        /// <param name="list">事件列表</param>
-        private void AddEvent(Action<IBindData, object> closure, List<Action<IBindData, object>> list)
-        {
-            Checker.NotNull(closure, "closure");
-
-            lock (_syncRoot)
-            {
-                CheckIsFlusing();
-                list.Add(closure);
-            }
-        }
-
-        /// <summary>
         /// 创建实例
         /// </summary>
         /// <param name="bindData">绑定数据</param>
@@ -231,6 +195,8 @@ namespace XMLib
             {
                 return null;
             }
+
+            args = GetConstructorsInjectParams(bindData, serviceType, args);
 
             try
             {
@@ -399,7 +365,47 @@ namespace XMLib
             return null;
         }
 
+        #endregion 构造绑定相关
+
         #region 事件调用
+
+        /// <summary>
+        /// 添加事件到列表
+        /// </summary>
+        /// <param name="closure">事件对象</param>
+        /// <param name="list">事件列表</param>
+        private void AddEvent(Action<IBindData, object> closure, List<Action<IBindData, object>> list)
+        {
+            Checker.NotNull(closure, "closure");
+
+            lock (_syncRoot)
+            {
+                CheckIsFlusing();
+                list.Add(closure);
+            }
+        }
+
+        /// <summary>
+        ///  触发消息
+        /// </summary>
+        /// <param name="bindData">绑定实例</param>
+        /// <param name="instance">服务实例</param>
+        /// <param name="list">事件列表</param>
+        /// <returns>服务实例</returns>
+        internal object Trigger(IBindData bindData, object instance, List<Action<IBindData, object>> list)
+        {
+            if (null == list || 0 >= list.Count)
+            {
+                return instance;
+            }
+
+            foreach (var evt in list)
+            {
+                evt(bindData, instance);
+            }
+
+            return instance;
+        }
 
         /// <summary>
         /// 触发全局解决修饰器之后的修饰器回调
@@ -450,6 +456,224 @@ namespace XMLib
         }
 
         #endregion 事件调用
+
+        #region 依赖注入
+
+        /// <summary>
+        /// 获取构造函数依赖
+        /// </summary>
+        /// <param name="bindData">服务绑定数据</param>
+        /// <param name="serviceType">服务类型</param>
+        /// <param name="args">用户传入参数</param>
+        /// <returns>参数列表</returns>
+        private object[] GetConstructorsInjectParams(Bindable bindData, Type serviceType, object[] args)
+        {
+            ConstructorInfo[] constructors = serviceType.GetConstructors();
+            if (constructors.Length <= 0)
+            {
+                return null;
+            }
+
+            Exception exception = null;
+            foreach (ConstructorInfo info in constructors)
+            {//遍历构造函数
+                try
+                {
+                    //获取依赖
+                    return GetDependencies(bindData, info.GetParameters(), args);
+                }
+                catch (Exception ex)
+                {
+                    if (exception == null)
+                    {
+                        exception = ex;
+                    }
+                }
+            }
+
+            Checker.Requires<RuntimeException>(exception != null);
+            throw exception;
+        }
+
+        /// <summary>
+        /// 获取参数依赖
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="parameterInfo">参数信息</param>
+        /// <param name="args">用户参数</param>
+        /// <returns>参数列表</returns>
+        private object[] GetDependencies(Bindable bindData, ParameterInfo[] parameterInfo, object[] args)
+        {
+            if (0 >= parameterInfo.Length)
+            {
+                return null;
+            }
+
+            object[] results = new object[parameterInfo.Length];
+
+            int length = results.Length;
+            for (int i = 0; i < length; i++)
+            {
+                ParameterInfo info = parameterInfo[i];
+
+                object arg = null;
+                if (null == arg)
+                {
+                    arg = GetCompactInjectUserParams(info, ref args);
+                }
+
+                if (null == arg)
+                {
+                    arg = GetDependenciesFromUserParams(info, ref args);
+                }
+
+                if (null == arg)
+                {
+                    throw new RuntimeException("未匹配到参数");
+                }
+
+                results[i] = arg;
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 从用户传入的参数中获取依赖
+        /// </summary>
+        /// <param name="info">参数信息</param>
+        /// <param name="args">用户参数</param>
+        /// <returns>参数</returns>
+        private object GetDependenciesFromUserParams(ParameterInfo info, ref object[] args)
+        {
+            if (null == args)
+            {
+                return null;
+            }
+
+            int length = args.Length;
+
+            for (int i = 0; i < length; i++)
+            {//遍历查找可用参数
+                object arg = args[i];
+
+                if (ChangeType(ref arg, info.ParameterType))
+                {//转换成功
+                    ArrayUtil.RemoveAt(ref args, i);//移除可用参数列表
+                    return arg;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 参数类型转换
+        /// </summary>
+        /// <param name="arg">需要转换的参数</param>
+        /// <param name="conversionType">需要转换的类型</param>
+        /// <returns>是否成功</returns>
+        private bool ChangeType(ref object arg, Type conversionType)
+        {
+            try
+            {
+                if (null == arg || conversionType.IsInstanceOfType(arg))
+                {
+                    return true;
+                }
+
+                if (arg is IConvertible && typeof(IConvertible).IsAssignableFrom(conversionType))
+                {
+                    arg = Convert.ChangeType(arg, conversionType);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {//忽略该异常
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 紧缩注入参数
+        /// </summary>
+        /// <param name="info">参数信息</param>
+        /// <param name="args">参数列表</param>
+        /// <returns>参数</returns>
+        private object GetCompactInjectUserParams(ParameterInfo info, ref object[] args)
+        {
+            if (!CheckCompactInjectUserParams(info, args))
+            {
+                return null;
+            }
+
+            object[] result = args;
+            args = null;
+
+            if (typeof(object) == info.ParameterType
+                && null != result
+                && 1 == result.Length)
+            {//返回object
+                return result[0];
+            }
+
+            //返回 object[]
+            return result;
+        }
+
+        private bool CheckCompactInjectUserParams(ParameterInfo info, object[] args)
+        {
+            if (null == args || args.Length <= 0)
+            {
+                return false;
+            }
+
+            return info.ParameterType == typeof(object[])
+                || info.ParameterType == typeof(object);
+        }
+
+        /// <summary>
+        /// 获取字段需求的服务
+        /// </summary>
+        /// <param name="property">字段</param>
+        /// <returns>服务名</returns>
+        protected virtual string GetPropertyNeedsService(PropertyInfo property)
+        {
+            InjectAttribute injectAttr = (InjectAttribute)property.GetCustomAttributes(typeof(InjectAttribute), false)[0];
+            if (string.IsNullOrEmpty(injectAttr.Alias))
+            {
+                return Type2Service(property.PropertyType);
+            }
+            else
+            {
+                return injectAttr.Alias;
+            }
+        }
+
+        /// <summary>
+        /// 获取参数需求的服务
+        /// </summary>
+        /// <param name="arg">参数</param>
+        /// <returns>服务名</returns>
+        protected virtual string GetParamNeedsService(ParameterInfo arg)
+        {
+            string needService = Type2Service(arg.ParameterType);
+            if (!arg.IsDefined(typeof(InjectAttribute), false))
+            {
+                return needService;
+            }
+
+            InjectAttribute injectAttr = (InjectAttribute)arg.GetCustomAttributes(typeof(InjectAttribute), false)[0];
+            if (!string.IsNullOrEmpty(injectAttr.Alias))
+            {
+                needService = injectAttr.Alias;
+            }
+
+            return needService;
+        }
+
+        #endregion 依赖注入
 
         #region IContainer
 

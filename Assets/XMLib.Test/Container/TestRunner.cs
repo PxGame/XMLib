@@ -45,6 +45,9 @@ namespace XMLib.Test.ContainerTest
             object obj1 = container.Make("1");
             Debug.Log(obj1);
 
+            object obj3 = container.Make("1", "我是参数");
+            Debug.Log(obj3);
+
             object obj2 = container.Make(services[1]);
             Debug.Log(obj2);
 
