@@ -866,6 +866,8 @@ namespace XMLib
                 targetArgs = new object[0];
             }
 
+            return methodInfo.Invoke(target, targetArgs);
+            /*
             try
             {
                 return methodInfo.Invoke(target, targetArgs);
@@ -879,6 +881,7 @@ namespace XMLib
                     methodInfo.DeclaringType);
                 throw new RuntimeException(msg, ex);
             }
+            */
         }
 
         /// <summary>

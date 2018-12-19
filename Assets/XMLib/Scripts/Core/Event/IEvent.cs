@@ -5,6 +5,8 @@
  * 创建时间: 12/11/2018 5:08:13 PM
  */
 
+using System.Reflection;
+
 namespace XMLib
 {
     /// <summary>
@@ -23,6 +25,16 @@ namespace XMLib
         object Group { get; }
 
         /// <summary>
+        /// 目标对象
+        /// </summary>
+        object Target { get; }
+
+        /// <summary>
+        /// 调用函数
+        /// </summary>
+        MethodInfo MethodInfo { get; }
+
+        /// <summary>
         /// 事件是否可用
         /// </summary>
         /// <returns>是否可用</returns>
@@ -33,12 +45,5 @@ namespace XMLib
         /// </summary>
         /// <returns>是否有效</returns>
         bool IsValid();
-
-        /// <summary>
-        /// 调用事件
-        /// </summary>
-        /// <param name="args">参数</param>
-        /// <returns>结果</returns>
-        object Call(params object[] args);
     }
 }

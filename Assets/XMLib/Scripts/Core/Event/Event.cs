@@ -27,44 +27,26 @@ namespace XMLib
         /// <summary>
         /// 目标对象
         /// </summary>
-        private readonly object _target;
+        public object Target { get; private set; }
 
         /// <summary>
         /// 调用函数
         /// </summary>
-        private readonly MethodInfo _methodInfo;
-
-        /// <summary>
-        /// 调用应用
-        /// </summary>
-        private readonly IApplication _app;
+        public MethodInfo MethodInfo { get; private set; }
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="app">调用应用</param>
         /// <param name="eventName">事件名</param>
         /// <param name="target">目标对象</param>
         /// <param name="methodInfo">目标函数</param>
         /// <param name="group">分组</param>
-        public Event(IApplication app, string eventName, object target, MethodInfo methodInfo, object group)
+        public Event(string eventName, object target, MethodInfo methodInfo, object group)
         {
             Name = eventName;
             Group = group;
-
-            _app = app;
-            _target = target;
-            _methodInfo = methodInfo;
-        }
-
-        /// <summary>
-        /// 调用事件
-        /// </summary>
-        /// <param name="args">参数</param>
-        /// <returns>结果</returns>
-        public object Call(params object[] args)
-        {
-            return _app.Call(_target, _methodInfo, args);
+            Target = target;
+            MethodInfo = methodInfo;
         }
 
         /// <summary>

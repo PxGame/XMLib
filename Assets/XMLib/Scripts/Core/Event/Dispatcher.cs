@@ -266,7 +266,7 @@ namespace XMLib
         /// <returns>监听</returns>
         protected virtual IEvent MakeEvent(string eventName, object target, MethodInfo methodInfo, object group)
         {
-            return new Event(_app, eventName, target, methodInfo, group);
+            return new Event(eventName, target, methodInfo, group);
         }
 
         /// <summary>
@@ -289,35 +289,57 @@ namespace XMLib
                 if (null != events)
                 {
                     List<IEvent> invalidEvents = null;
-                    foreach (IEvent evt in events)
+
+                    IEvent target = null;
+                    try
                     {
-                        if (!evt.IsValid())
-                        {//非有效事件,移除
-                            if (null == invalidEvents)
-                            {
-                                invalidEvents = new List<IEvent>();
+                        foreach (IEvent evt in events)
+                        {//遍历监听
+                            target = evt;
+                            if (!target.IsValid())
+                            {//非有效事件,移除
+                                if (null == invalidEvents)
+                                {
+                                    invalidEvents = new List<IEvent>();
+                                }
+
+                                //添加到无效列表
+                                invalidEvents.Add(target);
+                                continue;
                             }
 
-                            //添加到无效列表
-                            invalidEvents.Add(evt);
-                            continue;
+                            if (!target.IsActiveAndEnabled())
+                            {//非激活状态事件
+                                continue;
+                            }
+
+                            //调用事件
+
+                            object result = _app.Call(target.Target, target.MethodInfo, args);
+
+                            //只取一个结果时
+                            if (half && result != null)
+                            {
+                                return result;
+                            }
+
+                            outputs.Add(result);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        string msg = "事件调用异常";
 
-                        if (!evt.IsActiveAndEnabled())
-                        {//非激活状态事件
-                            continue;
-                        }
-
-                        //调用事件
-                        object result = evt.Call(_app, args);
-
-                        //只取一个结果时
-                        if (half && result != null)
+                        if (null != target)
                         {
-                            return result;
+                            msg = string.Format(
+                                                 "<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1}) , 声明类型({2})</color>",
+                                                 target.Target,
+                                                 target.MethodInfo,
+                                                 target.MethodInfo.DeclaringType);
                         }
 
-                        outputs.Add(result);
+                        throw new RuntimeException(msg, ex);
                     }
 
                     if (null != invalidEvents)
