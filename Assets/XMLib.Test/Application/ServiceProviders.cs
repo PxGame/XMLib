@@ -5,22 +5,64 @@
  * 创建时间: 12/14/2018 12:09:23 PM
  */
 
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace XMLib.Test.ApplicationTest
 {
+    public class Service1 : IDisposable, IUpdate, IOnDestroy, IFixedUpdate, ILateUpdate, IOnGUI
+    {
+        public void Dispose()
+        {
+            Debug.LogFormat("{0} 被释放了，呜呜呜...", this);
+        }
+
+        public override string ToString()
+        {
+            return "我是" + GetType().Name;
+        }
+
+        public void Update()
+        {
+            Debug.Log("Service1 Update");
+        }
+
+        public void OnDestroy()
+        {
+            Debug.Log("Service1 OnDestroy");
+        }
+
+        public void FixedUpdate()
+        {
+            Debug.Log("Service1 FixedUpdate");
+        }
+
+        public void LateUpdate()
+        {
+            Debug.Log("Service1 LateUpdate");
+        }
+
+        public void OnGUI()
+        {
+            Debug.Log("Service1 OnGUI");
+        }
+    }
+
     public class ServiceProvider1 : IServiceProvider, ICoroutineInit
     {
         [Priority(3)]
         public void Init()
         {
             App.Log("ServiceProviders1 Init");
+            App.Make<Service1>();
         }
 
         public void Register()
         {
             App.Log("ServiceProviders1 Register");
+
+            App.Singleton<Service1>();
         }
 
         public IEnumerator CoroutineInit()

@@ -14,7 +14,7 @@ namespace XMLib.Test.ApplicationTest
             return ArrayUtil.Merge(base.GetBootstraps(),
                 new IBootstrap[] {
                     new BootstrapTest1(),
-                    new BootstrapTest2()
+                    new BootstrapTest2(),
                 }
             );
         }

@@ -13,7 +13,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-namespace XMLib.Test
+namespace XMLib.Test.#FOLDERNAME#Test
 {
     public class #SCRIPTNAME#
     {

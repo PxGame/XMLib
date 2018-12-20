@@ -26,6 +26,8 @@ namespace XMLib
         public UnityApplication(MonoBehaviour behaviour)
         {
             _behaviour = behaviour;
+            this.Instance<Component>(behaviour);
+            this.Instance<IApplication>(this);
         }
 
         /// <summary>

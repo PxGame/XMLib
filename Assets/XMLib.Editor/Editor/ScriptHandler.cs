@@ -47,12 +47,17 @@ namespace XMLib.Editor
 
             string className = Path.GetFileNameWithoutExtension(filePath).Replace(" ", "");
 
+            string folderPath = Path.GetDirectoryName(filePath);
+            int index = folderPath.LastIndexOfAny(new char[] { '/', '\\' }) + 1;
+            string folderName = folderPath.Substring(index);
+
             //更新信息
             scriptStr = scriptStr.Replace("#SCRIPTNAME#", className);
             scriptStr = scriptStr.Replace("#AUTHOR#", "Peter Xiang");
             scriptStr = scriptStr.Replace("#CONTACT#", "565067150@qq.com");
             scriptStr = scriptStr.Replace("#DOC#", "https://github.com/xiangmu110/XMLib/wiki");
             scriptStr = scriptStr.Replace("#CREATEDATE#", DateTime.Now.ToString());
+            scriptStr = scriptStr.Replace("#FOLDERNAME#", folderName);
 
             File.WriteAllText(filePath, scriptStr);
 
@@ -76,6 +81,8 @@ namespace XMLib.Editor
         public static string SimpleScriptTemplate = "XMLib/Template/Simple.XMLib.cs.txt";
         public static string TestSimpleScriptTemplate = "XMLib/Template/Test Simple.XMLib.cs.txt";
         public static string TestRunnerScriptTemplate = "XMLib/Template/Test Runner.XMLib.cs.txt";
+        public static string ProviderScriptTemplate = "XMLib/Template/Provider.XMLib.cs.txt";
+        public static string SimpleWithFolderScriptTemplate = "XMLib/Template/SimpleWithFolder.XMLib.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
         /// <summary>
@@ -93,7 +100,7 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Test Mono Script")]
         public static void CreateTestScript()
         {
-            CreateFIle("Test Mono", TestScriptTemplate, TestScriptEditorTemplate);
+            CreateFIle("TestMono", TestScriptTemplate, TestScriptEditorTemplate);
         }
 
         /// <summary>
@@ -111,7 +118,7 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Test Simple Script")]
         public static void CreateTestSimpleScript()
         {
-            CreateFIle("Test Simple", TestSimpleScriptTemplate);
+            CreateFIle("TestSimple", TestSimpleScriptTemplate);
         }
 
         /// <summary>
@@ -120,7 +127,25 @@ namespace XMLib.Editor
         [MenuItem("Assets/XMLib/Create/Test Runner Script")]
         public static void CreateTestRunnerScript()
         {
-            CreateFIle("Test Runner", TestRunnerScriptTemplate);
+            CreateFIle("TestRunner", TestRunnerScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建服务提供者脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Provider Script")]
+        public static void CreateProviderScript()
+        {
+            CreateFIle("Provider", ProviderScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建服务提供者脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Simple With Folder Script")]
+        public static void CreateSimpleWithFolderScript()
+        {
+            CreateFIle("SimpleWithFolder", SimpleWithFolderScriptTemplate);
         }
 
         /// <summary>
@@ -164,12 +189,14 @@ namespace XMLib.Editor
         {
             if (isEditor)
             {
-                fileName += " Editor";
+                fileName += "Editor";
             }
 
             fileName += ".cs";
 
             string filePath = Path.Combine(dir, fileName);
+
+            //filePath = Path.GetFullPath(filePath);
 
             return filePath;
         }

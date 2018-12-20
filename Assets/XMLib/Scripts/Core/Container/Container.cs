@@ -399,9 +399,23 @@ namespace XMLib
                 return instance;
             }
 
-            foreach (var evt in list)
+            int length = list.Count;
+
+            Action<IBindData, object> evt = null;
+
+            for (int i = 0; i < length; i++)
             {
-                evt(bindData, instance);
+                evt = list[i];
+                if (null != evt)
+                {
+                    evt(bindData, instance);
+                }
+                else
+                {//事件为null自动移除
+                    list.RemoveAt(i);
+                    i--;
+                    length--;
+                }
             }
 
             return instance;
@@ -847,6 +861,47 @@ namespace XMLib
 
                 return bindData;
             }
+        }
+
+        /// <summary>
+        /// 如果服务不存在那么则绑定服务
+        /// </summary>
+        /// <param name="service">服务名</param>
+        /// <param name="concrete">服务实现</param>
+        /// <param name="isStatic">服务是否是静态的</param>
+        /// <param name="bindData">如果绑定失败则返回历史绑定对象</param>
+        /// <returns>是否成功绑定</returns>
+        public bool BindIf(string service, Func<IContainer, object[], object> concrete, bool isStatic, out IBindData bindData)
+        {
+            var bind = GetBind(service);
+            if (bind == null && (HasInstance(service) || IsAlias(service)))
+            {
+                bindData = null;
+                return false;
+            }
+
+            bindData = bind != null ? Bind(service, concrete, isStatic) : null;
+
+            return bind != null;
+        }
+
+        /// <summary>
+        /// 如果服务不存在那么则绑定服务
+        /// </summary>
+        /// <param name="service">服务名</param>
+        /// <param name="concrete">服务实现</param>
+        /// <param name="isStatic">服务是否是静态的</param>
+        /// <param name="bindData">如果绑定失败则返回历史绑定对象</param>
+        /// <returns>是否成功绑定</returns>
+        public bool BindIf(string service, Type concrete, bool isStatic, out IBindData bindData)
+        {
+            if (IsUnableType(concrete))
+            {
+                bindData = null;
+                return false;
+            }
+
+            return BindIf(service, WrapperTypeBuilder(service, concrete), isStatic, out bindData);
         }
 
         /// <summary>

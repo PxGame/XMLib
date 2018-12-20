@@ -13,7 +13,7 @@ namespace XMLib
     /// <summary>
     /// Transform 扩展
     /// </summary>
-    public static class TransformExt
+    public static class TransformExtend
     {
         /// <summary>
         /// 遍历每个子节点

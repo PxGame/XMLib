@@ -49,6 +49,26 @@ namespace XMLib
         IBindData Bind(string service, Func<IContainer, object[], object> concrete, bool isStatic);
 
         /// <summary>
+        /// 如果服务不存在那么则绑定服务
+        /// </summary>
+        /// <param name="service">服务名</param>
+        /// <param name="concrete">服务实现</param>
+        /// <param name="isStatic">服务是否是静态的</param>
+        /// <param name="bindData">如果绑定失败则返回历史绑定对象</param>
+        /// <returns>是否成功绑定</returns>
+        bool BindIf(string service, Func<IContainer, object[], object> concrete, bool isStatic, out IBindData bindData);
+
+        /// <summary>
+        /// 如果服务不存在那么则绑定服务
+        /// </summary>
+        /// <param name="service">服务名</param>
+        /// <param name="concrete">服务实现</param>
+        /// <param name="isStatic">服务是否是静态的</param>
+        /// <param name="bindData">如果绑定失败则返回历史绑定对象</param>
+        /// <returns>是否成功绑定</returns>
+        bool BindIf(string service, Type concrete, bool isStatic, out IBindData bindData);
+
+        /// <summary>
         /// 解绑服务
         /// </summary>
         /// <param name="service">服务名或别名</param>

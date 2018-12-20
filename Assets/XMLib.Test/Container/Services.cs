@@ -42,7 +42,7 @@ namespace XMLib.Test.ContainerTest
         string Get();
     }
 
-    public class Service2 : IDisposable
+    public class Service2 : IDisposable, IUpdate, IOnDestroy, IFixedUpdate, ILateUpdate, IOnGUI
     {
         private IService1 _service1;
 
@@ -59,6 +59,31 @@ namespace XMLib.Test.ContainerTest
         public override string ToString()
         {
             return "我是" + GetType().Name + ">" + _service1.Get();
+        }
+
+        public void Update()
+        {
+            Debug.Log("Service2 Update");
+        }
+
+        public void OnDestroy()
+        {
+            Debug.Log("Service2 OnDestroy");
+        }
+
+        public void FixedUpdate()
+        {
+            Debug.Log("Service2 FixedUpdate");
+        }
+
+        public void LateUpdate()
+        {
+            Debug.Log("Service2 LateUpdate");
+        }
+
+        public void OnGUI()
+        {
+            Debug.Log("Service2 OnGUI");
         }
     }
 }

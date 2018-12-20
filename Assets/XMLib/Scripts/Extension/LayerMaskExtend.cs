@@ -13,7 +13,7 @@ namespace XMLib
     /// <summary>
     /// LayerMask 扩展
     /// </summary>
-    public static class LayerMaskExt
+    public static class LayerMaskExtend
     {
         /// <summary>
         /// 移除层级

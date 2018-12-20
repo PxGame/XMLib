@@ -26,6 +26,16 @@ namespace XMLib.Test.ApplicationTest
             });
 
             yield return new WaitUntil(() => waitFlag);
+
+            int waitFrame = 3;
+
+            while (waitFrame > 0)
+            {
+                yield return new WaitForEndOfFrame();
+
+                waitFrame--;
+            }
+
             GameObject.Destroy(obj);
         }
     }

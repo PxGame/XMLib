@@ -13,7 +13,7 @@ namespace XMLib
     /// <summary>
     /// Dispatcher 扩展类
     /// </summary>
-    public static class DispatcherExt
+    public static class DispatcherExtend
     {
         /// <summary>
         /// 注册监听
