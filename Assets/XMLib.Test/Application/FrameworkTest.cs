@@ -5,6 +5,8 @@
  * 创建时间: 12/12/2018 4:18:47 PM
  */
 
+using UnityEngine;
+
 namespace XMLib.Test.ApplicationTest
 {
     public class FrameworkTest : Framework
@@ -22,6 +24,14 @@ namespace XMLib.Test.ApplicationTest
         protected override void OnBootstraped()
         {
             base.OnBootstraped();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                App.UnBind<MonoDriver.MonoDriver>();
+            }
         }
     }
 }

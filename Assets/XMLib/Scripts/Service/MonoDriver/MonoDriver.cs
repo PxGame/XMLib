@@ -55,6 +55,15 @@ namespace XMLib.MonoDriver
             _handler.OnRelease(OnGlobalRelease);
         }
 
+        public void Dispose()
+        {
+            if (null != _behaviour)
+            {
+                GameObject.Destroy(_behaviour);
+                _behaviour = null;
+            }
+        }
+
         /// <summary>
         /// 全局服务释放事件
         /// </summary>

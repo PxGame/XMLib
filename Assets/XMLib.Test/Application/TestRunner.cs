@@ -36,6 +36,8 @@ namespace XMLib.Test.ApplicationTest
                 waitFrame--;
             }
 
+            App.UnBind<MonoDriver.MonoDriver>();
+
             GameObject.Destroy(obj);
         }
     }

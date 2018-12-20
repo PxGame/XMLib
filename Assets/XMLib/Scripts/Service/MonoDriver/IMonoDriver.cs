@@ -14,7 +14,7 @@ namespace XMLib.MonoDriver
     /// <summary>
     /// 驱动器
     /// </summary>
-    public interface IMonoDriver
+    public interface IMonoDriver : IDisposable
     {
         /// <summary>
         /// 在主线程中调用
