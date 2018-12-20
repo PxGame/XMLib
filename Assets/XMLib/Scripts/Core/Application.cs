@@ -219,41 +219,52 @@ namespace XMLib
         /// <param name="bootstraps">引导程序</param>
         public virtual void Bootstrap(params IBootstrap[] bootstraps)
         {
-            Checker.Requires<ArgumentNullException>(bootstraps != null);
-
-            if (_isBootstraped || _process != LaunchProcess.Construct)
-            {//已调用或非构造状态
-                throw new RuntimeException("Bootstrap() 函数不能重复调用");
-            }
-
-            _process = LaunchProcess.Bootstrap;
-            Trigger(ApplicationEvents.OnBootstrap, this);
-            _process = LaunchProcess.Bootstrapping;
-
-            SortList<IBootstrap, int> sorting = new SortList<IBootstrap, int>(bootstraps.Length);
-
-            //构建引导顺序
-            foreach (IBootstrap bootstrap in bootstraps)
+            using (var watcher = new TimeWatcher("引导程序计时"))
             {
-                int priority = GetPriority(bootstrap.GetType(), "Bootstrap");
-                sorting.Add(bootstrap, priority);
-            }
+                Checker.Requires<ArgumentNullException>(bootstraps != null);
 
-            //调用引导
-            foreach (IBootstrap bootstrap in sorting)
-            {
-                //如果事件没有返回任何结果,则为允许
-                bool allowed = TriggerHalt(ApplicationEvents.Bootstrapping, bootstrap) == null;
-
-                if (allowed && null != bootstrap)
-                {
-                    bootstrap.Bootstrap();
+                if (_isBootstraped || _process != LaunchProcess.Construct)
+                {//已调用或非构造状态
+                    throw new RuntimeException("Bootstrap() 函数不能重复调用");
                 }
-            }
 
-            _process = LaunchProcess.Bootstraped;
-            _isBootstraped = true;
-            Trigger(ApplicationEvents.OnBootstraped, this);
+                _process = LaunchProcess.Bootstrap;
+                watcher.Start();
+                Trigger(ApplicationEvents.OnBootstrap, this);
+                watcher.End("调用OnBootstrap事件");
+                _process = LaunchProcess.Bootstrapping;
+
+                SortList<IBootstrap, int> sorting = new SortList<IBootstrap, int>(bootstraps.Length);
+
+                //构建引导顺序
+                watcher.Start();
+                foreach (IBootstrap bootstrap in bootstraps)
+                {
+                    int priority = GetPriority(bootstrap.GetType(), "Bootstrap");
+                    sorting.Add(bootstrap, priority);
+                }
+                watcher.End("引导顺序初始化");
+
+                //调用引导
+                foreach (IBootstrap bootstrap in sorting)
+                {
+                    watcher.Start();
+                    //如果事件没有返回任何结果,则为允许
+                    bool allowed = TriggerHalt(ApplicationEvents.Bootstrapping, bootstrap) == null;
+
+                    if (allowed && null != bootstrap)
+                    {
+                        bootstrap.Bootstrap();
+                    }
+                    watcher.End("调用(" + bootstrap.GetType().Name + ")引导");
+                }
+
+                _process = LaunchProcess.Bootstraped;
+                _isBootstraped = true;
+                watcher.Start();
+                Trigger(ApplicationEvents.OnBootstraped, this);
+                watcher.End("调用OnBootstraped事件");
+            }
         }
 
         /// <summary>
@@ -318,32 +329,42 @@ namespace XMLib
         /// <returns></returns>
         protected IEnumerator CoroutineInit()
         {
-            if (!_isBootstraped)
+            using (var watcher = new TimeWatcher("初始化程序计时"))
             {
-                throw new RuntimeException("Bootstrap() 引导程序必须在此之前调用");
+                if (!_isBootstraped)
+                {
+                    throw new RuntimeException("Bootstrap() 引导程序必须在此之前调用");
+                }
+
+                if (_isInited || _process != LaunchProcess.Bootstraped)
+                {
+                    throw new RuntimeException("已经初始化或当前启动状态不是引导程序完成");
+                }
+
+                _process = LaunchProcess.Init;
+                watcher.Start();
+                Trigger(ApplicationEvents.OnInit, this);
+                watcher.End("调用OnInit事件");
+                _process = LaunchProcess.Initing;
+
+                //初始化服务
+                foreach (var serviceProvider in _serviceProviders)
+                {
+                    watcher.Start();
+                    yield return InitProvider(serviceProvider);
+                    watcher.End("调用(" + serviceProvider.GetType().Name + ")服务提供者初始化");
+                }
+                _isInited = true;
+                _process = LaunchProcess.Inited;
+                watcher.Start();
+                Trigger(ApplicationEvents.OnInited, this);
+                watcher.End("调用OnInited事件");
+
+                _process = LaunchProcess.Running;
+                watcher.Start();
+                Trigger(ApplicationEvents.OnStartCompleted, this);
+                watcher.End("调用OnStartCompleted事件");
             }
-
-            if (_isInited || _process != LaunchProcess.Bootstraped)
-            {
-                throw new RuntimeException("已经初始化或当前启动状态不是引导程序完成");
-            }
-
-            _process = LaunchProcess.Init;
-            Trigger(ApplicationEvents.OnInit, this);
-            _process = LaunchProcess.Initing;
-
-            //初始化服务
-            foreach (var serviceProvider in _serviceProviders)
-            {
-                yield return InitProvider(serviceProvider);
-            }
-
-            _isInited = true;
-            _process = LaunchProcess.Inited;
-            Trigger(ApplicationEvents.OnInited, this);
-
-            _process = LaunchProcess.Running;
-            Trigger(ApplicationEvents.OnStartCompleted, this);
         }
 
         /// <summary>
