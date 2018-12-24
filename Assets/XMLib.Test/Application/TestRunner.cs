@@ -36,6 +36,25 @@ namespace XMLib.Test.ApplicationTest
                 waitFrame--;
             }
 
+            int cnt = 1000000;
+            using (var watcher = new TimeWatcher("Service1 Make 1000000 次"))
+            {
+                while (cnt > 0)
+                {
+                    App.Make<Service1>();
+                    cnt--;
+                }
+            }
+            int cnt2 = 1000000;
+            using (var watcher = new TimeWatcher("Service2 Make 1000000 次"))
+            {
+                while (cnt2 > 0)
+                {
+                    App.Make<Service2>("123");
+                    cnt2--;
+                }
+            }
+
             App.UnBind<MonoDriver.MonoDriver>();
 
             GameObject.Destroy(obj);

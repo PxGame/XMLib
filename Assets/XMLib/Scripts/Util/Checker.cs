@@ -89,5 +89,18 @@ namespace XMLib
                 throw new ArgumentNullException(argumentName);
             }
         }
+
+        /// <summary>
+        /// 内容不为空
+        /// </summary>
+        /// <param name="argumentValue">参数值</param>
+        [System.Diagnostics.DebuggerNonUserCode]
+        public static void NotNull(object argumentValue)
+        {
+            if (argumentValue == null)
+            {
+                throw new ArgumentNullException();
+            }
+        }
     }
 }

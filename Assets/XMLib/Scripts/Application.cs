@@ -96,7 +96,22 @@ namespace XMLib
         /// <summary>
         /// 事件系统
         /// </summary>
-        private readonly IDispatcher _dispatcher;
+        private IDispatcher _dispatcher;
+
+        /// <summary>
+        /// 事件系统
+        /// </summary>
+        public IDispatcher Dispatcher
+        {
+            get
+            {
+                if (null == _dispatcher)
+                {
+                    _dispatcher = (IDispatcher)Make(Type2Service(typeof(IDispatcher)));
+                }
+                return _dispatcher;
+            }
+        }
 
         #region 状态
 
@@ -164,7 +179,6 @@ namespace XMLib
 
             //初始化参数
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
-            _dispatcher = new Dispatcher(this);
 
             //初始化状态
             _isBootstraped = false;
@@ -173,6 +187,36 @@ namespace XMLib
 
             //设置启动进程
             _process = LaunchProcess.Construct;
+
+            //
+            RegisterCoreAlias();//1
+            RegisterCoreService();//2
+        }
+
+        /// <summary>
+        /// 注册核心服务
+        /// </summary>
+        private void RegisterCoreService()
+        {
+            //绑定事件分发
+            Bind(Type2Service(typeof(Dispatcher)), typeof(Dispatcher), true).Alias<IDispatcher>();
+        }
+
+        /// <summary>
+        /// 注册核心别名
+        /// </summary>
+        private void RegisterCoreAlias()
+        {
+            string application = Type2Service(typeof(Application));
+            Instance(application, this);
+            foreach (Type alias in new[] {
+                typeof(IApplication),
+                typeof(IContainer),
+                typeof(App)
+            })
+            {
+                Alias(Type2Service(alias), application);
+            }
         }
 
         /// <summary>
@@ -449,7 +493,7 @@ namespace XMLib
         /// <returns>是否存在</returns>
         public bool HasListener(string eventName)
         {
-            return _dispatcher.HasListener(eventName);
+            return Dispatcher.HasListener(eventName);
         }
 
         /// <summary>
@@ -460,7 +504,7 @@ namespace XMLib
         /// <returns>结果集合</returns>
         public List<object> Trigger(string eventName, params object[] args)
         {
-            return _dispatcher.Trigger(eventName, args);
+            return Dispatcher.Trigger(eventName, args);
         }
 
         /// <summary>
@@ -471,7 +515,7 @@ namespace XMLib
         /// <returns>结果</returns>
         public object TriggerHalt(string eventName, params object[] args)
         {
-            return _dispatcher.TriggerHalt(eventName, args);
+            return Dispatcher.TriggerHalt(eventName, args);
         }
 
         /// <summary>
@@ -484,7 +528,7 @@ namespace XMLib
         /// <returns>监听</returns>
         public IEvent On(string eventName, object target, MethodInfo methodInfo, object group = null)
         {
-            return _dispatcher.On(eventName, target, methodInfo, group);
+            return Dispatcher.On(eventName, target, methodInfo, group);
         }
 
         /// <summary>
@@ -498,7 +542,7 @@ namespace XMLib
         /// </param>
         public void Off(object target)
         {
-            _dispatcher.Off(target);
+            Dispatcher.Off(target);
         }
 
         #endregion IDispatcher

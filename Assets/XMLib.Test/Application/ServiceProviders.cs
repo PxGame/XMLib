@@ -49,6 +49,13 @@ namespace XMLib.Test.ApplicationTest
         }
     }
 
+    public class Service2
+    {
+        public Service2(IApplication application, Component component, string msg)
+        {
+        }
+    }
+
     public class ServiceProvider1 : IServiceProvider, ICoroutineInit
     {
         [Priority(3)]
@@ -63,6 +70,7 @@ namespace XMLib.Test.ApplicationTest
             App.Log("ServiceProviders1 Register");
 
             App.Singleton<Service1>();
+            App.Singleton<Service2>();
         }
 
         public IEnumerator CoroutineInit()
