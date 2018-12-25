@@ -27,7 +27,7 @@ namespace XMLib.Test.DispatcherTest
             {
                 for (int j = 0; j < cnt; j++)
                 {
-                    App.On("" + i, () =>
+                    App.On("" + i, (IApplication target, string a, int b, bool c) =>
                     {
                     });
                 }
@@ -39,7 +39,7 @@ namespace XMLib.Test.DispatcherTest
             for (int i = 0; i < length; i++)
             {
                 int eventIndex = rand.Next(0, events - 1);
-                App.Trigger("" + eventIndex);
+                App.Trigger("" + eventIndex, "123", 10, true);
             }
 
             watch.Stop();

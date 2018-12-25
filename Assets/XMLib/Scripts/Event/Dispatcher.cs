@@ -328,17 +328,7 @@ namespace XMLib
                     }
                     catch (Exception ex)
                     {
-                        string msg = "事件调用异常";
-
-                        if (null != target)
-                        {
-                            msg = string.Format(
-                                                 "<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1}) , 声明类型({2})</color>",
-                                                 target.Target,
-                                                 target.MethodInfo,
-                                                 target.MethodInfo.DeclaringType);
-                        }
-
+                        string msg = null == target ? "事件调用异常" : string.Format("<color=red>事件调用异常:{0} )</color>", target);
                         throw new RuntimeException(msg, ex);
                     }
 

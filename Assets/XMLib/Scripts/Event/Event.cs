@@ -67,5 +67,21 @@ namespace XMLib
         {
             return true;
         }
+
+        /// <summary>
+        /// 转换到字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            string extra = "";
+            if (null != MethodInfo)
+            {
+                extra = string.Format("(Info:{0},DeclaringType:{1}", MethodInfo, MethodInfo.DeclaringType);
+            }
+
+            string str = string.Format("[{0}](Name:{1},Group:{2},Target:{3},MethodInfo:{4})", GetType().Name, Name, Group, Target, extra);
+            return str;
+        }
     }
 }

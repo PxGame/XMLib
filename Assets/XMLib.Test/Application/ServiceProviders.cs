@@ -13,6 +13,10 @@ namespace XMLib.Test.ApplicationTest
 {
     public class Service1 : IDisposable, IUpdate, IOnDestroy, IFixedUpdate, ILateUpdate, IOnGUI
     {
+        public Service1(Service2 service1)
+        {
+        }
+
         public void Dispose()
         {
             Debug.LogFormat("{0} 被释放了，呜呜呜...", this);
@@ -51,7 +55,7 @@ namespace XMLib.Test.ApplicationTest
 
     public class Service2
     {
-        public Service2(IApplication application, Component component, string msg)
+        public Service2(IApplication application, Component component)
         {
         }
     }
@@ -75,7 +79,7 @@ namespace XMLib.Test.ApplicationTest
 
         public IEnumerator CoroutineInit()
         {
-            int index = 3;
+            int index = 1;
             while (index > 0)
             {
                 App.Log("ServiceProviders1 init> {0}", index);
@@ -100,7 +104,7 @@ namespace XMLib.Test.ApplicationTest
 
         public IEnumerator CoroutineInit()
         {
-            int index = 4;
+            int index = 1;
             while (index > 0)
             {
                 App.Log("ServiceProviders2 init> {0}", index);

@@ -193,6 +193,15 @@ namespace XMLib
             }
         }
 
+        /// <summary>
+        /// 转换到字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}]({1},isStatic:{2})", GetType().Name, base.ToString(), _isStatic);
+        }
+
         #region Bindable
 
         /// <summary>

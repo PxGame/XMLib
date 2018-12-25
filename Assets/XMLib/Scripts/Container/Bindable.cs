@@ -83,5 +83,14 @@ namespace XMLib
         /// 解除绑定
         /// </summary>
         protected abstract void ReleaseBind();
+
+        /// <summary>
+        /// 转换到字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}](service:{1}, isDestroy:{2}) ", GetType().Name, _service, _isDestroy);
+        }
     }
 }

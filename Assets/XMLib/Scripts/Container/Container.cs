@@ -54,6 +54,11 @@ namespace XMLib
         private readonly HashSet<string> _resolved;
 
         /// <summary>
+        /// 编译堆栈
+        /// </summary>
+        private readonly Stack<string> _buildStack;
+
+        /// <summary>
         /// 是否在清空过程中
         /// </summary>
         private bool _flushing;
@@ -103,6 +108,8 @@ namespace XMLib
             _instanceTiming = new SortList<string, int>();
             _instanceTiming.Forward = false;
 
+            _buildStack = new Stack<string>();
+
             _resolving = new List<Action<IBindData, object>>();
             _afterResolving = new List<Action<IBindData, object>>();
             _release = new List<Action<IBindData, object>>();
@@ -128,8 +135,6 @@ namespace XMLib
         {
             lock (_syncRoot)
             {
-                CheckIsFlusing();
-
                 Release(bindData.Service);
 
                 //移除别名
@@ -220,11 +225,9 @@ namespace XMLib
         /// <returns>绑定数据</returns>
         private BindData GetBindFillable(string service)
         {
-            Checker.NotEmptyOrNull(service, "service");
-
             BindData data = null;
 
-            if (!_binds.TryGetValue(service, out data))
+            if (service == null || !_binds.TryGetValue(service, out data))
             {
                 data = MakeEmptyBindData(service);
             }
@@ -282,23 +285,39 @@ namespace XMLib
                     return instance;
                 }
 
-                BindData bindData = GetBindFillable(service);
-
-                ///构建实例
-                instance = Build(bindData, args);
-
-                if (bindData.IsStatic)
-                {
-                    instance = Instance(bindData.Service, instance);
-                }
-                else
-                {
-                    TriggerOnResolving(bindData, instance);
+                //编译堆栈，用于检查是否有循环依赖
+                if (_buildStack.Contains(service))
+                {//循环依赖
+                    throw new RuntimeException("服务出现循环依赖");
                 }
 
-                _resolved.Add(service);
+                //添加到编译堆栈
+                _buildStack.Push(service);
 
-                return instance;
+                try
+                {
+                    BindData bindData = GetBindFillable(service);
+
+                    ///构建实例
+                    instance = Build(bindData, args);
+
+                    if (bindData.IsStatic)
+                    {
+                        instance = Instance(bindData.Service, instance);
+                    }
+                    else
+                    {
+                        TriggerOnResolving(bindData, instance);
+                    }
+
+                    _resolved.Add(service);
+
+                    return instance;
+                }
+                finally
+                {
+                    _buildStack.Pop();
+                }
             }
         }
 
@@ -380,7 +399,6 @@ namespace XMLib
 
             lock (_syncRoot)
             {
-                CheckIsFlusing();
                 list.Add(closure);
             }
         }
@@ -406,6 +424,10 @@ namespace XMLib
             for (int i = 0; i < length; i++)
             {
                 evt = list[i];
+
+                evt(bindData, instance);
+
+                /*
                 if (null != evt)
                 {
                     evt(bindData, instance);
@@ -416,6 +438,7 @@ namespace XMLib
                     i--;
                     length--;
                 }
+                */
             }
 
             return instance;
@@ -557,7 +580,7 @@ namespace XMLib
                     }
                 }
 
-                if (null == arg)
+                if (!CanInject(info.ParameterType, arg))
                 {
                     throw new RuntimeException("未匹配到参数");
                 }
@@ -566,6 +589,17 @@ namespace XMLib
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// 检查实例是否实现自某种类型
+        /// </summary>
+        /// <param name="type">需要实现自的类型</param>
+        /// <param name="instance">生成的实例</param>
+        /// <returns>是否符合类型</returns>
+        private bool CanInject(Type type, object instance)
+        {
+            return null != instance || type.IsInstanceOfType(instance);
         }
 
         /// <summary>
@@ -761,10 +795,9 @@ namespace XMLib
 
             alias = FormatService(alias);
             service = FormatService(service);
+
             lock (_syncRoot)
             {
-                CheckIsFlusing();
-
                 if (_aliases.ContainsKey(alias))
                 {
                     throw new RuntimeException("别名已经存在:[" + alias + "]");
@@ -827,8 +860,6 @@ namespace XMLib
 
             lock (_syncRoot)
             {
-                CheckIsFlusing();
-
                 if (_binds.ContainsKey(service))
                 {
                     throw new RuntimeException("该服务[" + service + "]已经绑定");
@@ -909,34 +940,27 @@ namespace XMLib
         /// </summary>
         /// <param name="target">方法对象</param>
         /// <param name="methodInfo">方法信息</param>
-        /// <param name="userParams">用户传入的参数</param>
+        /// <param name="args">用户传入的参数</param>
         /// <returns>方法返回值</returns>
         public object Call(object target, MethodInfo methodInfo, params object[] args)
         {
-            object[] targetArgs = args;
-            //获取函数参数
-            ParameterInfo[] argInfos = methodInfo.GetParameters();
-            if (0 >= argInfos.Length)
-            {//函数为无参,忽略输入的参数
-                targetArgs = new object[0];
+            Checker.Requires<ArgumentNullException>(methodInfo != null);
+            if (!methodInfo.IsStatic)
+            {
+                Checker.Requires<ArgumentNullException>(target != null);
             }
 
-            return methodInfo.Invoke(target, targetArgs);
-            /*
-            try
+            //获取函数参数
+            ParameterInfo[] argInfos = methodInfo.GetParameters();
+
+            lock (_syncRoot)
             {
-                return methodInfo.Invoke(target, targetArgs);
+                //获取所在类绑定数据
+                BindData bindData = GetBindFillable(target != null ? Type2Service(target.GetType()) : null);
+                //获取依赖参数
+                args = GetDependencies(bindData, argInfos, args);
+                return methodInfo.Invoke(target, args);
             }
-            catch (Exception ex)
-            {
-                string msg = string.Format(
-                    "<color=red>事件调用异常:目标对象 ({0}) , 调用函数 ({1}) , 声明类型({2})</color>",
-                    target,
-                    methodInfo,
-                    methodInfo.DeclaringType);
-                throw new RuntimeException(msg, ex);
-            }
-            */
         }
 
         /// <summary>
@@ -988,6 +1012,7 @@ namespace XMLib
                     _instances.Clear();
                     _instanceReverse.Clear();
                     _instanceTiming.Clear();
+                    _buildStack.Clear();
                     _binds.Clear();
                     _resolved.Clear();
                     _instanceId = 0;
@@ -1055,8 +1080,6 @@ namespace XMLib
 
             lock (_syncRoot)
             {
-                CheckIsFlusing();
-
                 //转换到映射名
                 service = AliasToService(service);
 
@@ -1092,7 +1115,7 @@ namespace XMLib
 
                 bool isResolved = IsResolved(service);
 
-                //释放单例
+                //释放已存在单例
                 Release(service);
 
                 //添加到单例列表
@@ -1124,7 +1147,6 @@ namespace XMLib
         /// <returns>是否是别名</returns>
         public bool IsAlias(string name)
         {
-            Checker.NotEmptyOrNull(name, "service");
             name = FormatService(name);
             return _aliases.ContainsKey(name);
         }
@@ -1136,7 +1158,6 @@ namespace XMLib
         /// <returns>是否是静态化的</returns>
         public bool IsStatic(string service)
         {
-            Checker.NotEmptyOrNull(service, "service");
             IBindData bindData = GetBind(service);
             return null != bindData && bindData.IsStatic;
         }
@@ -1275,7 +1296,6 @@ namespace XMLib
 
             lock (_syncRoot)
             {
-                CheckIsFlusing();
                 service = AliasToService(service);
 
                 List<Action<object>> list;
