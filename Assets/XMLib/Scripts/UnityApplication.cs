@@ -5,6 +5,7 @@
  * 创建时间: 12/12/2018 12:14:15 PM
  */
 
+using System;
 using UnityEngine;
 
 namespace XMLib
@@ -26,8 +27,11 @@ namespace XMLib
         public UnityApplication(MonoBehaviour behaviour)
         {
             _behaviour = behaviour;
-            this.Instance<Component>(behaviour);
-            this.Instance<IApplication>(this);
+
+            //注册Unity组件服务
+            string serviceName = Type2Service(typeof(MonoBehaviour));
+            Instance(serviceName, behaviour);
+            Alias(Type2Service(typeof(Component)), serviceName);
         }
 
         /// <summary>
