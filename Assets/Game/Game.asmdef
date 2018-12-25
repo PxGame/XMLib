@@ -1,0 +1,8 @@
+{
+    "name": "Game",
+    "references": [
+        "XMLib"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
