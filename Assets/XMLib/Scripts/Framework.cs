@@ -80,7 +80,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnBootstrap()
         {
-            App.Log("框架引导开始");
         }
 
         /// <summary>
@@ -89,7 +88,6 @@ namespace XMLib
         /// <param name="serviceProvider">服务提供者</param>
         protected virtual void OnRegisterProvider(IServiceProvider serviceProvider)
         {
-            App.Log("{0} 服务注册中", serviceProvider.GetType());
         }
 
         /// <summary>
@@ -97,7 +95,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnBootstraped()
         {
-            App.Log("框架引导结束");
         }
 
         /// <summary>
@@ -105,7 +102,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnInit()
         {
-            App.Log("框架初始化开始");
         }
 
         /// <summary>
@@ -114,7 +110,6 @@ namespace XMLib
         /// <param name="serviceProvider">服务提供者</param>
         protected virtual void OnProviderInit(IServiceProvider serviceProvider)
         {
-            App.Log("{0} 服务初始化开始", serviceProvider.GetType());
         }
 
         /// <summary>
@@ -123,7 +118,6 @@ namespace XMLib
         /// <param name="serviceProvider">服务提供者</param>
         protected virtual void OnProviderInited(IServiceProvider serviceProvider)
         {
-            App.Log("{0} 服务初始化结束", serviceProvider.GetType());
         }
 
         /// <summary>
@@ -131,7 +125,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnInited()
         {
-            App.Log("框架初始化完成");
         }
 
         /// <summary>
@@ -139,7 +132,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnStartCompleted()
         {
-            App.Log("框架启动完成");
         }
 
         /// <summary>
@@ -147,7 +139,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnTerminate()
         {
-            App.Log("框架终止开始");
         }
 
         /// <summary>
@@ -155,7 +146,6 @@ namespace XMLib
         /// </summary>
         protected virtual void OnTerminated()
         {
-            App.Log("框架终止结束");
         }
 
         #endregion 事件

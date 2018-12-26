@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using UnityEngine;
 
 namespace XMLib
 {
@@ -263,6 +264,7 @@ namespace XMLib
         /// <param name="bootstraps">引导程序</param>
         public virtual void Bootstrap(params IBootstrap[] bootstraps)
         {
+            Debug.Log("程序引导开始");
             using (var watcher = new TimeWatcher("引导程序计时"))
             {
                 Checker.Requires<ArgumentNullException>(bootstraps != null);
@@ -298,6 +300,7 @@ namespace XMLib
 
                     if (allowed && null != bootstrap)
                     {
+                        Debug.Log("执行引导程序:" + bootstrap.GetType().Name);
                         bootstrap.Bootstrap();
                     }
                     watcher.End("调用(" + bootstrap.GetType().Name + ")引导");
@@ -309,6 +312,8 @@ namespace XMLib
                 Trigger(ApplicationEvents.OnBootstraped, this);
                 watcher.End("调用OnBootstraped事件");
             }
+
+            Debug.Log("程序引导结束");
         }
 
         /// <summary>
@@ -373,6 +378,7 @@ namespace XMLib
         /// <returns></returns>
         protected IEnumerator CoroutineInit()
         {
+            Debug.Log("程序初始化开始");
             using (var watcher = new TimeWatcher("初始化程序计时"))
             {
                 if (!_isBootstraped)
@@ -409,6 +415,8 @@ namespace XMLib
                 Trigger(ApplicationEvents.OnStartCompleted, this);
                 watcher.End("调用OnStartCompleted事件");
             }
+
+            Debug.Log("程序初始化结束");
         }
 
         /// <summary>
@@ -421,6 +429,7 @@ namespace XMLib
             //开始事件
             Trigger(ApplicationEvents.OnProviderInit, serviceProvider);
 
+            Debug.Log("服务提供者初始化:" + serviceProvider.GetType().Name);
             serviceProvider.Init();
             if (serviceProvider is ICoroutineInit)
             {//存在则调用
@@ -465,6 +474,7 @@ namespace XMLib
             try
             {
                 _isRegistering = true;
+                Debug.Log("服务提供者注册:" + serviceProvider.GetType().Name);
                 serviceProvider.Register();
             }
             finally

@@ -1029,46 +1029,5 @@ namespace XMLib
         }
 
         #endregion Container Extend API
-
-        #region Debug
-
-        /// <summary>
-        /// 日志
-        /// </summary>
-        /// <param name="format">格式化文本</param>
-        /// <param name="args">参数</param>
-        public static void Log(string format, params object[] args)
-        {
-            Debug.Log(Format(Color.black, format, args));
-        }
-
-        /// <summary>
-        /// 警告日志
-        /// </summary>
-        /// <param name="format">格式化文本</param>
-        /// <param name="args">参数</param>
-        public static void LogWaring(string format, params object[] args)
-        {
-            Debug.LogWarning(Format(Color.yellow, format, args));
-        }
-
-        /// <summary>
-        /// 错误日志
-        /// </summary>
-        /// <param name="format">格式化文本</param>
-        /// <param name="args">参数</param>
-        public static void LogError(string format, params object[] args)
-        {
-            Debug.LogError(Format(Color.red, format, args));
-        }
-
-        private static string Format(Color color, string format, params object[] args)
-        {
-            string msg = string.Format(format, args);
-            string output = string.Format("[<color=#{0}><b>XBLib</b></color>]{1}", ColorUtility.ToHtmlStringRGBA(color), msg);
-            return output;
-        }
-
-        #endregion Debug
     }
 }

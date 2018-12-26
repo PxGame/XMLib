@@ -5,6 +5,8 @@
  * 创建时间: 12/14/2018 12:09:49 PM
  */
 
+using UnityEngine;
+
 namespace XMLib.Test.ApplicationTest
 {
     public class BootstrapTest1 : IBootstrap
@@ -12,7 +14,7 @@ namespace XMLib.Test.ApplicationTest
         [Priority(2)]
         public void Bootstrap()
         {
-            App.Log("BootstrapTest1");
+            Debug.LogFormat("BootstrapTest1");
             App.Register(new ServiceProvider2());
         }
     }
@@ -22,7 +24,7 @@ namespace XMLib.Test.ApplicationTest
         [Priority(3)]
         public void Bootstrap()
         {
-            App.Log("BootstrapTest2");
+            Debug.LogFormat("BootstrapTest2");
             App.Register(new ServiceProvider1());
 
             App.Register(new MonoDriver.MonoDriverProvider());

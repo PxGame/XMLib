@@ -15,12 +15,13 @@ namespace XMLib
     /// 绑定数据扩展
     /// </summary>
     public static class BindDataExtend
-    { /// <summary>
-      /// 解决服务时触发的回调
-      /// </summary>
-      /// <param name="bindData">绑定数据</param>
-      /// <param name="action">解决事件</param>
-      /// <returns>服务绑定数据</returns>
+    {
+        /// <summary>
+        /// 解决服务时触发的回调
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="action">解决事件</param>
+        /// <returns>服务绑定数据</returns>
         public static IBindData OnResolving(this IBindData bindData, Action<object> action)
         {
             Checker.Requires<ArgumentNullException>(action != null);
@@ -40,6 +41,36 @@ namespace XMLib
         {
             Checker.Requires<ArgumentNullException>(action != null);
             return bindData.OnResolving((_, instance) =>
+            {
+                action();
+            });
+        }
+
+        /// <summary>
+        /// 解决服务后触发的回调
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="action">解决事件</param>
+        /// <returns>服务绑定数据</returns>
+        public static IBindData OnAfterResolving(this IBindData bindData, Action<object> action)
+        {
+            Checker.Requires<ArgumentNullException>(action != null);
+            return bindData.OnAfterResolving((_, instance) =>
+            {
+                action(instance);
+            });
+        }
+
+        /// <summary>
+        /// 解决服务后触发的回调
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="action">解决事件</param>
+        /// <returns>服务绑定数据</returns>
+        public static IBindData OnAfterResolving(this IBindData bindData, Action action)
+        {
+            Checker.Requires<ArgumentNullException>(action != null);
+            return bindData.OnAfterResolving((_, instance) =>
             {
                 action();
             });

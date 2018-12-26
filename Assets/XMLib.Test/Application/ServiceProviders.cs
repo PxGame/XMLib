@@ -65,13 +65,13 @@ namespace XMLib.Test.ApplicationTest
         [Priority(3)]
         public void Init()
         {
-            App.Log("ServiceProviders1 Init");
+            Debug.LogFormat("ServiceProviders1 Init");
             App.Make<Service1>();
         }
 
         public void Register()
         {
-            App.Log("ServiceProviders1 Register");
+            Debug.LogFormat("ServiceProviders1 Register");
 
             App.Singleton<Service1>();
             App.Singleton<Service2>();
@@ -82,7 +82,7 @@ namespace XMLib.Test.ApplicationTest
             int index = 1;
             while (index > 0)
             {
-                App.Log("ServiceProviders1 init> {0}", index);
+                Debug.LogFormat("ServiceProviders1 init> {0}", index);
                 yield return new WaitForSeconds(1);
                 index--;
             }
@@ -94,12 +94,12 @@ namespace XMLib.Test.ApplicationTest
         [Priority(2)]
         public void Init()
         {
-            App.Log("ServiceProviders2 Init");
+            Debug.LogFormat("ServiceProviders2 Init");
         }
 
         public void Register()
         {
-            App.Log("ServiceProviders2 Register");
+            Debug.LogFormat("ServiceProviders2 Register");
         }
 
         public IEnumerator CoroutineInit()
@@ -107,7 +107,7 @@ namespace XMLib.Test.ApplicationTest
             int index = 1;
             while (index > 0)
             {
-                App.Log("ServiceProviders2 init> {0}", index);
+                Debug.LogFormat("ServiceProviders2 init> {0}", index);
                 yield return new WaitForSeconds(1);
                 index--;
             }

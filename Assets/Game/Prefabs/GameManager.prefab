@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4473423711720076}
+  - component: {fileID: 114847420941761408}
   - component: {fileID: 114183660206331132}
   m_Layer: 0
   m_Name: GameManager
@@ -49,5 +50,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67442d5137ef7a9409b0c1724839054e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114847420941761408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1864033136980232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b35b7e33bc2aeb4e9521a4cb0a46059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
