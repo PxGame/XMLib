@@ -17,7 +17,7 @@ namespace XMLib.MonoDriver
         /// 服务提供者初始化
         /// <para>可设置优先级</para>
         /// </summary>
-        [Priority()]
+        [Priority(-5000)]
         public void Init()
         {
             App.Make<IMonoDriver>();
