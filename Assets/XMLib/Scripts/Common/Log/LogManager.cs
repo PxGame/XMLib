@@ -95,6 +95,12 @@ namespace XMLib.Log
         /// </summary>
         private bool _isRunning;
 
+        /// <summary>
+        /// 缓冲区日志最大条数限制
+        /// </summary>
+        [SerializeField]
+        private int _maxPoolSize = 100;
+
         #region Mono
 
         private void Awake()
@@ -292,6 +298,11 @@ namespace XMLib.Log
 
             lock (_syncRoot)
             {
+                if (_queues.Count > _maxPoolSize)
+                {//缓冲区溢出，则不再添加
+                    return;
+                }
+
                 _queues.Enqueue(new LogMessage(type, condition, stackTrace));
             }
         }

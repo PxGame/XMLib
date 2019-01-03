@@ -42,7 +42,7 @@ namespace XMLib.InputDriver
         /// <param name="name">名字</param>
         public VirtualAxis(string name)
         {
-            _name = "";
+            _name = name;
             _value = 0;
         }
 

@@ -64,6 +64,10 @@ namespace XMLib.InputDriver
                 case ActiveInputMethod.Mobile:
                     _input = new MobileInput(deadZoom);
                     break;
+
+                case ActiveInputMethod.Mixed:
+                    _input = new MixedInput(deadZoom);
+                    break;
             }
 
             Checker.NotNull(_input);

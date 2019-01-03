@@ -46,7 +46,7 @@ namespace XMLib.InputDriver
             }
 
             float value = _axisDict[name].Value;
-            return value >= _deadZoom ? value : 0;
+            return Mathf.Abs(value) >= Mathf.Abs(_deadZoom) ? value : 0;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace XMLib.InputDriver
             }
 
             float value = _axisDict[name].Value;
-            return value >= _deadZoom ? 1 : 0;
+            return Mathf.Abs(value) >= Mathf.Abs(_deadZoom) ? Mathf.Sign(value) : 0;
         }
 
         /// <summary>
@@ -154,6 +154,51 @@ namespace XMLib.InputDriver
             }
 
             _buttonDict[name].Released();
+        }
+
+        /// <summary>
+        /// 按钮将要按住
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮是否按住</returns>
+        public bool WillButton(string name)
+        {
+            if (!ButtonExist(name))
+            {
+                return false;
+            }
+
+            return _buttonDict[name].WillHolding;
+        }
+
+        /// <summary>
+        /// 按钮将要按下
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮是否按下</returns>
+        public bool WillButtonDown(string name)
+        {
+            if (!ButtonExist(name))
+            {
+                return false;
+            }
+
+            return _buttonDict[name].WillDown;
+        }
+
+        /// <summary>
+        /// 按钮将要抬起
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮是否抬起</returns>
+        public bool WillButtonUp(string name)
+        {
+            if (!ButtonExist(name))
+            {
+                return false;
+            }
+
+            return _buttonDict[name].WillUp;
         }
 
         #endregion 控制

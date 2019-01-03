@@ -46,7 +46,7 @@ namespace XMLib.InputDriver
         /// <param name="value">值</param>
         public override void SetAxis(string name, float value)
         {
-            Debug.LogWarningFormat("标准输入方式不支持设置轴值: {0} = {1}", name, value);
+            //Debug.LogWarningFormat("标准输入方式不支持设置轴值: {0} = {1}", name, value);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace XMLib.InputDriver
         /// <param name="name">名字</param>
         public override void SetButtonDown(string name)
         {
-            Debug.LogWarningFormat("标准输入方式不支持设置按钮状态: {0} = 按下", name);
+            //Debug.LogWarningFormat("标准输入方式不支持设置按钮状态: {0} = 按下", name);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace XMLib.InputDriver
         /// <param name="name">名字</param>
         public override void SetButtonUp(string name)
         {
-            Debug.LogWarningFormat("标准输入方式不支持设置按钮状态: {0} = 抬起", name);
+            //Debug.LogWarningFormat("标准输入方式不支持设置按钮状态: {0} = 抬起", name);
         }
 
         #endregion 控制

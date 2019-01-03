@@ -81,7 +81,7 @@ namespace XMLib.InputDriver
         /// <summary>
         /// 按住
         /// </summary>
-        public bool Holding { get { return _pressed; } }
+        public bool Holding { get { return (_lastPressedFrame < Time.frameCount) && !(!_pressed && _releasedFrame < Time.frameCount); } }
 
         /// <summary>
         /// 按下
@@ -92,5 +92,20 @@ namespace XMLib.InputDriver
         /// 抬起
         /// </summary>
         public bool Up { get { return (_releasedFrame - Time.frameCount) == -1; } }
+
+        /// <summary>
+        ///  将要按住
+        /// </summary>
+        public bool WillHolding { get { return _pressed && (_lastPressedFrame == Time.frameCount); } }
+
+        /// <summary>
+        /// 将要按下
+        /// </summary>
+        public bool WillDown { get { return _lastPressedFrame == Time.frameCount; } }
+
+        /// <summary>
+        ///  将要抬起
+        /// </summary>
+        public bool WillUp { get { return _releasedFrame == Time.frameCount; } }
     }
 }

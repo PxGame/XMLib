@@ -18,6 +18,7 @@ namespace XMLib.InputDriver
     {
         None,
         StandAlone,
-        Mobile
+        Mobile,
+        Mixed
     }
 }
