@@ -5,6 +5,7 @@
  * 创建时间: 12/10/2018 3:04:27 PM
  */
 
+using System;
 using UnityEngine;
 
 namespace XMLib
@@ -243,6 +244,16 @@ namespace XMLib
 
             //还原颜色
             Gizmos.color = oldColor;
+        }
+
+        /// <summary>
+        /// 绘制方块
+        /// </summary>
+        /// <param name="rect">范围</param>
+        /// <param name="color">颜色</param>
+        public static void DrawCube2D(Rect rect, Color color)
+        {
+            DrawCube2D(rect.position, Quaternion.identity, Vector2.one, rect.size, rect.center, color);
         }
 
         /// <summary>

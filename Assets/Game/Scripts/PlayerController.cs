@@ -24,23 +24,23 @@ public class PlayerController : MonoBehaviour
         float x = _input.GetAxis("Horizontal") * Time.deltaTime * _speed;
         float y = _input.GetAxis("Vertical") * Time.deltaTime * _speed;
 
-        if (_input.GetButtonDown("Fire1"))
+        if (_input.GetButtonDown("Jump"))
         {
-            Debug.Log("Fire1 Down:" + Time.frameCount);
+            Debug.Log("Jump Down:" + Time.frameCount);
         }
-        if (_input.GetButtonUp("Fire1"))
+        if (_input.GetButtonUp("Jump"))
         {
-            Debug.Log("Fire1 Up:" + Time.frameCount);
+            Debug.Log("Jump Up:" + Time.frameCount);
         }
-        if (!_isPress && _input.GetButton("Fire1"))
+        if (!_isPress && _input.GetButton("Jump"))
         {
             _isPress = true;
-            Debug.Log("Fire1 Holding:" + Time.frameCount);
+            Debug.Log("Jump Holding:" + Time.frameCount);
         }
-        else if (_isPress && !_input.GetButton("Fire1"))
+        else if (_isPress && !_input.GetButton("Jump"))
         {
             _isPress = false;
-            Debug.Log("Fire1 Holded:" + Time.frameCount);
+            Debug.Log("Jump Holded:" + Time.frameCount);
         }
 
         transform.Translate(x, y, 0);

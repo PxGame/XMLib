@@ -157,8 +157,6 @@ namespace XMLib.UI
             }
 
             _onUp.Invoke();
-
-            Debug.Log("Center:" + ((RectTransform)transform).GetCenterPosition());
         }
     }
 }
