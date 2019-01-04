@@ -11,9 +11,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _speed = 3f;
 
+    private Physics2DController _controller;
+
     private void Awake()
     {
         Debug.Log("Player Awake");
+
+        _controller = GetComponent<Physics2DController>();
         _input = App.Make<IInput>();
     }
 
@@ -43,6 +47,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Jump Holded:" + Time.frameCount);
         }
 
-        transform.Translate(x, y, 0);
+        _controller.Move(new Vector2(x, y));
     }
 }

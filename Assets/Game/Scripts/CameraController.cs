@@ -58,4 +58,28 @@ public class CameraController : MonoBehaviour
 
         transform.position = pos;
     }
+
+    private void OnPostRender()
+    {
+        GL.Begin(GL.LINES);
+
+        GL.Vertex3(0, 0, 0);
+        GL.Vertex3(100, 100, 0);
+        GL.Vertex3(100, 100, 0);
+        GL.Vertex3(100, 200, 0);
+
+        GL.End();
+    }
+
+    private void OnValidate()
+    {
+        if (_target == null)
+        {
+            return;
+        }
+
+        Vector3 targetPos = (Vector2)_target.position - _offset;
+        targetPos.z = transform.position.z;
+        transform.position = targetPos;
+    }
 }
