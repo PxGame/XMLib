@@ -25,7 +25,7 @@ namespace XMLib
         /// <summary>
         /// 长度
         /// </summary>
-        public float length;
+        public float distance;
 
         /// <summary>
         /// 方向
@@ -43,12 +43,12 @@ namespace XMLib
         /// 构造函数
         /// </summary>
         /// <param name="origin">起点</param>
-        /// <param name="length">长度</param>
+        /// <param name="distance">长度</param>
         /// <param name="direction">方向</param>
-        public CheckItem(Vector2 origin, float length, Vector2 direction)
+        public CheckItem(Vector2 origin, float distance, Vector2 direction)
         {
             this.origin = origin;
-            this.length = length;
+            this.distance = distance;
             this.direction = direction;
         }
     }

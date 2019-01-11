@@ -23,12 +23,17 @@ namespace XMLib
         /// <summary>
         /// 设置
         /// </summary>
-        public Physics2DSetting Setting { get { return _setting; } }
+        public Physics2DSetting setting { get { return _setting; } }
 
         /// <summary>
         /// 碰撞体
         /// </summary>
-        public BoxCollider2D Collider2D { get { return _collider2D; } }
+        public BoxCollider2D boxCollider2D { get { return _boxCollider2D; } }
+
+        /// <summary>
+        /// 包围盒
+        /// </summary>
+        public Bounds bounds { get { return _boxCollider2D.bounds; } }
 
         #endregion 公开参数
 
@@ -43,7 +48,7 @@ namespace XMLib
         /// <summary>
         /// 碰撞体
         /// </summary>
-        protected BoxCollider2D _collider2D;
+        protected BoxCollider2D _boxCollider2D;
 
         #endregion 参数
 
@@ -57,7 +62,7 @@ namespace XMLib
         /// <summary>
         /// 移动偏移
         /// </summary>
-        protected Vector2 _moveOffset;
+        protected Vector2 _velocity;
 
         #region 射线检测
 
@@ -81,6 +86,36 @@ namespace XMLib
         /// </summary>
         protected List<CheckResult> _verticalCheckResults;
 
+        /// <summary>
+        /// bound
+        /// </summary>
+        protected Bounds _boundsNoSkin;
+
+        /// <summary>
+        /// 横向射线数量
+        /// </summary>
+        protected int _horizontalRayCount;
+
+        /// <summary>
+        /// 纵向射线数量
+        /// </summary>
+        protected int _verticalRayCount;
+
+        /// <summary>
+        /// 横向射线间距
+        /// </summary>
+        protected float _horizontalRaySpacing;
+
+        /// <summary>
+        /// 纵向射线间距
+        /// </summary>
+        protected float _verticalRaySpacing;
+
+        /// <summary>
+        /// 射线起点
+        /// </summary>
+        protected RaycastOrigins raycastOrigins;
+
         #endregion 射线检测
 
         #endregion 共享参数
@@ -90,14 +125,14 @@ namespace XMLib
         private void Awake()
         {
             //初始化
-            _raycastBuffer = new RaycastHit2D[_setting.raycastBufferCount];
+            _raycastBuffer = new RaycastHit2D[_setting.rayBufferCount];
             _horizontalCheckItems = new List<CheckItem>();
             _verticalCheckItems = new List<CheckItem>();
             _horizontalCheckResults = new List<CheckResult>();
             _verticalCheckResults = new List<CheckResult>();
 
             //获取组件
-            _collider2D = GetComponent<BoxCollider2D>();
+            _boxCollider2D = GetComponent<BoxCollider2D>();
         }
 
         #region Editor
@@ -119,10 +154,10 @@ namespace XMLib
         /// <summary>
         /// 移动
         /// </summary>
-        /// <param name="offset">偏移</param>
-        public void Move(Vector2 offset)
+        /// <param name="velocity">偏移</param>
+        public void Move(Vector2 velocity)
         {
-            _moveOffset = offset;
+            _velocity = velocity;
             RaycastCheck();
         }
 
@@ -148,43 +183,49 @@ namespace XMLib
         /// </summary>
         protected void Precompute()
         {
-            //校验数据
-            InitListSize(_horizontalCheckItems, _setting.horizontalRayCount);
-            InitListSize(_verticalCheckItems, _setting.verticalRayCount);
+            //去皮包围盒
+            _boundsNoSkin = _boxCollider2D.bounds;
+            _boundsNoSkin.Expand(_setting.skinWidth * -2);
 
-            Bounds bounds = _collider2D.bounds;
+            //计算射线起点
+            raycastOrigins = new RaycastOrigins();
+            raycastOrigins.bottomLeft = new Vector2(_boundsNoSkin.min.x, _boundsNoSkin.min.y);
+            raycastOrigins.bottomRight = new Vector2(_boundsNoSkin.max.x, _boundsNoSkin.min.y);
+            raycastOrigins.topLeft = new Vector2(_boundsNoSkin.min.x, _boundsNoSkin.max.y);
+            raycastOrigins.topRight = new Vector2(_boundsNoSkin.max.x, _boundsNoSkin.max.y);
+
+            //横纵向射线数量
+            _horizontalRayCount = Mathf.RoundToInt(_boundsNoSkin.size.y / _setting.raySpacing);
+            _verticalRayCount = Mathf.RoundToInt(_boundsNoSkin.size.x / _setting.raySpacing);
+
+            //横纵向射线间距
+            _horizontalRaySpacing = bounds.size.y / (_horizontalRayCount - 1);
+            _verticalRaySpacing = bounds.size.x / (_verticalRayCount - 1);
+
+            //更新检查项
+            UpdateCheckItem();
         }
 
         /// <summary>
-        /// 初始化数组大小
+        /// 更新检查项
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="count"></param>
-        private void InitListSize<T>(List<T> list, int count) where T : new()
+        protected void UpdateCheckItem()
         {
-            int offset = list.Count - count;
-            if (0 == offset)
+            //设置容器大小
+            _horizontalCheckItems.FixedCountWithInstance(_horizontalRayCount);
+            _verticalCheckItems.FixedCountWithInstance(_verticalRayCount);
+
+            float directionX = Mathf.Sign(_velocity.x);
+            float directionY = Mathf.Sign(_velocity.y);
+
+            //计算横向检测项
+            if (_velocity.y != 0)
             {
-                return;
             }
 
-            if (offset > 0)
-            {//移除多余对象
-                list.RemoveRange(0, offset);
-            }
-            else
-            {//添加新对象
-                while (offset < 0)
-                {
-                    list.Add(new T());
-                    offset++;
-                }
-            }
-
-            if (list.Count != count)
+            //计算纵向检测项
+            if (_velocity.x != 0)
             {
-                throw new InvalidOperationException("初始化List大小错误");
             }
         }
 

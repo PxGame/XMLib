@@ -21,25 +21,26 @@ namespace XMLib
         /// <summary>
         /// 最小射线检测距离
         /// </summary>
-        public float raycastLineMinLength = 0.2f;
+        [Tooltip("最小射线检测距离")]
+        public float rayMinDistance = 0.2f;
 
         /// <summary>
         /// 物理检测缓冲区最大数量
         /// </summary>
         [Tooltip("物理检测缓冲区最大数量")]
-        public int raycastBufferCount = 10;
+        public int rayBufferCount = 10;
 
         /// <summary>
-        /// 横向射线数量
+        /// 射线间距
         /// </summary>
-        [Tooltip("横向射线数量")]
-        public int horizontalRayCount = 5;
+        [Tooltip("射线间距")]
+        public float raySpacing = 0.25f;
 
         /// <summary>
-        /// 纵向射线数量
+        /// 皮肤宽度
         /// </summary>
-        [Tooltip("纵向射线数量")]
-        public int verticalRayCount = 5;
+        [Tooltip("皮肤宽度")]
+        public float skinWidth = 0.015f;
 
         /// <summary>
         /// 射线设置
