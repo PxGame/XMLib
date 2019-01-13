@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using XMLib;
 using XMLib.InputDriver;
+using XMLib.P2D;
 
+/// <summary>
+/// 角色控制器
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     private IInput _input;
@@ -11,42 +15,74 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _speed = 3f;
 
-    private Physics2DController _controller;
+    [SerializeField]
+    private Vector2 _jumpHeightRange = new Vector2(1f, 3f);
+
+    private RigidbodyController _controller;
+    protected Vector2 _preJumpSpeedRange;
 
     private void Awake()
     {
         Debug.Log("Player Awake");
+        //获取组件
+        _controller = GetComponent<RigidbodyController>();
 
-        _controller = GetComponent<Physics2DController>();
+        //计算跳跃速度
+        float tmp = 2.0f * Mathf.Abs(_controller.gravity);
+        _preJumpSpeedRange.x = Mathf.Sqrt(tmp * _jumpHeightRange.x);
+        _preJumpSpeedRange.y = Mathf.Sqrt(tmp * _jumpHeightRange.y);
+
+        //获取输入服务
         _input = App.Make<IInput>();
     }
 
     private bool _isPress = false;
+    private Vector2 _velocity;
+    private bool _stJumpDown;
+    private bool _stJumpUp;
 
     private void Update()
     {
-        float x = _input.GetAxis("Horizontal") * Time.deltaTime * _speed;
-        float y = _input.GetAxis("Vertical") * Time.deltaTime * _speed;
-
         if (_input.GetButtonDown("Jump"))
         {
-            Debug.Log("Jump Down:" + Time.frameCount);
         }
         if (_input.GetButtonUp("Jump"))
         {
-            Debug.Log("Jump Up:" + Time.frameCount);
         }
         if (!_isPress && _input.GetButton("Jump"))
         {
+            _stJumpDown = true;
             _isPress = true;
-            Debug.Log("Jump Holding:" + Time.frameCount);
         }
         else if (_isPress && !_input.GetButton("Jump"))
         {
+            _stJumpUp = true;
             _isPress = false;
-            Debug.Log("Jump Holded:" + Time.frameCount);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        _velocity = _controller.velocity;
+
+        _velocity.x = _input.GetAxis("Horizontal") * _speed;
+        //_velocity.y = _input.GetAxis("Vertical") * _speed;
+
+        if (_stJumpDown)
+        {
+            _velocity.y = _preJumpSpeedRange.y;
+            _stJumpDown = false;
         }
 
-        _controller.Move(new Vector2(x, y));
+        if (_stJumpUp)
+        {
+            if (_velocity.y > _preJumpSpeedRange.x)
+            {
+                _velocity.y = _preJumpSpeedRange.x;
+            }
+            _stJumpUp = false;
+        }
+
+        _controller.velocity = _velocity;
     }
 }

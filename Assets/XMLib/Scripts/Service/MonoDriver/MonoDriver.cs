@@ -278,9 +278,10 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void Update()
         {
-            foreach (IUpdate current in _updates)
+            int count = _updates.Count;
+            for (int i = 0; i < count; i++)
             {
-                current.Update();
+                _updates[i].Update();
             }
 
             lock (_syncRoot)
@@ -297,9 +298,10 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void LateUpdate()
         {
-            foreach (ILateUpdate current in _lateUpdates)
+            int count = _lateUpdates.Count;
+            for (int i = 0; i < count; i++)
             {
-                current.LateUpdate();
+                _lateUpdates[i].LateUpdate();
             }
         }
 
@@ -308,9 +310,10 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void FixedUpdate()
         {
-            foreach (IFixedUpdate current in _fixedUpdates)
+            int count = _fixedUpdates.Count;
+            for (int i = 0; i < count; i++)
             {
-                current.FixedUpdate();
+                _fixedUpdates[i].FixedUpdate();
             }
         }
 
@@ -319,9 +322,10 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void OnGUI()
         {
-            foreach (IOnGUI current in _onGUIs)
+            int count = _onGUIs.Count;
+            for (int i = 0; i < count; i++)
             {
-                current.OnGUI();
+                _onGUIs[i].OnGUI();
             }
         }
 
@@ -330,9 +334,10 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void OnDestroy()
         {
-            foreach (IOnDestroy current in _onDestroys)
+            int count = _onDestroys.Count;
+            for (int i = 0; i < count; i++)
             {
-                current.OnDestroy();
+                _onDestroys[i].OnDestroy();
             }
 
             _updates.Clear();

@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     protected AnimationCurve _moveSpeedCurve;
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (null == _target)
         {
@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour
         }
 
         Vector2 targetPos = (Vector2)_target.position - _offset;
+
         Vector2 selfPos = transform.position;
         Vector3 pos;
         float distance = Vector2.Distance(targetPos, selfPos);
@@ -57,18 +58,6 @@ public class CameraController : MonoBehaviour
         pos.z = transform.position.z;
 
         transform.position = pos;
-    }
-
-    private void OnPostRender()
-    {
-        GL.Begin(GL.LINES);
-
-        GL.Vertex3(0, 0, 0);
-        GL.Vertex3(100, 100, 0);
-        GL.Vertex3(100, 100, 0);
-        GL.Vertex3(100, 200, 0);
-
-        GL.End();
     }
 
     private void OnValidate()

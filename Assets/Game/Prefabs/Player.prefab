@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4091169012542972}
   - component: {fileID: 61141258342994466}
   - component: {fileID: 114089067262633730}
-  m_Layer: 0
+  - component: {fileID: 114853611141208012}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +39,7 @@ GameObject:
   - component: {fileID: 4735885532290570}
   - component: {fileID: 33146615293395290}
   - component: {fileID: 23225975416753566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +87,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3457e7e2885b13b49a7ad7b71f273432, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,3 +150,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150657bd7b15c514f9379a92cd202f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 10
+  _jumpHeightRange: {x: 1, y: 3}
+--- !u!114 &114853611141208012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668631817975680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5316250e28f76f4ea6cb4ed82f21620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raycastSetting:
+    rayMinDistance: 0.2
+    rayBufferCount: 10
+    raySpacing: 0.25
+    skinWidth: 0.015
+    contactFilter2D:
+      useTriggers: 0
+      useLayerMask: 1
+      useDepth: 0
+      useOutsideDepth: 0
+      useNormalAngle: 0
+      useOutsideNormalAngle: 0
+      layerMask:
+        serializedVersion: 2
+        m_Bits: 512
+      minDepth: 0
+      maxDepth: 0
+      minNormalAngle: 0
+      maxNormalAngle: 0
+  _rigidbodySetting:
+    gravityScale: 10

@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib
+namespace XMLib.P2D
 {
     /// <summary>
     /// 射线检测起点
     /// </summary>
     [Serializable]
-    public class RaycastOrigins
+    public struct RaycastOrigins
     {
         /// <summary>
         /// 上左

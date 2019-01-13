@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib
+namespace XMLib.P2D
 {
     /// <summary>
-    /// 物理设置
+    /// 物理检测设置
     /// </summary>
     [Serializable]
-    public class Physics2DSetting
+    public class RaycastSetting
     {
         /// <summary>
         /// 最小射线检测距离
