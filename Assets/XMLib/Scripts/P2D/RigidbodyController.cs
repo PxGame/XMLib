@@ -5,6 +5,7 @@
  * 创建时间: 1/13/2019 2:59:43 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,10 +17,12 @@ namespace XMLib.P2D
     /// </summary>
     public class RigidbodyController : RaycastController
     {
+        #region 公开参数
+
         /// <summary>
         /// 重力
         /// </summary>
-        public float gravity { get { return Physics2D.gravity.y * _rigidbodySetting.gravityScale; } }
+        public float gravity { get { return Physics2D.gravity.y * RigidbodySetting.gravityScale; } }
 
         /// <summary>
         /// 当前速度
@@ -27,16 +30,41 @@ namespace XMLib.P2D
         public Vector2 velocity { get { return _velocity; } set { _velocity = value; } }
 
         /// <summary>
-        /// 设置
+        /// 刚体设置
+        /// </summary>
+        public RigidbodySetting RigidbodySetting { get { return _rigidbodySetting; } }
+
+        #endregion 公开参数
+
+        /// <summary>
+        /// 刚体设置
         /// </summary>
         [SerializeField]
         protected RigidbodySetting _rigidbodySetting;
 
+        /// <summary>
+        /// 横向运动是否发生碰撞
+        /// </summary>
         protected bool _isHorizontalHitted;
+
+        /// <summary>
+        /// 纵向运动是否发生碰撞
+        /// </summary>
         protected bool _isVerticalHitted;
+
+        /// <summary>
+        /// 横向运动碰撞信息
+        /// </summary>
         protected RaycastHit2D _horizontalNearHit;
+
+        /// <summary>
+        /// 纵向运动碰撞信息
+        /// </summary>
         protected RaycastHit2D _verticalNearHit;
 
+        /// <summary>
+        /// 当前速度
+        /// </summary>
         private Vector2 _velocity;
 
         protected void FixedUpdate()

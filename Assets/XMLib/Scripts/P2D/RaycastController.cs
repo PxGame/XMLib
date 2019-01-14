@@ -21,7 +21,7 @@ namespace XMLib.P2D
         #region 公开参数
 
         /// <summary>
-        /// 设置
+        /// 射线设置
         /// </summary>
         public RaycastSetting setting { get { return _raycastSetting; } }
 
@@ -29,11 +29,6 @@ namespace XMLib.P2D
         /// 碰撞体
         /// </summary>
         public BoxCollider2D boxCollider2D { get { return _boxCollider2D; } }
-
-        /// <summary>
-        /// 包围盒
-        /// </summary>
-        public Bounds bounds { get { return _boxCollider2D.bounds; } }
 
         #endregion 公开参数
 
@@ -62,39 +57,39 @@ namespace XMLib.P2D
         /// <summary>
         /// 用于在发生变化时重新计算相关数据
         /// </summary>
-        protected Bounds _lastBounds;
+        private Bounds _lastBounds;
 
         #region 射线检测
 
         /// <summary>
         /// 去皮包围盒
         /// </summary>
-        protected Bounds _boundsNoSkin;
+        private Bounds _boundsNoSkin;
 
         /// <summary>
         /// 包围盒
         /// </summary>
-        protected Bounds _bounds;
+        private Bounds _bounds;
 
         /// <summary>
         /// 横向射线数量
         /// </summary>
-        protected int _horizontalRayCount;
+        private int _horizontalRayCount;
 
         /// <summary>
         /// 纵向射线数量
         /// </summary>
-        protected int _verticalRayCount;
+        private int _verticalRayCount;
 
         /// <summary>
         /// 横向射线间距
         /// </summary>
-        protected float _horizontalRaySpacing;
+        private float _horizontalRaySpacing;
 
         /// <summary>
         /// 纵向射线间距
         /// </summary>
-        protected float _verticalRaySpacing;
+        private float _verticalRaySpacing;
 
         /// <summary>
         /// 射线起点
@@ -145,7 +140,7 @@ namespace XMLib.P2D
             _raycastOrigins.topRight.x = _boundsNoSkin.max.x;
             _raycastOrigins.topRight.y = _boundsNoSkin.max.y;
 
-            if (_lastBounds != _bounds)
+            if (_lastBounds.size != _bounds.size)
             {//包围盒大小改变时更新数据
                 //横纵向射线数量
                 _horizontalRayCount = Mathf.RoundToInt(_boundsNoSkin.size.y / _raycastSetting.raySpacing);
@@ -185,7 +180,7 @@ namespace XMLib.P2D
             {
                 Vector2 origin = rayOrigin + Vector2.right * (_verticalRaySpacing * i);
 
-                Debug.DrawLine(origin, origin + direction * distance, Color.red);
+                //Debug.DrawLine(origin, origin + direction * distance, Color.red);
 
                 int count = Physics2D.Raycast(origin, direction, _raycastSetting.contactFilter2D, _raycastResults, distance);
                 if (0 == count)
@@ -233,7 +228,7 @@ namespace XMLib.P2D
             {
                 Vector2 origin = rayOrigin + Vector2.up * (_horizontalRaySpacing * i);
 
-                Debug.DrawLine(origin, origin + direction * distance, Color.blue);
+                //Debug.DrawLine(origin, origin + direction * distance, Color.blue);
 
                 int count = Physics2D.Raycast(origin, direction, _raycastSetting.contactFilter2D, _raycastResults, distance);
                 if (0 == count)

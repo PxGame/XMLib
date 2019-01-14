@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     {
         _velocity = _controller.velocity;
 
-        _velocity.x = _input.GetAxis("Horizontal") * _speed;
+        _velocity.x = 1 * _speed;
         //_velocity.y = _input.GetAxis("Vertical") * _speed;
 
         if (_stJumpDown)
