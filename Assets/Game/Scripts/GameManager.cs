@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XMLib;
 using XMLib.MonoDriver;
+using XMLib.UIDriver;
 using IServiceProvider = XMLib.IServiceProvider;
 
 /// <summary>
@@ -25,9 +26,13 @@ public class GameManager : Framework
     private void LoadProvider()
     {
         //非mono服务提供者
-        foreach (IServiceProvider provider in new IServiceProvider[] {
-            new MonoDriverProvider()
-        })
+        IServiceProvider[] providers = new IServiceProvider[]
+        {
+            new MonoDriverProvider(),
+            new UIDriverProvider()
+        };
+
+        foreach (IServiceProvider provider in providers)
         {
             App.Register(provider);
         }
@@ -36,14 +41,9 @@ public class GameManager : Framework
         Component root = App.Make<Component>();
         if (null != root)
         {
-            IServiceProvider[] providers = root.GetComponentsInChildren<IServiceProvider>();
-            foreach (IServiceProvider provider in providers)
+            IServiceProvider[] monoProviders = root.GetComponentsInChildren<IServiceProvider>();
+            foreach (IServiceProvider provider in monoProviders)
             {
-                if (null == provider)
-                {
-                    continue;
-                }
-
                 App.Register(provider);
             }
         }

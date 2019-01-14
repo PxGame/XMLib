@@ -5,10 +5,11 @@
  * 创建时间: 12/18/2018 12:14:02 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
+using XMLib.MonoDriver;
 
 namespace XMLib.Test.ContainerTest
 {
@@ -16,7 +17,7 @@ namespace XMLib.Test.ContainerTest
     {
         private string _msg = "";
 
-        public Service1([Inject("msg")]string msg)
+        public Service1([Inject("msg")] string msg)
         {
             _msg = msg;
         }

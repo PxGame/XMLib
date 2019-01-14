@@ -8,14 +8,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using XMLib.MonoDriver;
 
 namespace XMLib.Test.ApplicationTest
 {
     public class Service1 : IDisposable, IUpdate, IOnDestroy, IFixedUpdate, ILateUpdate, IOnGUI
     {
-        public Service1(Service2 service1)
-        {
-        }
+        public Service1(Service2 service1) { }
 
         public void Dispose()
         {
@@ -55,9 +54,7 @@ namespace XMLib.Test.ApplicationTest
 
     public class Service2
     {
-        public Service2(IApplication application, Component component)
-        {
-        }
+        public Service2(IApplication application, Component component) { }
     }
 
     public class ServiceProvider1 : IServiceProvider, ICoroutineInit

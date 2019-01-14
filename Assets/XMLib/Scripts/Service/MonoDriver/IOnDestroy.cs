@@ -2,23 +2,23 @@
  * 作者：Peter Xiang
  * 联系方式：565067150@qq.com
  * 文档: https://github.com/xiangmu110/XMLib/wiki
- * 创建时间: 12/20/2018 12:15:15 PM
+ * 创建时间: 12/20/2018 12:15:28 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
-namespace XMLib
+namespace XMLib.MonoDriver
 {
     /// <summary>
-    /// LateUpdate调用
+    /// OnDestroy 调用
     /// </summary>
-    public interface ILateUpdate
+    public interface IOnDestroy
     {
         /// <summary>
-        /// LateUpdate调用
+        /// OnDestroy 调用
         /// </summary>
-        void LateUpdate();
+        void OnDestroy();
     }
 }
