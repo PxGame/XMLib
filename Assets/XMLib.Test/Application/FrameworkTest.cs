@@ -30,7 +30,7 @@ namespace XMLib.Test.ApplicationTest
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                App.UnBind<MonoDriver.MonoDriver>();
+                //App.UnBind<MonoDriver.MonoDriver>();
             }
         }
     }

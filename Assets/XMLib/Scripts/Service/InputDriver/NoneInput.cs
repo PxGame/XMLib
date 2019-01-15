@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 空输入
     /// </summary>
-    public class NoneInput : VirtualInput
+    internal class NoneInput : VirtualInput
     {
         /// <summary>
         /// 设置轴值

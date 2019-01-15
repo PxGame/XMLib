@@ -2,19 +2,19 @@
  * 作者：Peter Xiang
  * 联系方式：565067150@qq.com
  * 文档: https://github.com/xiangmu110/XMLib/wiki
- * 创建时间: 1/14/2019 10:10:04 PM
+ * 创建时间: 1/15/2019 12:20:28 PM
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-namespace XMLib.UIDriver
+namespace XMLib.ObjectPool
 {
     /// <summary>
-    /// UI 驱动提供者
+    /// 对象池提供者
     /// </summary>
-    public sealed class UIDriverProvider : IServiceProvider
+    public sealed class ObjectPoolProvider : IServiceProvider
     {
         /// <summary>
         /// 服务提供者初始化
@@ -23,7 +23,7 @@ namespace XMLib.UIDriver
         [Priority()]
         public void Init()
         {
-            App.Make<IUIDriver>();
+            App.Make<IObjectPool>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace XMLib.UIDriver
         /// </summary>
         public void Register()
         {
-            App.Singleton<UIDriver>().Alias<IUI>();
+            App.Singleton<ObjectPool>().Alias<IObjectPool>();
         }
     }
 }

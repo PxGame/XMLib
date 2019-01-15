@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 虚拟按钮
     /// </summary>
-    public class VirtualButton
+    internal class VirtualButton
     {
         /// <summary>
         /// 按钮名

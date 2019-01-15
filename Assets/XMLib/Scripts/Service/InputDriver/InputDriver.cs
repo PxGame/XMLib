@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 输入服务
     /// </summary>
-    public class InputDriver : IInputDriver
+    internal class InputDriver : IInputDriver
     {
         /// <summary>
         /// 当前输入方式

@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 移动输入
     /// </summary>
-    public class MobileInput : VirtualInput
+    internal class MobileInput : VirtualInput
     {
         /// <summary>
         /// 死区

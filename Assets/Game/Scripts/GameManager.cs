@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XMLib;
 using XMLib.MonoDriver;
+using XMLib.ObjectPool;
 using XMLib.UIDriver;
 using IServiceProvider = XMLib.IServiceProvider;
 
@@ -29,7 +30,8 @@ public class GameManager : Framework
         IServiceProvider[] providers = new IServiceProvider[]
         {
             new MonoDriverProvider(),
-            new UIDriverProvider()
+            new UIDriverProvider(),
+            new ObjectPoolProvider()
         };
 
         foreach (IServiceProvider provider in providers)

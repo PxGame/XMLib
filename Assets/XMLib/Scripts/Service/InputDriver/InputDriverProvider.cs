@@ -15,9 +15,8 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 输入服务提供者
     /// </summary>
-    public sealed class InputDriverProvider : MonoBehaviour, IServiceProvider
+    public sealed class InputDriverProvider : IServiceProvider
     {
-        [SerializeField]
         private ActiveInputMethod _method;
 
         [Tooltip("None及StandAlone模式下,该参数被忽略")]
@@ -31,7 +30,7 @@ namespace XMLib.InputDriver
         [Priority()]
         public void Init()
         {
-            App.Make<IInputDriver>();
+            App.Make<IInput>();
         }
 
         /// <summary>
@@ -40,7 +39,6 @@ namespace XMLib.InputDriver
         public void Register()
         {
             App.Singleton<InputDriver>()
-                .Alias<IInputDriver>()
                 .Alias<IInput>().OnAfterResolving((instance) =>
                 {
                     InputDriver inputDriver = (InputDriver)instance;

@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 混合输入
     /// </summary>
-    public class MixedInput : VirtualInput
+    internal class MixedInput : VirtualInput
     {
         /// <summary>
         /// 标准输入

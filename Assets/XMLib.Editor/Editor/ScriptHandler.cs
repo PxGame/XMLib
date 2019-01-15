@@ -82,6 +82,7 @@ namespace XMLib.Editor
         public static string TestSimpleScriptTemplate = "XMLib/Template/Test Simple.XMLib.cs.txt";
         public static string TestRunnerScriptTemplate = "XMLib/Template/Test Runner.XMLib.cs.txt";
         public static string ProviderScriptTemplate = "XMLib/Template/Provider.XMLib.cs.txt";
+        public static string SettingScriptTemplate = "XMLib/Template/Setting.XMLib.cs.txt";
         public static string SimpleWithFolderScriptTemplate = "XMLib/Template/SimpleWithFolder.XMLib.cs.txt";
         public static string CheckEditorPath = ".*/Editor/.*";
 
@@ -146,6 +147,15 @@ namespace XMLib.Editor
         public static void CreateSimpleWithFolderScript()
         {
             CreateFIle("SimpleWithFolder", SimpleWithFolderScriptTemplate);
+        }
+
+        /// <summary>
+        /// 创建服务设置脚本
+        /// </summary>
+        [MenuItem("Assets/XMLib/Create/Setting Script")]
+        public static void CreateSettingScript()
+        {
+            CreateFIle("Setting", SettingScriptTemplate);
         }
 
         /// <summary>

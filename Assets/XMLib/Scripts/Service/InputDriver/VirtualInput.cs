@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 虚拟输入
     /// </summary>
-    public abstract class VirtualInput : IVirtualInput
+    internal abstract class VirtualInput : IVirtualInput
     {
         protected Dictionary<string, VirtualAxis> _axisDict;
         protected Dictionary<string, VirtualButton> _buttonDict;

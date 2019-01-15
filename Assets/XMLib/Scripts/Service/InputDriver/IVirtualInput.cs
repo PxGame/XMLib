@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 虚拟输入
     /// </summary>
-    public interface IVirtualInput : IInput
+    internal interface IVirtualInput : IInput
     {
         #region 注册
 
