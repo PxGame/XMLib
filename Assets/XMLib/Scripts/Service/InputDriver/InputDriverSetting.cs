@@ -17,15 +17,15 @@ namespace XMLib.InputDriver
     public class InputDriverSetting : ServiceSetting
     {
         /// <summary>
-        /// 输入模式
+        /// 输入方式
         /// </summary>
-        private ActiveInputMethod method { get { return _method; } }
+        private ActiveInputMethod _method;
 
         /// <summary>
-        /// 输入模式
+        /// 死区
+        /// <para>None及StandAlone模式下,该参数被忽略</para>
         /// </summary>
-        [SerializeField]
-        protected ActiveInputMethod _method;
+        private float _deadZoom;
 
         /// <summary>
         /// 获取服务提供者实例
@@ -33,7 +33,7 @@ namespace XMLib.InputDriver
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new InputDriverProvider();
+            return new InputDriverProvider(_method, _deadZoom);
         }
     }
 }

@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4473423711720076}
   - component: {fileID: 114847420941761408}
   - component: {fileID: 114183660206331132}
-  - component: {fileID: 114673016672105328}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -53,19 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67442d5137ef7a9409b0c1724839054e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114673016672105328
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1864033136980232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e64201974573547a40522d19b5ae57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _method: 1
-  _deadZoom: 0
+  _setting: {fileID: 11400000, guid: 9c10be200c7ed44479396d3da9b9e0a0, type: 2}
 --- !u!114 &114847420941761408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,3 +64,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b35b7e33bc2aeb4e9521a4cb0a46059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxPoolSize: 100

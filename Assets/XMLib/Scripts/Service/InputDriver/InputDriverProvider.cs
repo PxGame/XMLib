@@ -5,9 +5,9 @@
  * 创建时间: 12/28/2018 10:30:48 AM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 namespace XMLib.InputDriver
@@ -17,11 +17,27 @@ namespace XMLib.InputDriver
     /// </summary>
     public sealed class InputDriverProvider : IServiceProvider
     {
+        /// <summary>
+        /// 输入方式
+        /// </summary>
         private ActiveInputMethod _method;
 
-        [Tooltip("None及StandAlone模式下,该参数被忽略")]
-        [SerializeField]
+        /// <summary>
+        /// 死区
+        /// <para>None及StandAlone模式下,该参数被忽略</para>
+        /// </summary>
         private float _deadZoom;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="method">输入方式</param>
+        /// <param name="deadZoom">死区,None及StandAlone模式下,该参数被忽略</param>
+        public InputDriverProvider(ActiveInputMethod method, float deadZoom)
+        {
+            _method = method;
+            _deadZoom = deadZoom;
+        }
 
         /// <summary>
         /// 服务提供者初始化
@@ -41,7 +57,7 @@ namespace XMLib.InputDriver
             App.Singleton<InputDriver>()
                 .Alias<IInput>().OnAfterResolving((instance) =>
                 {
-                    InputDriver inputDriver = (InputDriver)instance;
+                    InputDriver inputDriver = (InputDriver) instance;
 
                     //设置输入方式
                     inputDriver.SwitchInputMethod(_method, _deadZoom);

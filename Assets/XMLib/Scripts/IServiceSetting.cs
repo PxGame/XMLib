@@ -5,9 +5,9 @@
  * 创建时间: 1/15/2019 2:25:17 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 namespace XMLib
 {
@@ -16,11 +16,6 @@ namespace XMLib
     /// </summary>
     public interface IServiceSetting
     {
-        /// <summary>
-        /// 是否启用
-        /// </summary>
-        bool enable { get; }
-
         /// <summary>
         /// 获取服务提供者实例
         /// </summary>

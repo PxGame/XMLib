@@ -16,6 +16,13 @@ namespace XMLib
     [DisallowMultipleComponent]
     public class Framework : MonoBehaviour, IBootstrap
     {
+        /// <summary>
+        /// 设置
+        /// </summary>
+        [Tooltip("设置")]
+        [SerializeField]
+        protected FrameworkSetting _setting;
+
         #region Unity
 
         protected virtual void Awake()
@@ -61,6 +68,21 @@ namespace XMLib
             App.On(ApplicationEvents.OnStartCompleted, OnStartCompleted);
             App.On(ApplicationEvents.OnTerminate, OnTerminate);
             App.On(ApplicationEvents.OnTerminated, OnTerminated);
+
+            //从设置加载服务
+            LoadProviderFromSetting();
+        }
+
+        /// <summary>
+        /// 加载服务通过设置
+        /// </summary>
+        private void LoadProviderFromSetting()
+        {
+            foreach (ServiceSetting setting in _setting)
+            {
+                IServiceProvider provider = setting.NewServiceProvider();
+                App.Register(provider);
+            }
         }
 
         /// <summary>
@@ -78,75 +100,55 @@ namespace XMLib
         /// <summary>
         ///  当引导程序开始之前
         /// </summary>
-        protected virtual void OnBootstrap()
-        {
-        }
+        protected virtual void OnBootstrap() { }
 
         /// <summary>
         ///  当注册服务提供者
         /// </summary>
         /// <param name="serviceProvider">服务提供者</param>
-        protected virtual void OnRegisterProvider(IServiceProvider serviceProvider)
-        {
-        }
+        protected virtual void OnRegisterProvider(IServiceProvider serviceProvider) { }
 
         /// <summary>
         /// 所有引导完成
         /// </summary>
-        protected virtual void OnBootstraped()
-        {
-        }
+        protected virtual void OnBootstraped() { }
 
         /// <summary>
         /// 当初始化开始之前
         /// </summary>
-        protected virtual void OnInit()
-        {
-        }
+        protected virtual void OnInit() { }
 
         /// <summary>
         /// 当服务提供者初始化结束后
         /// </summary>
         /// <param name="serviceProvider">服务提供者</param>
-        protected virtual void OnProviderInit(IServiceProvider serviceProvider)
-        {
-        }
+        protected virtual void OnProviderInit(IServiceProvider serviceProvider) { }
 
         /// <summary>
         /// 当服务提供者初始化进行前
         /// </summary>
         /// <param name="serviceProvider">服务提供者</param>
-        protected virtual void OnProviderInited(IServiceProvider serviceProvider)
-        {
-        }
+        protected virtual void OnProviderInited(IServiceProvider serviceProvider) { }
 
         /// <summary>
         /// 当初始化完成之后
         /// </summary>
-        protected virtual void OnInited()
-        {
-        }
+        protected virtual void OnInited() { }
 
         /// <summary>
         /// 框架启动完成
         /// </summary>
-        protected virtual void OnStartCompleted()
-        {
-        }
+        protected virtual void OnStartCompleted() { }
 
         /// <summary>
         /// 框架终止前
         /// </summary>
-        protected virtual void OnTerminate()
-        {
-        }
+        protected virtual void OnTerminate() { }
 
         /// <summary>
         /// 框架终止后
         /// </summary>
-        protected virtual void OnTerminated()
-        {
-        }
+        protected virtual void OnTerminated() { }
 
         #endregion 事件
 
