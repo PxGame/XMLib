@@ -10,7 +10,7 @@ using XMLib.P2D;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    private IInput _input;
+    private IInputDriver _input;
 
     [SerializeField]
     private float _speed = 3f;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         _preJumpSpeedRange.y = Mathf.Sqrt(tmp * _jumpHeightRange.y);
 
         //获取输入服务
-        _input = App.Make<IInput>();
+        _input = App.Make<IInputDriver>();
     }
 
     private bool _isPress = false;

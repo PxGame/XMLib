@@ -19,12 +19,14 @@ namespace XMLib.InputDriver
         /// <summary>
         /// 输入方式
         /// </summary>
+        [SerializeField]
         private ActiveInputMethod _method;
 
         /// <summary>
         /// 死区
         /// <para>None及StandAlone模式下,该参数被忽略</para>
         /// </summary>
+        [SerializeField]
         private float _deadZoom;
 
         /// <summary>

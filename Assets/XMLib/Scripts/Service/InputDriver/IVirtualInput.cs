@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 虚拟输入
     /// </summary>
-    internal interface IVirtualInput : IInput
+    public interface IVirtualInput
     {
         #region 注册
 
@@ -57,5 +57,63 @@ namespace XMLib.InputDriver
         void UnRegistButton(string name);
 
         #endregion 注册
+
+        #region 控制
+
+        /// <summary>
+        /// 设置轴值
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <param name="value">值</param>
+        void SetAxis(string name, float value);
+
+        /// <summary>
+        /// 设置按钮按下
+        /// </summary>
+        /// <param name="name">名字</param>
+        void SetButtonDown(string name);
+
+        /// <summary>
+        /// 设置按钮抬起
+        /// </summary>
+        /// <param name="name">名字</param>
+        void SetButtonUp(string name);
+
+        /// <summary>
+        /// 获取轴值
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取轴值</returns>
+        float GetAxis(string name);
+
+        /// <summary>
+        /// 获取轴值
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取轴值</returns>
+        float GetAxisRaw(string name);
+
+        /// <summary>
+        /// 获取按钮状态
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮状态</returns>
+        bool GetButton(string name);
+
+        /// <summary>
+        /// 获取按钮是否按下
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮是否按下</returns>
+        bool GetButtonDown(string name);
+
+        /// <summary>
+        /// 获取按钮是否抬起
+        /// </summary>
+        /// <param name="name">名字</param>
+        /// <returns>获取按钮是否抬起</returns>
+        bool GetButtonUp(string name);
+
+        #endregion 控制
     }
 }

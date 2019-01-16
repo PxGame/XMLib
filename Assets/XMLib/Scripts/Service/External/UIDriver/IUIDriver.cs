@@ -9,12 +9,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace XMLib.UIDriver
+namespace XMLib
 {
     /// <summary>
     /// UI 驱动接口
     /// </summary>
-    internal interface IUIDriver : IUI
+    internal interface IUIDriver
     {
     }
 }

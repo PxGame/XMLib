@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 输入服务
     /// </summary>
-    internal class InputDriver : IInputDriver
+    public class InputDriver : IInputDriver
     {
         /// <summary>
         /// 当前输入方式
@@ -30,7 +30,7 @@ namespace XMLib.InputDriver
         /// <summary>
         /// 输入对象
         /// </summary>
-        private IInput _input;
+        private IVirtualInput _input;
 
         /// <summary>
         /// 构造函数

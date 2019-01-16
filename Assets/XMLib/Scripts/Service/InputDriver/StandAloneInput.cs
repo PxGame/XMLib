@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 标准输入
     /// </summary>
-    internal class StandAloneInput : VirtualInput
+    public class StandAloneInput : VirtualInput
     {
         #region 控制
 

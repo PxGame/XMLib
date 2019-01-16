@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace XMLib.MonoDriver
 {
-    internal class MonoDriver : IMonoDriver
+    public class MonoDriver : IMonoDriver
     {
         #region Mono
 

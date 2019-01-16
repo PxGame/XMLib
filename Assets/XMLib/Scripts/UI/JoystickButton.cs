@@ -107,7 +107,7 @@ namespace XMLib.UI
 
         #endregion Event
 
-        private IInput _input;
+        private IInputDriver _input;
 
         protected JoystickButton()
         {
@@ -121,9 +121,9 @@ namespace XMLib.UI
 
             if (App.Handler != null)
             {
-                if (App.CanMake<IInput>())
+                if (App.CanMake<IInputDriver>())
                 {
-                    _input = App.Make<IInput>();
+                    _input = App.Make<IInputDriver>();
                 }
             }
 

@@ -78,7 +78,7 @@ namespace XMLib
         /// </summary>
         private void LoadProviderFromSetting()
         {
-            foreach (ServiceSetting setting in _setting)
+            foreach (IServiceSetting setting in _setting)
             {
                 IServiceProvider provider = setting.NewServiceProvider();
                 App.Register(provider);

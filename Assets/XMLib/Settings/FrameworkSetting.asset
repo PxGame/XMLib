@@ -11,3 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a44d6722286bf4d9368b93eeba1811, type: 3}
   m_Name: FrameworkSetting
   m_EditorClassIdentifier: 
+  InputDriver:
+    _enable: 1
+    _method: 3
+    _deadZoom: 0
+  MonoDriver:
+    _enable: 1
+  ObjectPool:
+    _enable: 0
+  UIDriver:
+    _enable: 0

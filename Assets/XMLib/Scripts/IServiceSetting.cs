@@ -17,6 +17,11 @@ namespace XMLib
     public interface IServiceSetting
     {
         /// <summary>
+        /// 是否启用
+        /// </summary>
+        bool enable { get; }
+
+        /// <summary>
         /// 获取服务提供者实例
         /// </summary>
         /// <returns>服务提供者实例</returns>

@@ -15,7 +15,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 输入服务提供者
     /// </summary>
-    public sealed class InputDriverProvider : IServiceProvider
+    public class InputDriverProvider : IServiceProvider
     {
         /// <summary>
         /// 输入方式
@@ -46,7 +46,7 @@ namespace XMLib.InputDriver
         [Priority()]
         public void Init()
         {
-            App.Make<IInput>();
+            App.Make<IInputDriver>();
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace XMLib.InputDriver
         public void Register()
         {
             App.Singleton<InputDriver>()
-                .Alias<IInput>().OnAfterResolving((instance) =>
+                .Alias<IInputDriver>().OnAfterResolving((instance) =>
                 {
-                    InputDriver inputDriver = (InputDriver) instance;
+                    InputDriver inputDriver = (InputDriver)instance;
 
                     //设置输入方式
                     inputDriver.SwitchInputMethod(_method, _deadZoom);

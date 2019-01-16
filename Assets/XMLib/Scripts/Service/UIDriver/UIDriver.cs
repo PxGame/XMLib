@@ -14,7 +14,7 @@ namespace XMLib.UIDriver
     /// <summary>
     /// UI 驱动
     /// </summary>
-    internal class UIDriver : IUIDriver
+    public class UIDriver : IUIDriver
     {
     }
 }

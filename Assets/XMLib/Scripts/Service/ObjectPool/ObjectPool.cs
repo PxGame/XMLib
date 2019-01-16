@@ -14,7 +14,7 @@ namespace XMLib.ObjectPool
     /// <summary>
     /// 对象池
     /// </summary>
-    internal class ObjectPool : IObjectPool
+    public class ObjectPool : IObjectPool
     {
     }
 }

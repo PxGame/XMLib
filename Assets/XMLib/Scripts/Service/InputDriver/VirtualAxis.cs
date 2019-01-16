@@ -14,7 +14,7 @@ namespace XMLib.InputDriver
     /// <summary>
     /// 虚拟轴
     /// </summary>
-    internal class VirtualAxis
+    public class VirtualAxis
     {
         /// <summary>
         /// 轴名

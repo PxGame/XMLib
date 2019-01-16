@@ -31,7 +31,7 @@ namespace XMLib.UIDriver
         /// </summary>
         public void Register()
         {
-            App.Singleton<UIDriver>().Alias<IUI>();
+            App.Singleton<UIDriver>().Alias<IUIDriver>();
         }
     }
 }

@@ -2,7 +2,7 @@
  * 作者：Peter Xiang
  * 联系方式：565067150@qq.com
  * 文档: https://github.com/xiangmu110/XMLib/wiki
- * 创建时间: 12/28/2018 2:17:43 PM
+ * 创建时间: 12/28/2018 10:30:14 AM
  */
 
 using System.Collections;
@@ -12,10 +12,22 @@ using System;
 namespace XMLib
 {
     /// <summary>
-    /// 输入
+    /// 输入服务
     /// </summary>
-    public interface IInput
+    public interface IInputDriver
     {
+        /// <summary>
+        /// 当前输入方式
+        /// </summary>
+        ActiveInputMethod Method { get; }
+
+        /// <summary>
+        /// 切换输入方式
+        /// </summary>
+        /// <param name="method">输入方式</param>
+        /// <param name="deadZoom">死区</param>
+        void SwitchInputMethod(ActiveInputMethod method, float deadZoom = 0);
+
         #region 控制
 
         /// <summary>

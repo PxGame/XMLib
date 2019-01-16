@@ -2,7 +2,7 @@
  * 作者：Peter Xiang
  * 联系方式：565067150@qq.com
  * 文档: https://github.com/xiangmu110/XMLib/wiki
- * 创建时间: 1/15/2019 11:04:07 AM
+ * 创建时间: 12/28/2018 2:22:47 PM
  */
 
 using System.Collections;
@@ -12,9 +12,13 @@ using System;
 namespace XMLib
 {
     /// <summary>
-    /// UI驱动对外调用接口
+    /// 输入类型
     /// </summary>
-    public interface IUI
+    public enum ActiveInputMethod
     {
+        None,
+        StandAlone,
+        Mobile,
+        Mixed
     }
 }

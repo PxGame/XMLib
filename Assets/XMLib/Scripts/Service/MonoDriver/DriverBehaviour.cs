@@ -15,7 +15,7 @@ namespace XMLib.MonoDriver
     /// <summary>
     /// Mono 驱动脚本
     /// </summary>
-    internal sealed class DriverBehaviour : MonoBehaviour
+    public sealed class DriverBehaviour : MonoBehaviour
     {
         private MonoDriver _driver;
 
