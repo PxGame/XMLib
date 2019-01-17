@@ -8,13 +8,13 @@
 using System;
 using UnityEngine;
 
-namespace XMLib.InputDriver
+namespace XMLib.InputService
 {
     /// <summary>
     /// Input驱动设置
     /// </summary>
     [Serializable]
-    public class InputDriverSetting : ServiceSetting
+    public class InputServiceSetting : ServiceSetting
     {
         /// <summary>
         /// 输入方式
@@ -35,7 +35,7 @@ namespace XMLib.InputDriver
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new InputDriverProvider(_method, _deadZoom);
+            return new InputServiceProvider(_method, _deadZoom);
         }
     }
 }

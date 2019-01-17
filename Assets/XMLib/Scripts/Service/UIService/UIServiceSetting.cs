@@ -8,13 +8,13 @@
 using System;
 using UnityEngine;
 
-namespace XMLib.UIDriver
+namespace XMLib.UIService
 {
     /// <summary>
     /// UI 驱动设置
     /// </summary>
     [Serializable]
-    public class UIDriverSetting : ServiceSetting
+    public class UIServiceSetting : ServiceSetting
     {
         /// <summary>
         /// 获取服务提供者实例
@@ -22,7 +22,7 @@ namespace XMLib.UIDriver
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new UIDriverProvider();
+            return new UIServiceProvider();
         }
     }
 }

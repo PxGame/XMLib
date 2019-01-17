@@ -9,12 +9,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace XMLib.UIDriver
+namespace XMLib.UIService
 {
     /// <summary>
     /// UI 驱动提供者
     /// </summary>
-    public sealed class UIDriverProvider : IServiceProvider
+    public sealed class UIServiceProvider : IServiceProvider
     {
         /// <summary>
         /// 服务提供者初始化
@@ -23,7 +23,7 @@ namespace XMLib.UIDriver
         [Priority()]
         public void Init()
         {
-            App.Make<IUIDriver>();
+            App.Make<IUIService>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace XMLib.UIDriver
         /// </summary>
         public void Register()
         {
-            App.Singleton<UIDriver>().Alias<IUIDriver>();
+            App.Singleton<UIService>().Alias<IUIService>();
         }
     }
 }

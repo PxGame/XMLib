@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace XMLib.InputDriver
+namespace XMLib.InputService
 {
     /// <summary>
     /// 混合输入

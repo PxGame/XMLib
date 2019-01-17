@@ -10,12 +10,12 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib.InputDriver
+namespace XMLib.InputService
 {
     /// <summary>
     /// 输入服务
     /// </summary>
-    public class InputDriver : IInputDriver
+    public class InputService : IInputService
     {
         /// <summary>
         /// 当前输入方式
@@ -35,7 +35,7 @@ namespace XMLib.InputDriver
         /// <summary>
         /// 构造函数
         /// </summary>
-        public InputDriver()
+        public InputService()
         {
             //设置默认
             _method = ActiveInputMethod.None;
@@ -72,7 +72,7 @@ namespace XMLib.InputDriver
 
             Checker.NotNull(_input);
 
-            Debug.LogFormat("InputDriver输入模式切换: {0} => {1}", _method, method);
+            Debug.LogFormat("InputService输入模式切换: {0} => {1}", _method, method);
             _method = method;
         }
 

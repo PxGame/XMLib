@@ -278,6 +278,10 @@ namespace XMLib
         /// <returns>结果</returns>
         private object Dispatch(bool half, string eventName, object[] args)
         {
+            //
+            UnityEngine.Debug.Log("Dispatch Event :" + eventName);
+            //
+
             Checker.NotEmptyOrNull(eventName, "eventName");
 
             lock (_syncRoot)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using XMLib;
-using XMLib.InputDriver;
+using XMLib.InputService;
 using XMLib.P2D;
 
 /// <summary>
@@ -10,7 +10,7 @@ using XMLib.P2D;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    private IInputDriver _input;
+    private IInputService _input;
 
     [SerializeField]
     private float _speed = 3f;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         _preJumpSpeedRange.y = Mathf.Sqrt(tmp * _jumpHeightRange.y);
 
         //获取输入服务
-        _input = App.Make<IInputDriver>();
+        _input = App.Make<IInputService>();
     }
 
     private bool _isPress = false;

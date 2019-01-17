@@ -5,7 +5,7 @@ using UnityEngine;
 using XMLib;
 using XMLib.MonoDriver;
 using XMLib.ObjectPool;
-using XMLib.UIDriver;
+using XMLib.UIService;
 using IServiceProvider = XMLib.IServiceProvider;
 
 /// <summary>

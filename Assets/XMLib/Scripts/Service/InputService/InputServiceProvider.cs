@@ -10,12 +10,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.InputDriver
+namespace XMLib.InputService
 {
     /// <summary>
     /// 输入服务提供者
     /// </summary>
-    public class InputDriverProvider : IServiceProvider
+    public class InputServiceProvider : IServiceProvider
     {
         /// <summary>
         /// 输入方式
@@ -33,7 +33,7 @@ namespace XMLib.InputDriver
         /// </summary>
         /// <param name="method">输入方式</param>
         /// <param name="deadZoom">死区,None及StandAlone模式下,该参数被忽略</param>
-        public InputDriverProvider(ActiveInputMethod method, float deadZoom)
+        public InputServiceProvider(ActiveInputMethod method, float deadZoom)
         {
             _method = method;
             _deadZoom = deadZoom;
@@ -46,7 +46,7 @@ namespace XMLib.InputDriver
         [Priority()]
         public void Init()
         {
-            App.Make<IInputDriver>();
+            App.Make<IInputService>();
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace XMLib.InputDriver
         /// </summary>
         public void Register()
         {
-            App.Singleton<InputDriver>()
-                .Alias<IInputDriver>().OnAfterResolving((instance) =>
+            App.Singleton<InputService>()
+                .Alias<IInputService>().OnAfterResolving((instance) =>
                 {
-                    InputDriver inputDriver = (InputDriver)instance;
+                    InputService InputService = (InputService)instance;
 
                     //设置输入方式
-                    inputDriver.SwitchInputMethod(_method, _deadZoom);
+                    InputService.SwitchInputMethod(_method, _deadZoom);
                 });
         }
     }

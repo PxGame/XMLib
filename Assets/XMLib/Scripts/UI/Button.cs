@@ -13,7 +13,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using XMLib.InputDriver;
+using XMLib.InputService;
 
 namespace XMLib.UI
 {
@@ -69,7 +69,7 @@ namespace XMLib.UI
 
         #endregion Event
 
-        private IInputDriver _input;
+        private IInputService _input;
 
         protected Button()
         {
@@ -81,9 +81,9 @@ namespace XMLib.UI
 
             if (App.Handler != null)
             {
-                if (App.CanMake<IInputDriver>())
+                if (App.CanMake<IInputService>())
                 {
-                    _input = App.Make<IInputDriver>();
+                    _input = App.Make<IInputService>();
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace XMLib.UI
             if (!IsActive() || !IsInteractable())
                 return;
 
-            _onClick.Invoke();
+            OnClick();
         }
 
         private IEnumerator OnFinishSubmit()
@@ -136,12 +136,7 @@ namespace XMLib.UI
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
-            if (null != _input && !string.IsNullOrEmpty(_buttonName))
-            {
-                _input.SetButtonDown(_buttonName);
-            }
-
-            _onDown.Invoke();
+            OnDown();
         }
 
         public override void OnPointerUp(PointerEventData eventData)
@@ -151,12 +146,51 @@ namespace XMLib.UI
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
-            if (null != _input && !string.IsNullOrEmpty(_buttonName))
+            OnUp();
+        }
+
+        #region 事件
+
+        private void OnUp()
+        {
+            if (!string.IsNullOrEmpty(_buttonName))
             {
-                _input.SetButtonUp(_buttonName);
+                if (null != _input)
+                {
+                    _input.SetButtonUp(_buttonName);
+                }
+
+                App.Trigger(EventUtil.UIButtonUp(_buttonName));
             }
 
             _onUp.Invoke();
         }
+
+        private void OnDown()
+        {
+            if (!string.IsNullOrEmpty(_buttonName))
+            {
+                if (null != _input)
+                {
+                    _input.SetButtonDown(_buttonName);
+                }
+
+                App.Trigger(EventUtil.UIButtonDown(_buttonName));
+            }
+
+            _onDown.Invoke();
+        }
+
+        private void OnClick()
+        {
+            _onClick.Invoke();
+
+            if (!string.IsNullOrEmpty(_buttonName))
+            {
+                App.Trigger(EventUtil.UIButtonClick(_buttonName));
+            }
+        }
+
+        #endregion 事件
     }
 }

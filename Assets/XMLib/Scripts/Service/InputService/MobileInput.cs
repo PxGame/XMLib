@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib.InputDriver
+namespace XMLib.InputService
 {
     /// <summary>
     /// 移动输入
