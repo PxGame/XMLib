@@ -17,6 +17,20 @@ namespace XMLib.ObjectPool
     public sealed class ObjectPoolProvider : IServiceProvider
     {
         /// <summary>
+        /// 对象池最大大小，超过时直接删除
+        /// </summary>
+        private int _maxSize;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="maxSize">对象池最大大小，超过时直接删除</param>
+        public ObjectPoolProvider(int maxSize = 10)
+        {
+            _maxSize = maxSize;
+        }
+
+        /// <summary>
         /// 服务提供者初始化
         /// <para>可设置优先级</para>
         /// </summary>
@@ -31,7 +45,17 @@ namespace XMLib.ObjectPool
         /// </summary>
         public void Register()
         {
-            App.Singleton<ObjectPool>().Alias<IObjectPool>();
+            App.Singleton<ObjectPool>()
+                .Alias<IObjectPool>()
+                .OnAfterResolving(
+                    (instance) =>
+                        {
+                            ObjectPool objectPool = (ObjectPool)instance;
+
+                            //初始化
+                            objectPool.Init(_maxSize);
+                        }
+                );
         }
     }
 }

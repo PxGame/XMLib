@@ -55,13 +55,16 @@ namespace XMLib.InputService
         public void Register()
         {
             App.Singleton<InputService>()
-                .Alias<IInputService>().OnAfterResolving((instance) =>
-                {
-                    InputService InputService = (InputService)instance;
+                .Alias<IInputService>()
+                .OnAfterResolving(
+                    (instance) =>
+                        {
+                            InputService InputService = (InputService)instance;
 
-                    //设置输入方式
-                    InputService.SwitchInputMethod(_method, _deadZoom);
-                });
+                            //设置输入方式
+                            InputService.SwitchInputMethod(_method, _deadZoom);
+                        }
+                    );
         }
     }
 }

@@ -20,6 +20,7 @@ namespace XMLib.InputService
         /// 输入方式
         /// </summary>
         [SerializeField]
+        [Tooltip("输入方式")]
         private ActiveInputMethod _method;
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace XMLib.InputService
         /// <para>None及StandAlone模式下,该参数被忽略</para>
         /// </summary>
         [SerializeField]
+        [Tooltip("死区,None及StandAlone模式下,该参数被忽略")]
         private float _deadZoom;
 
         /// <summary>

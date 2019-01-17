@@ -17,12 +17,19 @@ namespace XMLib.ObjectPool
     public class ObjectPoolSetting : ServiceSetting
     {
         /// <summary>
+        /// 对象池最大大小，超过时直接删除
+        /// </summary>
+        [SerializeField]
+        [Tooltip("对象池最大大小，超过时直接删除")]
+        private int _maxSize = 10;
+
+        /// <summary>
         /// 获取服务提供者实例
         /// </summary>
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new ObjectPoolProvider();
+            return new ObjectPoolProvider(_maxSize);
         }
     }
 }
