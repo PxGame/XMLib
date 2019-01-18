@@ -18,6 +18,8 @@ MonoBehaviour:
   MonoDriver:
     _enable: 1
   ObjectPool:
-    _enable: 0
+    _enable: 1
+    _maxSize: 10
   UIService:
-    _enable: 0
+    _enable: 1
+    _uiRootPath: XMLib/UI/UIRoot

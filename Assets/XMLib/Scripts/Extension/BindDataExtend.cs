@@ -67,6 +67,21 @@ namespace XMLib
         /// <param name="bindData">绑定数据</param>
         /// <param name="action">解决事件</param>
         /// <returns>服务绑定数据</returns>
+        public static IBindData OnAfterResolving<T>(this IBindData bindData, Action<T> action)
+        {
+            Checker.Requires<ArgumentNullException>(action != null);
+            return bindData.OnAfterResolving((_, instance) =>
+            {
+                action((T)instance);
+            });
+        }
+
+        /// <summary>
+        /// 解决服务后触发的回调
+        /// </summary>
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="action">解决事件</param>
+        /// <returns>服务绑定数据</returns>
         public static IBindData OnAfterResolving(this IBindData bindData, Action action)
         {
             Checker.Requires<ArgumentNullException>(action != null);

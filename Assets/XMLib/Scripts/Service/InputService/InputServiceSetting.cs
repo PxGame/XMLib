@@ -32,12 +32,23 @@ namespace XMLib.InputService
         private float _deadZoom;
 
         /// <summary>
+        /// 输入方式
+        /// </summary>
+        public ActiveInputMethod method { get { return _method; } }
+
+        /// <summary>
+        /// 死区
+        /// <para>None及StandAlone模式下,该参数被忽略</para>
+        /// </summary>
+        public float deadZoom { get { return _deadZoom; } }
+
+        /// <summary>
         /// 获取服务提供者实例
         /// </summary>
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new InputServiceProvider(_method, _deadZoom);
+            return new InputServiceProvider(this);
         }
     }
 }

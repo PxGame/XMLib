@@ -138,7 +138,7 @@ namespace XMLib.MonoDriver
                 return false;
             }
 
-            int weight = AttributeUtil.GetPriority(target.GetType(), function);
+            int weight = ReflectionUtil.GetPriority(target.GetType(), function);
             sortList.Add(target, weight);
 
             return true;

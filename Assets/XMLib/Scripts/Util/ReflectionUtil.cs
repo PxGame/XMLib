@@ -11,9 +11,9 @@ using System.Reflection;
 namespace XMLib
 {
     /// <summary>
-    /// 属性工具
+    /// 反射工具
     /// </summary>
-    public static class AttributeUtil
+    public static class ReflectionUtil
     {
         /// <summary>
         /// 获取优先级
@@ -69,6 +69,55 @@ namespace XMLib
             }
 
             return currentPriority;
+        }
+
+        /// <summary>
+        /// 调用函数,未找到函数时不会调用
+        /// </summary>
+        /// <param name="target">目标</param>
+        /// <param name="methodName">函数名</param>
+        /// <param name="result">返回值</param>
+        /// <param name="args">参数</param>
+        /// <returns>是否成功</returns>
+        public static bool InvokeMethod(object target, string methodName, out object result, params object[] args)
+        {
+            Type[] argTypes = new Type[args.Length];
+            int length = argTypes.Length;
+            for (int i = 0; i < length; i++)
+            {
+                argTypes[i] = args[i].GetType();
+            }
+
+            MethodInfo method = target.GetType().GetMethod(
+                methodName,
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                null,
+                argTypes,
+                null);
+
+            if (null == method)
+            {//未找到函数
+                result = null;
+                return false;
+            }
+
+            //调用
+            result = method.Invoke(target, args);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 调用函数,未找到函数时不会调用
+        /// </summary>
+        /// <param name="target">目标</param>
+        /// <param name="methodName">函数名</param>
+        /// <param name="args">参数</param>
+        /// <returns>是否成功</returns>
+        public static bool InvokeMethod(object target, string methodName, params object[] args)
+        {
+            object result;
+            return InvokeMethod(target, methodName, out result, args);
         }
     }
 }

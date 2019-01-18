@@ -17,12 +17,23 @@ namespace XMLib.UIService
     public class UIServiceSetting : ServiceSetting
     {
         /// <summary>
+        /// UIRoot 资源路径
+        /// </summary>
+        [SerializeField]
+        private string _uiRootPath;
+
+        /// <summary>
+        /// UIRoot 资源路径
+        /// </summary>
+        public string uiRootPath { get { return _uiRootPath; } }
+
+        /// <summary>
         /// 获取服务提供者实例
         /// </summary>
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new UIServiceProvider();
+            return new UIServiceProvider(this);
         }
     }
 }

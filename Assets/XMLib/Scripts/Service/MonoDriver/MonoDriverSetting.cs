@@ -22,7 +22,7 @@ namespace XMLib.MonoDriver
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new MonoDriverProvider();
+            return new MonoDriverProvider(this);
         }
     }
 }

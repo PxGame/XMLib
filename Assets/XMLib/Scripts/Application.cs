@@ -237,7 +237,7 @@ namespace XMLib
         /// <returns>优先级</returns>
         public int GetPriority(Type type, string method = null)
         {
-            return AttributeUtil.GetPriority(type, method);
+            return ReflectionUtil.GetPriority(type, method);
         }
 
         /// <summary>

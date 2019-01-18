@@ -24,12 +24,17 @@ namespace XMLib.ObjectPool
         private int _maxSize = 10;
 
         /// <summary>
+        /// 对象池最大大小，超过时直接删除
+        /// </summary>
+        public int maxSize { get { return _maxSize; } }
+
+        /// <summary>
         /// 获取服务提供者实例
         /// </summary>
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new ObjectPoolProvider(_maxSize);
+            return new ObjectPoolProvider(this);
         }
     }
 }

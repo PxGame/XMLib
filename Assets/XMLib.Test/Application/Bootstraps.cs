@@ -26,8 +26,6 @@ namespace XMLib.Test.ApplicationTest
         {
             Debug.LogFormat("BootstrapTest2");
             App.Register(new ServiceProvider1());
-
-            App.Register(new MonoDriver.MonoDriverProvider());
         }
     }
 }

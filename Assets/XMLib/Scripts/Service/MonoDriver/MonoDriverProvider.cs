@@ -14,6 +14,20 @@ namespace XMLib.MonoDriver
     public sealed class MonoDriverProvider : IServiceProvider
     {
         /// <summary>
+        /// 服务设置
+        /// </summary>
+        private readonly MonoDriverSetting _setting;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="setting">服务设置</param>
+        public MonoDriverProvider(MonoDriverSetting setting)
+        {
+            _setting = setting;
+        }
+
+        /// <summary>
         /// 服务提供者初始化
         /// <para>可设置优先级</para>
         /// </summary>
@@ -28,7 +42,8 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void Register()
         {
-            App.Singleton<MonoDriver>().Alias<IMonoDriver>();
+            App.Singleton<MonoDriver>()
+                .Alias<IMonoDriver>();
         }
     }
 }

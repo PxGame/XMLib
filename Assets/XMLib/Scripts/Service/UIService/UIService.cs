@@ -16,5 +16,18 @@ namespace XMLib.UIService
     /// </summary>
     public class UIService : IUIService
     {
+        /// <summary>
+        /// 根节点
+        /// </summary>
+        private UIRoot _uiRoot;
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="uiRoot">根节点</param>
+        public void Init(UIRoot uiRoot)
+        {
+            _uiRoot = uiRoot;
+        }
     }
 }

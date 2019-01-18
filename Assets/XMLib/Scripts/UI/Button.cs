@@ -159,8 +159,6 @@ namespace XMLib.UI
                 {
                     _input.SetButtonUp(_buttonName);
                 }
-
-                App.Trigger(EventUtil.UIButtonUp(_buttonName));
             }
 
             _onUp.Invoke();
@@ -174,8 +172,6 @@ namespace XMLib.UI
                 {
                     _input.SetButtonDown(_buttonName);
                 }
-
-                App.Trigger(EventUtil.UIButtonDown(_buttonName));
             }
 
             _onDown.Invoke();
@@ -184,11 +180,6 @@ namespace XMLib.UI
         private void OnClick()
         {
             _onClick.Invoke();
-
-            if (!string.IsNullOrEmpty(_buttonName))
-            {
-                App.Trigger(EventUtil.UIButtonClick(_buttonName));
-            }
         }
 
         #endregion 事件

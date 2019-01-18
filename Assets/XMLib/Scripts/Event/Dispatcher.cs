@@ -248,7 +248,7 @@ namespace XMLib
             IEvent evt = MakeEvent(eventName, target, methodInfo, group);
 
             //获取优先级
-            int priority = AttributeUtil.GetPriority(methodInfo);
+            int priority = ReflectionUtil.GetPriority(methodInfo);
 
             //添加到事件列表
             events.Add(evt, priority);
@@ -279,7 +279,7 @@ namespace XMLib
         private object Dispatch(bool half, string eventName, object[] args)
         {
             //
-            UnityEngine.Debug.Log("Dispatch Event :" + eventName);
+            UnityEngine.Debug.Log("事件调用 :" + eventName);
             //
 
             Checker.NotEmptyOrNull(eventName, "eventName");

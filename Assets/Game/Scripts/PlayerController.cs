@@ -43,12 +43,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (_input.GetButtonDown("Jump"))
-        {
-        }
-        if (_input.GetButtonUp("Jump"))
-        {
-        }
         if (!_isPress && _input.GetButton("Jump"))
         {
             _stJumpDown = true;
@@ -65,7 +59,7 @@ public class PlayerController : MonoBehaviour
     {
         _velocity = _controller.velocity;
 
-        _velocity.x = 1 * _speed;
+        _velocity.x = _input.GetAxis("Horizontal") * _speed;
         //_velocity.y = _input.GetAxis("Vertical") * _speed;
 
         if (_stJumpDown)

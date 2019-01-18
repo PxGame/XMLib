@@ -18,25 +18,17 @@ namespace XMLib.InputService
     public class InputServiceProvider : IServiceProvider
     {
         /// <summary>
-        /// 输入方式
+        /// 服务设置
         /// </summary>
-        private ActiveInputMethod _method;
-
-        /// <summary>
-        /// 死区
-        /// <para>None及StandAlone模式下,该参数被忽略</para>
-        /// </summary>
-        private float _deadZoom;
+        private readonly InputServiceSetting _setting;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="method">输入方式</param>
-        /// <param name="deadZoom">死区,None及StandAlone模式下,该参数被忽略</param>
-        public InputServiceProvider(ActiveInputMethod method, float deadZoom)
+        /// <param name="setting">服务设置</param>
+        public InputServiceProvider(InputServiceSetting setting)
         {
-            _method = method;
-            _deadZoom = deadZoom;
+            _setting = setting;
         }
 
         /// <summary>
@@ -56,15 +48,17 @@ namespace XMLib.InputService
         {
             App.Singleton<InputService>()
                 .Alias<IInputService>()
-                .OnAfterResolving(
-                    (instance) =>
-                        {
-                            InputService InputService = (InputService)instance;
+                .OnAfterResolving<InputService>(OnAfterResolving);
+        }
 
-                            //设置输入方式
-                            InputService.SwitchInputMethod(_method, _deadZoom);
-                        }
-                    );
+        /// <summary>
+        /// 实例创建后
+        /// </summary>
+        /// <param name="instance">实例</param>
+        private void OnAfterResolving(InputService instance)
+        {
+            //设置输入方式
+            instance.SwitchInputMethod(_setting.method, _setting.deadZoom);
         }
     }
 }
