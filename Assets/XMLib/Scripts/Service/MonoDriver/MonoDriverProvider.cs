@@ -11,6 +11,9 @@ using System.Collections.Generic;
 
 namespace XMLib.MonoDriver
 {
+    /// <summary>
+    /// Mono 驱动提供者
+    /// </summary>
     public sealed class MonoDriverProvider : IServiceProvider
     {
         /// <summary>

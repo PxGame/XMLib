@@ -15,8 +15,19 @@ namespace XMLib.UIService
     /// <summary>
     /// 面板
     /// </summary>
+    [RequireComponent(typeof(CanvasGroup))]
     public abstract class UIPanel : MonoBehaviour
     {
+        /// <summary>
+        /// CanvasGroup
+        /// </summary>
+        protected CanvasGroup canvasGroup { get; private set; }
+
+        protected virtual void Awake()
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+
         #region Panel Event
 
         #region Enter
@@ -24,18 +35,30 @@ namespace XMLib.UIService
         /// <summary>
         /// 预进入
         /// </summary>
-        public abstract void OnPreEnter();
+        public virtual void OnPreEnter()
+        {
+        }
 
         /// <summary>
         /// 进入
         /// </summary>
         /// <param name="onCompete">完成回调</param>
-        public abstract void OnEnter(Action onCompete);
+        public virtual void OnEnter(Action onCompete)
+        {
+            if (null != onCompete)
+            {
+                onCompete();
+            }
+        }
 
         /// <summary>
         /// 完成进入
         /// </summary>
-        public abstract void OnLateEnter();
+        public virtual void OnLateEnter()
+        {
+            //启用输入
+            canvasGroup.interactable = true;
+        }
 
         #endregion Enter
 
@@ -44,18 +67,30 @@ namespace XMLib.UIService
         /// <summary>
         /// 预离开
         /// </summary>
-        public abstract void OnPreLeave();
+        public virtual void OnPreLeave()
+        {
+            //禁用输入
+            canvasGroup.interactable = false;
+        }
 
         /// <summary>
         /// 离开
         /// </summary>
         /// <param name="onCompete">完成回调</param>
-        public abstract void OnLeave(Action onCompete);
+        public virtual void OnLeave(Action onCompete)
+        {
+            if (null != onCompete)
+            {
+                onCompete();
+            }
+        }
 
         /// <summary>
         /// 离开后
         /// </summary>
-        public abstract void OnLateLeave();
+        public virtual void OnLateLeave()
+        {
+        }
 
         #endregion Leave
 
@@ -64,18 +99,30 @@ namespace XMLib.UIService
         /// <summary>
         /// 预暂停
         /// </summary>
-        public abstract void OnPrePause();
+        public virtual void OnPrePause()
+        {
+            //禁用输入
+            canvasGroup.interactable = false;
+        }
 
         /// <summary>
         /// 暂停
         /// </summary>
         /// <param name="onCompete">完成回调</param>
-        public abstract void OnPause(Action onCompete);
+        public virtual void OnPause(Action onCompete)
+        {
+            if (null != onCompete)
+            {
+                onCompete();
+            }
+        }
 
         /// <summary>
         /// 暂停完成
         /// </summary>
-        public abstract void OnLatePause();
+        public virtual void OnLatePause()
+        {
+        }
 
         #endregion Pause
 
@@ -84,18 +131,30 @@ namespace XMLib.UIService
         /// <summary>
         /// 预唤醒
         /// </summary>
-        public abstract void OnPreResume();
+        public virtual void OnPreResume()
+        {
+        }
 
         /// <summary>
         /// 唤醒
         /// </summary>
         /// <param name="onCompete">完成回调</param>
-        public abstract void OnResume(Action onCompete);
+        public virtual void OnResume(Action onCompete)
+        {
+            if (null != onCompete)
+            {
+                onCompete();
+            }
+        }
 
         /// <summary>
         /// 唤醒完成
         /// </summary>
-        public abstract void OnLateResume();
+        public virtual void OnLateResume()
+        {
+            //启用输入
+            canvasGroup.interactable = true;
+        }
 
         #endregion Resume
 

@@ -16,5 +16,21 @@ namespace XMLib
     /// </summary>
     public interface IUIService
     {
+        /// <summary>
+        /// 显示
+        /// </summary>
+        /// <param name="layerName">层名</param>
+        /// <param name="panelName">面板名</param>
+        /// <param name="inStack">是否放入堆栈</param>
+        /// <param name="args">参数</param>
+        /// <returns>绑定数据</returns>
+        IUIPanelBindData Show(string layerName, string panelName, bool inStack, params object[] args);
+
+        /// <summary>
+        /// 隐藏指定面板
+        /// </summary>
+        /// <param name="paneId"></param>
+        /// <returns></returns>
+        bool Hide(Guid paneId);
     }
 }
