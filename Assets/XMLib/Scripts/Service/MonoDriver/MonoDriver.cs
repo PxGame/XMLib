@@ -14,6 +14,8 @@ namespace XMLib.MonoDriver
 {
     public class MonoDriver : IMonoDriver
     {
+        private readonly MonoDriverSetting _setting;
+
         #region Mono
 
         private readonly SortList<IUpdate, int> _updates;
@@ -31,10 +33,18 @@ namespace XMLib.MonoDriver
 
         private DriverBehaviour _behaviour;
 
-        public MonoDriver(IApplication handler, Component component)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="setting">设置</param>
+        /// <param name="handler">应用实例</param>
+        /// <param name="component">Mono 组件</param>
+        public MonoDriver(MonoDriverSetting setting, IApplication handler, Component component)
         {
             Checker.NotNull(handler, "handler");
             Checker.NotNull(component, "component");
+
+            _setting = setting;
 
             _updates = new SortList<IUpdate, int>();
             _lateUpdates = new SortList<ILateUpdate, int>();

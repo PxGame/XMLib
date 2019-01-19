@@ -970,11 +970,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public static TService Make<TService>(params object[] userParams)
         {
-#if CATLIB_PERFORMANCE
-            return Facade<TService>.Make(userParams);
-#else
             return Handler.Make<TService>(userParams);
-#endif
         }
 
         /// <summary>

@@ -220,11 +220,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!4 &336939229 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4091169012542972, guid: 78c34a1f6afd8ff4e8587905bb494da6,
-    type: 2}
-  m_PrefabInternal: {fileID: 633578627}
 --- !u!1 &475405698
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +249,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &633578627
+--- !u!1001 &1356442101
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -392,7 +387,7 @@ MonoBehaviour:
   _offset: {x: 0, y: -3.5}
   _maxDistance: 2
   _moveSpeed: 13
-  _target: {fileID: 336939229}
+  _target: {fileID: 0}
   _moveSpeedCurve:
     serializedVersion: 2
     m_Curve:

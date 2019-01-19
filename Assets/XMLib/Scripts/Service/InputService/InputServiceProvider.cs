@@ -25,10 +25,9 @@ namespace XMLib.InputService
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="setting">服务设置</param>
-        public InputServiceProvider(InputServiceSetting setting)
+        public InputServiceProvider()
         {
-            _setting = setting;
+            _setting = App.Make<InputServiceSetting>();
         }
 
         /// <summary>
@@ -47,18 +46,7 @@ namespace XMLib.InputService
         public void Register()
         {
             App.Singleton<InputService>()
-                .Alias<IInputService>()
-                .OnAfterResolving<InputService>(OnAfterResolving);
-        }
-
-        /// <summary>
-        /// 实例创建后
-        /// </summary>
-        /// <param name="instance">实例</param>
-        private void OnAfterResolving(InputService instance)
-        {
-            //设置输入方式
-            instance.SwitchInputMethod(_setting.method, _setting.deadZoom);
+                .Alias<IInputService>();
         }
     }
 }

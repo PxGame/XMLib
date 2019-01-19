@@ -22,15 +22,12 @@ namespace XMLib.UIService
         /// </summary>
         private readonly UIServiceSetting _setting;
 
-        private GameObject _preUIRoot;
-
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="setting">服务设置</param>
-        public UIServiceProvider(UIServiceSetting setting)
+        public UIServiceProvider()
         {
-            _setting = setting;
+            _setting = App.Make<UIServiceSetting>();
         }
 
         /// <summary>
@@ -48,11 +45,25 @@ namespace XMLib.UIService
         /// <returns>迭代</returns>
         public IEnumerator CoroutineInit()
         {
+            //加载预制
             ResourceRequest req = Resources.LoadAsync<GameObject>(_setting.uiRootPath);
             yield return req;
 
-            _preUIRoot = (GameObject)req.asset;
-            Checker.NotNull(_preUIRoot);
+            //获取预制
+            GameObject preObj = (GameObject)req.asset;
+            Checker.NotNull(preObj);
+
+            //创建预制
+            GameObject obj = GameObject.Instantiate(preObj);
+            obj.name = "UIRoot";
+            GameObject.DontDestroyOnLoad(obj);
+
+            //获取组件
+            UIRoot uiRoot = obj.GetComponent<UIRoot>();
+            Checker.NotNull(uiRoot);
+
+            //ui根单例
+            App.Instance<UIRoot>(uiRoot);
 
             //创建服务并初始化
             App.Make<UIService>();
@@ -64,24 +75,7 @@ namespace XMLib.UIService
         public void Register()
         {
             App.Singleton<UIService>()
-                .Alias<IUIService>()
-                .OnAfterResolving<UIService>(OnAfterResolving);
-        }
-
-        /// <summary>
-        /// 实例创建后
-        /// </summary>
-        /// <param name="instance">实例</param>
-        private void OnAfterResolving(UIService instance)
-        {
-            GameObject obj = GameObject.Instantiate(_preUIRoot);
-            obj.name = "UIRoot";
-            GameObject.DontDestroyOnLoad(obj);
-
-            UIRoot uiRoot = obj.GetComponent<UIRoot>();
-            Checker.NotNull(uiRoot);
-
-            instance.Init(uiRoot);
+                .Alias<IUIService>();
         }
     }
 }

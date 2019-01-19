@@ -582,7 +582,7 @@ namespace XMLib
 
                 if (!CanInject(info.ParameterType, arg))
                 {
-                    throw new RuntimeException("未匹配到参数");
+                    throw new RuntimeException("未匹配到参数" + bindData);
                 }
 
                 results[i] = arg;

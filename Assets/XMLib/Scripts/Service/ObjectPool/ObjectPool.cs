@@ -18,6 +18,11 @@ namespace XMLib.ObjectPool
     public class ObjectPool : IObjectPool
     {
         /// <summary>
+        /// 设置
+        /// </summary>
+        private readonly ObjectPoolSetting _setting;
+
+        /// <summary>
         /// 根节点
         /// </summary>
         private Transform _root;
@@ -30,15 +35,12 @@ namespace XMLib.ObjectPool
         private bool _isInit;
 
         /// <summary>
-        /// 对象池最大大小，超过时直接删除
-        /// </summary>
-        private int _maxSize;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
-        public ObjectPool()
+        /// <param name="setting">设置</param>
+        public ObjectPool(ObjectPoolSetting setting)
         {
+            _setting = setting;
             _poolDict = new Dictionary<string, Dictionary<string, Stack<GameObject>>>();
             _isInit = false;
         }
@@ -56,8 +58,6 @@ namespace XMLib.ObjectPool
             GameObject obj = new GameObject("ObjectPoolRoot");
             GameObject.DontDestroyOnLoad(obj);
             _root = obj.transform;
-
-            _maxSize = maxSize;
 
             _isInit = true;
         }
@@ -164,11 +164,11 @@ namespace XMLib.ObjectPool
             Stack<GameObject> objs = null;
             if (!pool.TryGetValue(objectName, out objs))
             {//创建对象池
-                objs = new Stack<GameObject>(_maxSize / 2);
+                objs = new Stack<GameObject>(_setting.maxSize / 2);
                 pool.Add(objectName, objs);
             }
 
-            if (objs.Count > _maxSize)
+            if (objs.Count > _setting.maxSize)
             {//超出最大限制，直接删除
                 //删除处理
                 OnDestroy(obj);

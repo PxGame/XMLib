@@ -24,10 +24,9 @@ namespace XMLib.MonoDriver
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="setting">服务设置</param>
-        public MonoDriverProvider(MonoDriverSetting setting)
+        public MonoDriverProvider()
         {
-            _setting = setting;
+            _setting = App.Make<MonoDriverSetting>();
         }
 
         /// <summary>

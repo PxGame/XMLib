@@ -80,6 +80,11 @@ namespace XMLib
         {
             foreach (IServiceSetting setting in _setting)
             {
+                //注册服务设置
+                string serviceName = App.Type2Service(setting.GetType());
+                App.Instance(serviceName, setting);
+
+                //注册服务提供者
                 IServiceProvider provider = setting.NewServiceProvider();
                 App.Register(provider);
             }

@@ -34,7 +34,7 @@ namespace XMLib.ObjectPool
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new ObjectPoolProvider(this);
+            return new ObjectPoolProvider();
         }
     }
 }

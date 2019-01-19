@@ -48,7 +48,7 @@ namespace XMLib.InputService
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new InputServiceProvider(this);
+            return new InputServiceProvider();
         }
     }
 }

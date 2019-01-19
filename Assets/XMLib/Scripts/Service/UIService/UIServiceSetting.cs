@@ -33,7 +33,7 @@ namespace XMLib.UIService
         /// <returns>服务提供者实例</returns>
         public override IServiceProvider NewServiceProvider()
         {
-            return new UIServiceProvider(this);
+            return new UIServiceProvider();
         }
     }
 }

@@ -18,6 +18,11 @@ namespace XMLib.InputService
     public class InputService : IInputService
     {
         /// <summary>
+        /// 设置
+        /// </summary>
+        private readonly InputServiceSetting _setting;
+
+        /// <summary>
         /// 当前输入方式
         /// </summary>
         public ActiveInputMethod Method { get { return _method; } }
@@ -35,11 +40,17 @@ namespace XMLib.InputService
         /// <summary>
         /// 构造函数
         /// </summary>
-        public InputService()
+        /// <param name="setting">设置</param>
+        public InputService(InputServiceSetting setting)
         {
+            _setting = setting;
+
             //设置默认
-            _method = ActiveInputMethod.None;
             _input = new NoneInput();
+            _method = ActiveInputMethod.None;
+
+            //应用设置
+            SwitchInputMethod(_setting.method, _setting.deadZoom);
         }
 
         /// <summary>
