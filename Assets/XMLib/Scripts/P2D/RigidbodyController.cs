@@ -22,7 +22,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 重力
         /// </summary>
-        public float gravity { get { return Physics2D.gravity.y * RigidbodySetting.gravityScale; } }
+        public float gravity { get { return Physics2D.gravity.y * rigidbodySetting.gravityScale; } }
 
         /// <summary>
         /// 当前速度
@@ -32,7 +32,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 刚体设置
         /// </summary>
-        public RigidbodySetting RigidbodySetting { get { return _rigidbodySetting; } }
+        public RigidbodySetting rigidbodySetting { get { return _rigidbodySetting; } }
 
         #endregion 公开参数
 

@@ -20,14 +20,14 @@ namespace XMLib.InputService
         /// <summary>
         /// 服务设置
         /// </summary>
-        private readonly InputServiceSetting _setting;
+        //private readonly InputServiceSetting _setting;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public InputServiceProvider()
         {
-            _setting = App.Make<InputServiceSetting>();
+            //_setting = App.Make<InputServiceSetting>();
         }
 
         /// <summary>

@@ -44,17 +44,17 @@ namespace XMLib
         /// <summary>
         /// 同步对象
         /// </summary>
-        private object _syncRoot;
+        private readonly object _syncRoot;
 
         /// <summary>
         /// 服务实现
         /// </summary>
-        public Func<IContainer, object[], object> Concrete { get { return _concrete; } }
+        public Func<IContainer, object[], object> concrete { get { return _concrete; } }
 
         /// <summary>
         /// 是否是静态服务
         /// </summary>
-        public bool IsStatic { get { return _isStatic; } }
+        public bool isStatic { get { return _isStatic; } }
 
         /// <summary>
         /// 构造函数
@@ -81,7 +81,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public IBindData Alias<T>()
         {
-            return Alias(Container.Type2Service(typeof(T)));
+            return Alias(container.Type2Service(typeof(T)));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace XMLib
                 CheckIsDestroy();
                 Checker.NotEmptyOrNull(alias, "alias");
 
-                Container.Alias(alias, Service);
+                container.Alias(alias, service);
                 return this;
             }
         }
@@ -132,7 +132,7 @@ namespace XMLib
         {
             if (!_isStatic)
             {
-                throw new RuntimeException("服务[" + Service + "]不是单例,不能调用OnRelease方法");
+                throw new RuntimeException("服务[" + service + "]不是单例,不能调用OnRelease方法");
             }
 
             AddEvent(closure, ref _release);
@@ -148,7 +148,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public object TriggerResolving(object instance)
         {
-            return Container.Trigger(this, instance, _resolving);
+            return container.Trigger(this, instance, _resolving);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public object TriggerAfterResolving(object instance)
         {
-            return Container.Trigger(this, instance, _afterResolving);
+            return container.Trigger(this, instance, _afterResolving);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public object TriggerRelease(object instance)
         {
-            return Container.Trigger(this, instance, _release);
+            return container.Trigger(this, instance, _release);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace XMLib
         /// </summary>
         protected override void ReleaseBind()
         {
-            Container.UnBind(this);
+            container.UnBind(this);
         }
 
         #endregion Bindable

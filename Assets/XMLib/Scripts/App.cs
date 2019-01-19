@@ -32,7 +32,7 @@ namespace XMLib
         /// <summary>
         ///实例
         /// </summary>
-        public static IApplication Handler
+        public static IApplication handler
         {
             get
             {
@@ -62,7 +62,7 @@ namespace XMLib
         /// </summary>
         public static void Terminate()
         {
-            Handler.Terminate();
+            handler.Terminate();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace XMLib
         /// <param name="serviceProvider">服务实例</param>
         public static void Register(IServiceProvider serviceProvider)
         {
-            Handler.Register(serviceProvider);
+            handler.Register(serviceProvider);
         }
 
         /// <summary>
@@ -81,17 +81,17 @@ namespace XMLib
         /// <returns>服务提供者是否已经注册过</returns>
         public static bool IsRegisted(IServiceProvider serviceProvider)
         {
-            return Handler.IsRegisted(serviceProvider);
+            return handler.IsRegisted(serviceProvider);
         }
 
         /// <summary>
         /// 是否是主线程
         /// </summary>
-        public static bool IsMainThread
+        public static bool isMainThread
         {
             get
             {
-                return Handler.IsMainThread;
+                return handler.isMainThread;
             }
         }
 
@@ -103,7 +103,7 @@ namespace XMLib
         /// <returns>优先级</returns>
         public static int GetPriority(Type type, string method = null)
         {
-            return Handler.GetPriority(type, method);
+            return handler.GetPriority(type, method);
         }
 
         #endregion Application API
@@ -117,7 +117,7 @@ namespace XMLib
         /// <returns>是否存在</returns>
         public static bool HasListener(string eventName)
         {
-            return Handler.HasListener(eventName);
+            return handler.HasListener(eventName);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace XMLib
         /// <returns>结果集合</returns>
         public static List<object> Trigger(string eventName, params object[] args)
         {
-            return Handler.Trigger(eventName, args);
+            return handler.Trigger(eventName, args);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace XMLib
         /// <returns>结果</returns>
         public static object TriggerHalt(string eventName, params object[] args)
         {
-            return Handler.TriggerHalt(eventName, args);
+            return handler.TriggerHalt(eventName, args);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace XMLib
         /// </param>
         public static void Off(object target)
         {
-            Handler.Off(target);
+            handler.Off(target);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On(string eventName, object target, string method = null)
         {
-            return Handler.On(eventName, target, method);
+            return handler.On(eventName, target, method);
         }
 
         #region Action
@@ -181,7 +181,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On(string eventName, Action method, object group = null)
         {
-            return Handler.On(eventName, method, group);
+            return handler.On(eventName, method, group);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On<T1>(string eventName, Action<T1> method, object group = null)
         {
-            return Handler.On(eventName, method, group);
+            return handler.On(eventName, method, group);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On<T1, T2>(string eventName, Action<T1, T2> method, object group = null)
         {
-            return Handler.On(eventName, method, group);
+            return handler.On(eventName, method, group);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On<T1, T2, T3>(string eventName, Action<T1, T2, T3> method, object group = null)
         {
-            return Handler.On(eventName, method, group);
+            return handler.On(eventName, method, group);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent On<T1, T2, T3, T4>(string eventName, Action<T1, T2, T3, T4> method, object group = null)
         {
-            return Handler.On(eventName, method, group);
+            return handler.On(eventName, method, group);
         }
 
         #endregion Action
@@ -250,7 +250,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent Listen<TResult>(string eventName, Func<TResult> method, object group = null)
         {
-            return Handler.Listen(eventName, method, group);
+            return handler.Listen(eventName, method, group);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent Listen<T1, TResult>(string eventName, Func<T1, TResult> method, object group = null)
         {
-            return Handler.Listen(eventName, method, group);
+            return handler.Listen(eventName, method, group);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent Listen<T1, T2, TResult>(string eventName, Func<T1, T2, TResult> method, object group = null)
         {
-            return Handler.Listen(eventName, method, group);
+            return handler.Listen(eventName, method, group);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent Listen<T1, T2, T3, TResult>(string eventName, Func<T1, T2, T3, TResult> method, object group = null)
         {
-            return Handler.Listen(eventName, method, group);
+            return handler.Listen(eventName, method, group);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace XMLib
         /// <returns>对象</returns>
         public static IEvent Listen<T1, T2, T3, T4, TResult>(string eventName, Func<T1, T2, T3, T4, TResult> method, object group = null)
         {
-            return Handler.Listen(eventName, method, group);
+            return handler.Listen(eventName, method, group);
         }
 
         #endregion Func
@@ -318,7 +318,7 @@ namespace XMLib
         /// <returns>服务绑定数据或者null</returns>
         public static IBindData GetBind(string service)
         {
-            return Handler.GetBind(service);
+            return handler.GetBind(service);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace XMLib
         /// <returns>返回一个bool值代表服务是否被绑定</returns>
         public static bool HasBind(string service)
         {
-            return Handler.HasBind(service);
+            return handler.HasBind(service);
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace XMLib
 #if CATLIB_PERFORMANCE
             return Facade<TService>.HasInstance || Handler.HasInstance<TService>();
 #else
-            return Handler.HasInstance<TService>();
+            return handler.HasInstance<TService>();
 #endif
         }
 
@@ -352,7 +352,7 @@ namespace XMLib
         /// <returns>是否已经被解决过</returns>
         public static bool IsResolved<TService>()
         {
-            return Handler.IsResolved<TService>();
+            return handler.IsResolved<TService>();
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace XMLib
         /// <returns>是否可以生成服务</returns>
         public static bool CanMake(string service)
         {
-            return Handler.CanMake(service);
+            return handler.CanMake(service);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace XMLib
         /// <returns>是否是静态化的</returns>
         public static bool IsStatic(string service)
         {
-            return Handler.IsStatic(service);
+            return handler.IsStatic(service);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace XMLib
         /// <returns>是否是别名</returns>
         public static bool IsAlias(string name)
         {
-            return Handler.IsAlias(name);
+            return handler.IsAlias(name);
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind(string service, Type concrete, bool isStatic)
         {
-            return Handler.Bind(service, concrete, isStatic);
+            return handler.Bind(service, concrete, isStatic);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind(string service, Func<IContainer, object[], object> concrete, bool isStatic)
         {
-            return Handler.Bind(service, concrete, isStatic);
+            return handler.Bind(service, concrete, isStatic);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static bool BindIf(string service, Func<IContainer, object[], object> concrete, bool isStatic, out IBindData bindData)
         {
-            return Handler.BindIf(service, concrete, isStatic, out bindData);
+            return handler.BindIf(service, concrete, isStatic, out bindData);
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static bool BindIf(string service, Type concrete, bool isStatic, out IBindData bindData)
         {
-            return Handler.BindIf(service, concrete, isStatic, out bindData);
+            return handler.BindIf(service, concrete, isStatic, out bindData);
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace XMLib
         /// <param name="service">服务名或者别名</param>
         public static void UnBind(string service)
         {
-            Handler.UnBind(service);
+            handler.UnBind(service);
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace XMLib
         /// <param name="instance">服务实例</param>
         public static object Instance(string service, object instance)
         {
-            return Handler.Instance(service, instance);
+            return handler.Instance(service, instance);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace XMLib
         /// <param name="service">服务名或别名</param>
         public static bool Release(string service)
         {
-            return Handler.Release(service);
+            return handler.Release(service);
         }
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace XMLib
         /// <returns>方法返回值</returns>
         public static object Call(object instance, MethodInfo methodInfo, params object[] userParams)
         {
-            return Handler.Call(instance, methodInfo, userParams);
+            return handler.Call(instance, methodInfo, userParams);
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace XMLib
         /// <returns>服务实例，如果构造失败那么返回null</returns>
         public static object Make(string service, params object[] userParams)
         {
-            return Handler.Make(service, userParams);
+            return handler.Make(service, userParams);
         }
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace XMLib
         /// <returns>当前容器对象</returns>
         public static IContainer Alias(string alias, string service)
         {
-            return Handler.Alias(alias, service);
+            return handler.Alias(alias, service);
         }
 
         /// <summary>
@@ -504,7 +504,7 @@ namespace XMLib
         /// <returns>当前容器实例</returns>
         public static IContainer OnResolving(Action<IBindData, object> func)
         {
-            return Handler.OnResolving(func);
+            return handler.OnResolving(func);
         }
 
         /// <summary>
@@ -513,7 +513,7 @@ namespace XMLib
         /// <param name="action">处理释放时的回调</param>
         public static IContainer OnRelease(Action<IBindData, object> action)
         {
-            return Handler.OnRelease(action);
+            return handler.OnRelease(action);
         }
 
         /// <summary>
@@ -524,7 +524,7 @@ namespace XMLib
         /// <returns>服务容器</returns>
         public static IContainer OnRebound(string service, Action<object> callback)
         {
-            return Handler.OnRebound(service, callback);
+            return handler.OnRebound(service, callback);
         }
 
         /// <summary>
@@ -534,7 +534,7 @@ namespace XMLib
         /// <returns>转换后的服务名</returns>
         public static string Type2Service(Type type)
         {
-            return Handler.Type2Service(type);
+            return handler.Type2Service(type);
         }
 
         #endregion Container API
@@ -548,7 +548,7 @@ namespace XMLib
         /// <returns>服务绑定数据或者null</returns>
         public static IBindData GetBind<TService>()
         {
-            return Handler.GetBind<TService>();
+            return handler.GetBind<TService>();
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace XMLib
         /// <returns>代表服务是否被绑定</returns>
         public static bool HasBind<TService>()
         {
-            return Handler.HasBind<TService>();
+            return handler.HasBind<TService>();
         }
 
         /// <summary>
@@ -568,7 +568,7 @@ namespace XMLib
         /// <returns>服务是否可以被构建</returns>
         public static bool CanMake<TService>()
         {
-            return Handler.CanMake<TService>();
+            return handler.CanMake<TService>();
         }
 
         /// <summary>
@@ -578,7 +578,7 @@ namespace XMLib
         /// <returns>服务是否是静态化的</returns>
         public static bool IsStatic<TService>()
         {
-            return Handler.IsStatic<TService>();
+            return handler.IsStatic<TService>();
         }
 
         /// <summary>
@@ -588,7 +588,7 @@ namespace XMLib
         /// <returns>是否是别名</returns>
         public static bool IsAlias<TService>()
         {
-            return Handler.IsAlias<TService>();
+            return handler.IsAlias<TService>();
         }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace XMLib
         /// <typeparam name="TService">服务名</typeparam>
         public static IContainer Alias<TAlias, TService>()
         {
-            return Handler.Alias(Handler.Type2Service(typeof(TAlias)), Handler.Type2Service(typeof(TService)));
+            return handler.Alias(handler.Type2Service(typeof(TAlias)), handler.Type2Service(typeof(TService)));
         }
 
         /// <summary>
@@ -608,7 +608,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind<TService>()
         {
-            return Handler.Bind<TService>();
+            return handler.Bind<TService>();
         }
 
         /// <summary>
@@ -619,7 +619,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind<TService, TAlias>()
         {
-            return Handler.Bind<TService, TAlias>();
+            return handler.Bind<TService, TAlias>();
         }
 
         /// <summary>
@@ -630,7 +630,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind<TService>(Func<IContainer, object[], object> concrete)
         {
-            return Handler.Bind<TService>(concrete);
+            return handler.Bind<TService>(concrete);
         }
 
         /// <summary>
@@ -641,7 +641,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind<TService>(Func<object> concrete)
         {
-            return Handler.Bind<TService>(concrete);
+            return handler.Bind<TService>(concrete);
         }
 
         /// <summary>
@@ -652,7 +652,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Bind(string service, Func<IContainer, object[], object> concrete)
         {
-            return Handler.Bind(service, concrete);
+            return handler.Bind(service, concrete);
         }
 
         /// <summary>
@@ -664,7 +664,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool BindIf<TService, TAlias>(out IBindData bindData)
         {
-            return Handler.BindIf<TService, TAlias>(out bindData);
+            return handler.BindIf<TService, TAlias>(out bindData);
         }
 
         /// <summary>
@@ -675,7 +675,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool BindIf<TService>(out IBindData bindData)
         {
-            return Handler.BindIf<TService>(out bindData);
+            return handler.BindIf<TService>(out bindData);
         }
 
         /// <summary>
@@ -687,7 +687,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool BindIf<TService>(Func<IContainer, object[], object> concrete, out IBindData bindData)
         {
-            return Handler.BindIf<TService>(concrete, out bindData);
+            return handler.BindIf<TService>(concrete, out bindData);
         }
 
         /// <summary>
@@ -699,7 +699,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool BindIf<TService>(Func<object> concrete, out IBindData bindData)
         {
-            return Handler.BindIf<TService>(concrete, out bindData);
+            return handler.BindIf<TService>(concrete, out bindData);
         }
 
         /// <summary>
@@ -711,7 +711,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool BindIf(string service, Func<IContainer, object[], object> concrete, out IBindData bindData)
         {
-            return Handler.BindIf(service, concrete, out bindData);
+            return handler.BindIf(service, concrete, out bindData);
         }
 
         /// <summary>
@@ -722,7 +722,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Singleton<TService, TAlias>()
         {
-            return Handler.Singleton<TService, TAlias>();
+            return handler.Singleton<TService, TAlias>();
         }
 
         /// <summary>
@@ -732,7 +732,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Singleton<TService>()
         {
-            return Handler.Singleton<TService>();
+            return handler.Singleton<TService>();
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Singleton<TService>(Func<IContainer, object[], object> concrete)
         {
-            return Handler.Singleton<TService>(concrete);
+            return handler.Singleton<TService>(concrete);
         }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Singleton<TService>(Func<object> concrete)
         {
-            return Handler.Singleton<TService>(concrete);
+            return handler.Singleton<TService>(concrete);
         }
 
         /// <summary>
@@ -765,7 +765,7 @@ namespace XMLib
         /// <returns>服务绑定数据</returns>
         public static IBindData Singleton(string service, Func<IContainer, object[], object> concrete)
         {
-            return Handler.Singleton(service, concrete);
+            return handler.Singleton(service, concrete);
         }
 
         /// <summary>
@@ -777,7 +777,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool SingletonIf<TService, TAlias>(out IBindData bindData)
         {
-            return Handler.SingletonIf<TService, TAlias>(out bindData);
+            return handler.SingletonIf<TService, TAlias>(out bindData);
         }
 
         /// <summary>
@@ -788,7 +788,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool SingletonIf<TService>(out IBindData bindData)
         {
-            return Handler.SingletonIf<TService>(out bindData);
+            return handler.SingletonIf<TService>(out bindData);
         }
 
         /// <summary>
@@ -800,7 +800,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool SingletonIf<TService>(Func<IContainer, object[], object> concrete, out IBindData bindData)
         {
-            return Handler.SingletonIf<TService>(concrete, out bindData);
+            return handler.SingletonIf<TService>(concrete, out bindData);
         }
 
         /// <summary>
@@ -812,7 +812,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool SingletonIf<TService>(Func<object> concrete, out IBindData bindData)
         {
-            return Handler.SingletonIf<TService>(concrete, out bindData);
+            return handler.SingletonIf<TService>(concrete, out bindData);
         }
 
         /// <summary>
@@ -824,7 +824,7 @@ namespace XMLib
         /// <returns>是否完成绑定</returns>
         public static bool SingletonIf(string service, Func<IContainer, object[], object> concrete, out IBindData bindData)
         {
-            return Handler.SingletonIf(service, concrete, out bindData);
+            return handler.SingletonIf(service, concrete, out bindData);
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace XMLib
         /// <typeparam name="TService">解除绑定的服务</typeparam>
         public static void UnBind<TService>()
         {
-            Handler.UnBind<TService>();
+            handler.UnBind<TService>();
         }
 
         /// <summary>
@@ -843,7 +843,7 @@ namespace XMLib
         /// <param name="instance">实例值</param>
         public static void Instance<TService>(object instance)
         {
-            Handler.Instance<TService>(instance);
+            handler.Instance<TService>(instance);
         }
 
         /// <summary>
@@ -852,7 +852,7 @@ namespace XMLib
         /// <typeparam name="TService">服务名</typeparam>
         public static bool Release<TService>()
         {
-            return Handler.Release<TService>();
+            return handler.Release<TService>();
         }
 
         /// <summary>
@@ -863,7 +863,7 @@ namespace XMLib
         /// <returns>只要有一个没有释放成功那么返回false，<paramref name="instances"/>为没有释放掉的实例</returns>
         public static bool Release(ref object[] instances, bool reverse = true)
         {
-            return Handler.Release(ref instances, reverse);
+            return handler.Release(ref instances, reverse);
         }
 
         /// <summary>
@@ -875,7 +875,7 @@ namespace XMLib
         /// <returns>方法返回值</returns>
         public static object Call(object instance, string method, params object[] userParams)
         {
-            return Handler.Call(instance, method, userParams);
+            return handler.Call(instance, method, userParams);
         }
 
         /// <summary>
@@ -885,7 +885,7 @@ namespace XMLib
         /// <param name="userParams">用户传入的参数</param>
         public static void Call<T1>(Action<T1> method, params object[] userParams)
         {
-            Handler.Call(method, userParams);
+            handler.Call(method, userParams);
         }
 
         /// <summary>
@@ -895,7 +895,7 @@ namespace XMLib
         /// <param name="userParams">用户传入的参数</param>
         public static void Call<T1, T2>(Action<T1, T2> method, params object[] userParams)
         {
-            Handler.Call(method, userParams);
+            handler.Call(method, userParams);
         }
 
         /// <summary>
@@ -905,7 +905,7 @@ namespace XMLib
         /// <param name="userParams">用户传入的参数</param>
         public static void Call<T1, T2, T3>(Action<T1, T2, T3> method, params object[] userParams)
         {
-            Handler.Call(method, userParams);
+            handler.Call(method, userParams);
         }
 
         /// <summary>
@@ -915,7 +915,7 @@ namespace XMLib
         /// <param name="userParams">用户传入的参数</param>
         public static void Call<T1, T2, T3, T4>(Action<T1, T2, T3, T4> method, params object[] userParams)
         {
-            Handler.Call(method, userParams);
+            handler.Call(method, userParams);
         }
 
         /// <summary>
@@ -926,7 +926,7 @@ namespace XMLib
         /// <returns>包装方法</returns>
         public static Action Wrap<T1>(Action<T1> method, params object[] userParams)
         {
-            return Handler.Wrap(method, userParams);
+            return handler.Wrap(method, userParams);
         }
 
         /// <summary>
@@ -937,7 +937,7 @@ namespace XMLib
         /// <returns>包装方法</returns>
         public static Action Wrap<T1, T2>(Action<T1, T2> method, params object[] userParams)
         {
-            return Handler.Wrap(method, userParams);
+            return handler.Wrap(method, userParams);
         }
 
         /// <summary>
@@ -948,7 +948,7 @@ namespace XMLib
         /// <returns>包装方法</returns>
         public static Action Wrap<T1, T2, T3>(Action<T1, T2, T3> method, params object[] userParams)
         {
-            return Handler.Wrap(method, userParams);
+            return handler.Wrap(method, userParams);
         }
 
         /// <summary>
@@ -959,7 +959,7 @@ namespace XMLib
         /// <returns>包装方法</returns>
         public static Action Wrap<T1, T2, T3, T4>(Action<T1, T2, T3, T4> method, params object[] userParams)
         {
-            return Handler.Wrap(method, userParams);
+            return handler.Wrap(method, userParams);
         }
 
         /// <summary>
@@ -970,7 +970,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public static TService Make<TService>(params object[] userParams)
         {
-            return Handler.Make<TService>(userParams);
+            return handler.Make<TService>(userParams);
         }
 
         /// <summary>
@@ -981,7 +981,7 @@ namespace XMLib
         /// <returns>服务实例</returns>
         public static object Make(Type type, params object[] userParams)
         {
-            return Handler.Make(type, userParams);
+            return handler.Make(type, userParams);
         }
 
         /// <summary>
@@ -1001,7 +1001,7 @@ namespace XMLib
         /// <returns>当前容器实例</returns>
         public static IContainer OnRelease(Action<object> callback)
         {
-            return Handler.OnRelease(callback);
+            return handler.OnRelease(callback);
         }
 
         /// <summary>
@@ -1011,7 +1011,7 @@ namespace XMLib
         /// <returns>当前容器对象</returns>
         public static IContainer OnResolving(Action<object> callback)
         {
-            return Handler.OnResolving(callback);
+            return handler.OnResolving(callback);
         }
 
         /// <summary>
@@ -1021,7 +1021,7 @@ namespace XMLib
         /// <returns>服务名</returns>
         public static string Type2Service<TService>()
         {
-            return Handler.Type2Service<TService>();
+            return handler.Type2Service<TService>();
         }
 
         #endregion Container Extend API

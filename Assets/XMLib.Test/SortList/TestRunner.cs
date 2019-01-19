@@ -28,9 +28,9 @@ namespace XMLib.Test.SortListTest
             data.Remove("5");
             data.RemoveIndex(0);
 
-            data.Forward = false;
+            data.forward = false;
             List<string> toData = new List<string>(data);
-            data.Forward = true;
+            data.forward = true;
             List<string> toData2 = data.ToList();
 
             string sort = "";

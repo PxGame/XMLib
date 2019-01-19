@@ -91,7 +91,7 @@ namespace XMLib
         /// <summary>
         /// 同步实例
         /// </summary>
-        private object _syncRoot;
+        private readonly object _syncRoot;
 
         #endregion 参数
 
@@ -106,7 +106,7 @@ namespace XMLib
             _aliases = new Dictionary<string, string>();
             _aliasesReverse = new Dictionary<string, List<string>>();
             _instanceTiming = new SortList<string, int>();
-            _instanceTiming.Forward = false;
+            _instanceTiming.forward = false;
 
             _buildStack = new Stack<string>();
 
@@ -135,22 +135,22 @@ namespace XMLib
         {
             lock (_syncRoot)
             {
-                Release(bindData.Service);
+                Release(bindData.service);
 
                 //移除别名
                 List<string> serviceList;
-                if (_aliasesReverse.TryGetValue(bindData.Service, out serviceList))
+                if (_aliasesReverse.TryGetValue(bindData.service, out serviceList))
                 {
                     foreach (string alias in serviceList)
                     {//移除所有绑定的别名
                         _aliases.Remove(alias);
                     }
                     //移除反向查找列表
-                    _aliasesReverse.Remove(bindData.Service);
+                    _aliasesReverse.Remove(bindData.service);
                 }
 
                 //移除绑定
-                _binds.Remove(bindData.Service);
+                _binds.Remove(bindData.service);
             }
         }
 
@@ -301,9 +301,9 @@ namespace XMLib
                     ///构建实例
                     instance = Build(bindData, args);
 
-                    if (bindData.IsStatic)
+                    if (bindData.isStatic)
                     {
-                        instance = Instance(bindData.Service, instance);
+                        instance = Instance(bindData.service, instance);
                     }
                     else
                     {
@@ -343,14 +343,14 @@ namespace XMLib
         {
             object instance;
 
-            if (null != bindData.Concrete)
+            if (null != bindData.concrete)
             {
-                instance = bindData.Concrete(this, args);
+                instance = bindData.concrete(this, args);
             }
             else
             {
                 //推测服务类型
-                Type type = SpeculatedServiceType(bindData.Service);
+                Type type = SpeculatedServiceType(bindData.service);
                 instance = CreateInstance(bindData, type, args);
             }
 
@@ -741,13 +741,13 @@ namespace XMLib
         protected virtual string GetPropertyNeedsService(PropertyInfo property)
         {
             InjectAttribute injectAttr = (InjectAttribute)property.GetCustomAttributes(typeof(InjectAttribute), false)[0];
-            if (string.IsNullOrEmpty(injectAttr.Alias))
+            if (string.IsNullOrEmpty(injectAttr.alias))
             {
                 return Type2Service(property.PropertyType);
             }
             else
             {
-                return injectAttr.Alias;
+                return injectAttr.alias;
             }
         }
 
@@ -765,9 +765,9 @@ namespace XMLib
             }
 
             InjectAttribute injectAttr = (InjectAttribute)arg.GetCustomAttributes(typeof(InjectAttribute), false)[0];
-            if (!string.IsNullOrEmpty(injectAttr.Alias))
+            if (!string.IsNullOrEmpty(injectAttr.alias))
             {
-                needService = injectAttr.Alias;
+                needService = injectAttr.alias;
             }
 
             return needService;
@@ -1088,7 +1088,7 @@ namespace XMLib
 
                 if (null != bindData)
                 {
-                    if (!bindData.IsStatic)
+                    if (!bindData.isStatic)
                     {
                         throw new RuntimeException("该服务[" + service + "]不是单例绑定");
                     }
@@ -1159,7 +1159,7 @@ namespace XMLib
         public bool IsStatic(string service)
         {
             IBindData bindData = GetBind(service);
-            return null != bindData && bindData.IsStatic;
+            return null != bindData && bindData.isStatic;
         }
 
         /// <summary>

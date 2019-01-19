@@ -18,7 +18,7 @@ namespace XMLib
         /// <summary>
         /// 优先级
         /// </summary>
-        public int Priorities { get; private set; }
+        public int priority { get; private set; }
 
         /// <summary>
         /// 优先级(0最高)
@@ -26,7 +26,7 @@ namespace XMLib
         /// <param name="priority">优先级(0为默认级别)，值越小，优先级越高</param>
         public PriorityAttribute(int priority = 0)
         {
-            Priorities = priority;
+            this.priority = priority;
         }
     }
 }

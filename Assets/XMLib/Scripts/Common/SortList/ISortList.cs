@@ -35,12 +35,12 @@ namespace XMLib
         /// <summary>
         /// 数量
         /// </summary>
-        int Count { get; }
+        int count { get; }
 
         /// <summary>
         /// 迭代器迭代方向
         /// </summary>
-        bool Forward { get; set; }
+        bool forward { get; set; }
 
         /// <summary>
         /// 添加

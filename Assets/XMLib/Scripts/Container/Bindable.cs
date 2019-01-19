@@ -19,12 +19,12 @@ namespace XMLib
         /// <summary>
         /// 绑定的服务名
         /// </summary>
-        public string Service { get { return _service; } }
+        public string service { get { return _service; } }
 
         /// <summary>
         /// 容器
         /// </summary>
-        protected readonly Container Container;
+        protected readonly Container container;
 
         /// <summary>
         /// 服务名
@@ -48,7 +48,7 @@ namespace XMLib
         /// <param name="service">服务名</param>
         public Bindable(Container container, string service)
         {
-            Container = container;
+            this.container = container;
             _service = service;
 
             _syncRoot = new object();

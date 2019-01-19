@@ -17,6 +17,14 @@ namespace XMLib.UIService
     /// </summary>
     public class UIService : IUIService
     {
+        /// <summary>
+        /// 设置
+        /// </summary>
+        public UIServiceSetting setting { get { return _setting; } }
+
+        /// <summary>
+        /// 设置
+        /// </summary>
         private readonly UIServiceSetting _setting;
 
         /// <summary>
@@ -30,9 +38,9 @@ namespace XMLib.UIService
         private readonly Dictionary<Guid, UIPanelBindData> _panelBindDict;
 
         /// <summary>
-        /// 面板字典
+        /// 面板实例字典
         /// </summary>
-        private readonly Dictionary<string, List<Guid>> _panelNameDict;
+        private readonly Dictionary<Guid, UIPanel> _panelDict;
 
         /// <summary>
         /// 堆栈面板
@@ -51,21 +59,13 @@ namespace XMLib.UIService
         public UIService(UIServiceSetting setting, UIRoot uiRoot)
         {
             _setting = setting;
+            _uiRoot = uiRoot;
 
             //初始化对象
+            _panelDict = new Dictionary<Guid, UIPanel>();
             _panelBindDict = new Dictionary<Guid, UIPanelBindData>();
-            _panelNameDict = new Dictionary<string, List<Guid>>();
             _panelStack = new Stack<Guid>();
             _panelList = new List<Guid>();
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="uiRoot">根节点</param>
-        public void Init(UIRoot uiRoot)
-        {
-            _uiRoot = uiRoot;
         }
 
         /// <summary>
@@ -80,10 +80,45 @@ namespace XMLib.UIService
         {
             //创建绑定数据
             UIPanelBindData bindData = CreateBindData(layerName, panelName, inStack);
-            //床创建面板
+            _panelBindDict.Add(bindData.id, bindData);
+
+            //创建面板
             UIPanel uiPanel = CreatePanel(bindData, args);
+            _panelDict.Add(bindData.id, uiPanel);
+
+            //
+            if (inStack)
+            {
+                ShowInStack(bindData, uiPanel);
+            }
+            else
+            {
+                ShowNotStack(bindData, uiPanel);
+            }
 
             return bindData;
+        }
+
+        /// <summary>
+        /// 非堆栈显示
+        /// </summary>
+        /// <param name="bindData">面板绑定数据</param>
+        /// <param name="uiPanel">面板实例</param>
+        /// <returns>是否成功</returns>
+        private bool ShowNotStack(UIPanelBindData bindData, UIPanel uiPanel)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 堆栈显示
+        /// </summary>
+        /// <param name="bindData">面板绑定数据</param>
+        /// <param name="uiPanel">面板实例</param>
+        /// <returns>是否成功</returns>
+        private bool ShowInStack(UIPanelBindData bindData, UIPanel uiPanel)
+        {
+            return true;
         }
 
         /// <summary>
@@ -107,7 +142,7 @@ namespace XMLib.UIService
         /// <returns>绑定数据</returns>
         private UIPanelBindData CreateBindData(string layerName, string panelName, bool inStack)
         {
-            UIPanelBindData data = new UIPanelBindData(layerName, panelName, inStack);
+            UIPanelBindData data = new UIPanelBindData(this, layerName, panelName, inStack);
 
             return data;
         }
@@ -120,14 +155,28 @@ namespace XMLib.UIService
         /// <returns>面板实例</returns>
         private UIPanel CreatePanel(UIPanelBindData bindData, params object[] args)
         {
-            UIPanel uiPanel = null;
+            GameObject obj = LoadPanel(bindData);
+            obj.transform.parent = _uiRoot.Get(bindData.layerName);
+            obj.transform.SetAsLastSibling();//移到末尾
+
+            UIPanel uiPanel = obj.GetComponent<UIPanel>();
+
+            //调用初始化函数
+            ReflectionUtil.InvokeMethod(uiPanel, "OnInitialize", args);
 
             return uiPanel;
         }
 
+        /// <summary>
+        /// 加载面板实例
+        /// </summary>
+        /// <param name="bindData">面板绑定数据</param>
+        /// <returns>面板实例</returns>
         private GameObject LoadPanel(UIPanelBindData bindData)
         {
-            return null;
+            GameObject preObj = Resources.Load<GameObject>(bindData.path);
+            GameObject obj = GameObject.Instantiate(preObj);
+            return obj;
         }
 
         #endregion Panel

@@ -25,7 +25,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 保存的layer
         /// </summary>
-        private int _layer;
+        private readonly int _layer;
 
         /// <summary>
         /// 构造函数

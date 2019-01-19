@@ -19,7 +19,7 @@ namespace XMLib
         /// <summary>
         /// 当前输入方式
         /// </summary>
-        ActiveInputMethod Method { get; }
+        ActiveInputMethod method { get; }
 
         /// <summary>
         /// 切换输入方式

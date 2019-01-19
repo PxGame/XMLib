@@ -19,7 +19,7 @@ namespace XMLib
         /// <summary>
         /// 当前绑定的名字
         /// </summary>
-        string Service { get; }
+        string service { get; }
 
         /// <summary>
         /// 移除绑定

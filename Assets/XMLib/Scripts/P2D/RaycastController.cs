@@ -23,7 +23,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 射线设置
         /// </summary>
-        public RaycastSetting setting { get { return _raycastSetting; } }
+        public RaycastSetting raycastSetting { get { return _raycastSetting; } }
 
         /// <summary>
         /// 碰撞体

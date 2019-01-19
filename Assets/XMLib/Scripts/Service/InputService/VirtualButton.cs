@@ -20,12 +20,12 @@ namespace XMLib.InputService
         /// <summary>
         /// 按钮名
         /// </summary>
-        public string Name { get { return _name; } }
+        public string name { get { return _name; } }
 
         /// <summary>
         /// 按钮名
         /// </summary>
-        private string _name;
+        private readonly string _name;
 
         /// <summary>
         /// 按下的帧

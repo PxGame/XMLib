@@ -11,15 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a44d6722286bf4d9368b93eeba1811, type: 3}
   m_Name: FrameworkSetting
   m_EditorClassIdentifier: 
-  InputService:
+  inputService:
     _enable: 1
     _method: 3
     _deadZoom: 0
-  MonoDriver:
+  monoDriver:
     _enable: 1
-  ObjectPool:
+  objectPool:
     _enable: 1
     _maxSize: 10
-  UIService:
+  uiService:
     _enable: 1
-    _uiRootPath: XMLib/UI/UIRoot
+    _uiRootPath: UI/UIRoot
+    _panelDir: Panel/

@@ -20,7 +20,7 @@ namespace XMLib.InputService
         /// <summary>
         /// 死区
         /// </summary>
-        private float _deadZoom;
+        private readonly float _deadZoom;
 
         /// <summary>
         /// 构造函数
@@ -45,7 +45,7 @@ namespace XMLib.InputService
                 return 0;
             }
 
-            float value = _axisDict[name].Value;
+            float value = _axisDict[name].value;
             return Mathf.Abs(value) >= Mathf.Abs(_deadZoom) ? value : 0;
         }
 
@@ -61,7 +61,7 @@ namespace XMLib.InputService
                 return 0;
             }
 
-            float value = _axisDict[name].Value;
+            float value = _axisDict[name].value;
             return Mathf.Abs(value) >= Mathf.Abs(_deadZoom) ? Mathf.Sign(value) : 0;
         }
 

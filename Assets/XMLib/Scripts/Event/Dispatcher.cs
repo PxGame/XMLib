@@ -29,7 +29,7 @@ namespace XMLib
         /// <summary>
         /// 同步锁
         /// </summary>
-        private object _syncRoot;
+        private readonly object _syncRoot;
 
         /// <summary>
         /// 绑定的应用实例
@@ -166,26 +166,26 @@ namespace XMLib
         {
             //移除分组中的监听
             List<IEvent> events = null;
-            if (null != evt.Group)
+            if (null != evt.group)
             {
-                if (_groupMapping.TryGetValue(evt.Group, out events))
+                if (_groupMapping.TryGetValue(evt.group, out events))
                 {
                     events.Remove(evt);
                     if (events.Count <= 0)
                     {
-                        _groupMapping.Remove(evt.Group);
+                        _groupMapping.Remove(evt.group);
                     }
                 }
             }
 
             //移除监听
             SortList<IEvent, int> sortEvents = null;
-            if (_listeners.TryGetValue(evt.Name, out sortEvents))
+            if (_listeners.TryGetValue(evt.name, out sortEvents))
             {
                 sortEvents.Remove(evt);
-                if (sortEvents.Count <= 0)
+                if (sortEvents.count <= 0)
                 {
-                    _listeners.Remove(evt.Name);
+                    _listeners.Remove(evt.name);
                 }
             }
         }
@@ -319,7 +319,7 @@ namespace XMLib
 
                             //调用事件
 
-                            object result = _app.Call(target.Target, target.MethodInfo, args);
+                            object result = _app.Call(target.target, target.methodInfo, args);
 
                             //只取一个结果时
                             if (half && result != null)

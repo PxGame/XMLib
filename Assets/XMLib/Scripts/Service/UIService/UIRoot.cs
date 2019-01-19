@@ -26,12 +26,12 @@ namespace XMLib.UIService
             /// <summary>
             /// 层名
             /// </summary>
-            public string LayerName { get { return _layerName; } }
+            public string layerName { get { return _layerName; } }
 
             /// <summary>
             /// 层节点
             /// </summary>
-            public RectTransform LayerRoot { get { return _layerRoot; } }
+            public RectTransform layerRoot { get { return _layerRoot; } }
 
             /// <summary>
             /// 层名
@@ -73,7 +73,7 @@ namespace XMLib.UIService
 
             foreach (var layer in _layers)
             {
-                _layerDict.Add(layer.LayerName, layer.LayerRoot);
+                _layerDict.Add(layer.layerName, layer.layerRoot);
             }
         }
 

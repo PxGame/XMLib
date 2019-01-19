@@ -46,12 +46,12 @@ namespace XMLib.InputService
         /// <param name="axis">轴引用</param>
         public void RegistAxis(VirtualAxis axis)
         {
-            if (AxisExist(axis.Name))
+            if (AxisExist(axis.name))
             {
                 return;
             }
 
-            _axisDict.Add(axis.Name, axis);
+            _axisDict.Add(axis.name, axis);
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace XMLib.InputService
         /// <param name="button">按钮引用</param>
         public void RegistButton(VirtualButton button)
         {
-            if (ButtonExist(button.Name))
+            if (ButtonExist(button.name))
             {
                 return;
             }
 
-            _buttonDict.Add(button.Name, button);
+            _buttonDict.Add(button.name, button);
         }
 
         /// <summary>

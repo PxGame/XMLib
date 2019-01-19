@@ -19,17 +19,17 @@ namespace XMLib
         /// <summary>
         /// 当前绑定的名字
         /// </summary>
-        string Service { get; }
+        string service { get; }
 
         /// <summary>
         /// 服务实现
         /// </summary>
-        Func<IContainer, object[], object> Concrete { get; }
+        Func<IContainer, object[], object> concrete { get; }
 
         /// <summary>
         /// 是否是静态服务
         /// </summary>
-        bool IsStatic { get; }
+        bool isStatic { get; }
 
         /// <summary>
         /// 为服务设定一个别名

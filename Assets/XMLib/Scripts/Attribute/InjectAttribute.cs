@@ -22,7 +22,7 @@ namespace XMLib
         /// <summary>
         /// 注入服务的别名或者服务名
         /// </summary>
-        public string Alias { get; private set; }
+        public string alias { get; private set; }
 
         /// <summary>
         /// 声明注入
@@ -30,7 +30,7 @@ namespace XMLib
         /// <param name="alias">依赖服务的别名或者服务名</param>
         public InjectAttribute(string alias)
         {
-            Alias = alias;
+            this.alias = alias;
         }
 
         /// <summary>

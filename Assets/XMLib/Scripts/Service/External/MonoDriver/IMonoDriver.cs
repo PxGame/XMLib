@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace XMLib
 {
@@ -33,7 +34,7 @@ namespace XMLib
         /// </summary>
         /// <param name="routine">协程</param>
         /// <returns>协程</returns>
-        UnityEngine.Coroutine StartCoroutine(IEnumerator routine);
+        Coroutine StartCoroutine(IEnumerator routine);
 
         /// <summary>
         /// 停止协程

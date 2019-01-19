@@ -29,12 +29,12 @@ namespace XMLib
             /// <summary>
             /// 值
             /// </summary>
-            public TValue Value;
+            public TValue value;
 
             /// <summary>
             /// 权重
             /// </summary>
-            public TWeight Weight;
+            public TWeight weight;
 
             /// <summary>
             /// 构造函数
@@ -43,8 +43,8 @@ namespace XMLib
             /// <param name="weight">权重</param>
             public ValueWeightPair(TValue value, TWeight weight)
             {
-                this.Value = value;
-                this.Weight = weight;
+                this.value = value;
+                this.weight = weight;
             }
 
             public ValueWeightPair()
@@ -83,7 +83,7 @@ namespace XMLib
                     try
                     {
                         ValueWeightPair pair = _list[_index];
-                        return pair.Value;
+                        return pair.value;
                     }
                     catch (Exception)
                     {
@@ -124,12 +124,12 @@ namespace XMLib
         /// <summary>
         /// 迭代器迭代方向
         /// </summary>
-        public bool Forward { get { return _forward; } set { _forward = value; } }
+        public bool forward { get { return _forward; } set { _forward = value; } }
 
         /// <summary>
         /// 数量
         /// </summary>
-        public int Count { get { return _list.Count; } }
+        public int count { get { return _list.Count; } }
 
         /// <summary>
         /// 构造函数
@@ -200,7 +200,7 @@ namespace XMLib
         /// <param name="sortList">一组数据</param>
         public void AddRange(ISortList<TValue, TWeight> sortList)
         {
-            int length = sortList.Count;
+            int length = sortList.count;
             for (int i = 0; i < length; i++)
             {
                 TValue value = sortList[i];
@@ -247,7 +247,7 @@ namespace XMLib
 
             //
             ValueWeightPair pair = _list[index];
-            _dict.Remove(pair.Value);
+            _dict.Remove(pair.value);
             _list.RemoveAt(index);
 
             //需要重排
@@ -308,7 +308,7 @@ namespace XMLib
             {
                 throw new KeyNotFoundException();
             }
-            return pair.Weight;
+            return pair.weight;
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace XMLib
 
             //
             ValueWeightPair pair = _list[index];
-            return pair.Value;
+            return pair.value;
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace XMLib
         /// <returns>列表</returns>
         public TValue[] ToArray()
         {
-            int length = Count;
+            int length = count;
             TValue[] ary = new TValue[length];
             for (int i = 0; i < length; i++)
             {
@@ -385,7 +385,7 @@ namespace XMLib
         /// <summary>
         /// 比较方法，先不开放
         /// </summary>
-        private Comparison<TWeight> ComparerWeight
+        private Comparison<TWeight> comparerWeight
         {
             get { return _comparerWeight; }
             set { _comparerWeight = value; }
@@ -406,7 +406,7 @@ namespace XMLib
         /// <returns></returns>
         private int OnComparerPair(ValueWeightPair x, ValueWeightPair y)
         {
-            return _comparerWeight(x.Weight, y.Weight);
+            return _comparerWeight(x.weight, y.weight);
         }
 
         /// <summary>

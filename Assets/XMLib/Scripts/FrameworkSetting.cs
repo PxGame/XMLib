@@ -20,16 +20,16 @@ namespace XMLib
     public class FrameworkSetting : ScriptableObject, IEnumerable
     {
         [SerializeField]
-        private InputService.InputServiceSetting InputService;
+        private InputService.InputServiceSetting inputService;
 
         [SerializeField]
-        private MonoDriver.MonoDriverSetting MonoDriver;
+        private MonoDriver.MonoDriverSetting monoDriver;
 
         [SerializeField]
-        private ObjectPool.ObjectPoolSetting ObjectPool;
+        private ObjectPool.ObjectPoolSetting objectPool;
 
         [SerializeField]
-        private UIService.UIServiceSetting UIService;
+        private UIService.UIServiceSetting uiService;
 
         /// <summary>
         /// 获取迭代器
@@ -39,21 +39,21 @@ namespace XMLib
         {
             List<IServiceSetting> settings = new List<IServiceSetting>();
 
-            if (InputService.enable)
+            if (inputService.enable)
             {
-                settings.Add(InputService);
+                settings.Add(inputService);
             }
-            if (MonoDriver.enable)
+            if (monoDriver.enable)
             {
-                settings.Add(MonoDriver);
+                settings.Add(monoDriver);
             }
-            if (ObjectPool.enable)
+            if (objectPool.enable)
             {
-                settings.Add(ObjectPool);
+                settings.Add(objectPool);
             }
-            if (UIService.enable)
+            if (uiService.enable)
             {
-                settings.Add(UIService);
+                settings.Add(uiService);
             }
 
             return settings.GetEnumerator();

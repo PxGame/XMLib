@@ -17,22 +17,22 @@ namespace XMLib
         /// <summary>
         /// 事件名
         /// </summary>
-        string Name { get; }
+        string name { get; }
 
         /// <summary>
         /// 事件分组
         /// </summary>
-        object Group { get; }
+        object group { get; }
 
         /// <summary>
         /// 目标对象
         /// </summary>
-        object Target { get; }
+        object target { get; }
 
         /// <summary>
         /// 调用函数
         /// </summary>
-        MethodInfo MethodInfo { get; }
+        MethodInfo methodInfo { get; }
 
         /// <summary>
         /// 事件是否可用

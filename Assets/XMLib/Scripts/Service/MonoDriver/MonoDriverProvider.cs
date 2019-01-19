@@ -19,14 +19,14 @@ namespace XMLib.MonoDriver
         /// <summary>
         /// 服务设置
         /// </summary>
-        private readonly MonoDriverSetting _setting;
+        //private readonly MonoDriverSetting _setting;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public MonoDriverProvider()
         {
-            _setting = App.Make<MonoDriverSetting>();
+            //_setting = App.Make<MonoDriverSetting>();
         }
 
         /// <summary>

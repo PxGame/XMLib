@@ -32,11 +32,11 @@ namespace XMLib
                 (methodInfo = type.GetMethod(method)) != null &&
                 methodInfo.IsDefined(priority, false))
             {//获取函数
-                currentPriority = ((PriorityAttribute)methodInfo.GetCustomAttributes(priority, false)[0]).Priorities;
+                currentPriority = ((PriorityAttribute)methodInfo.GetCustomAttributes(priority, false)[0]).priority;
             }
             else if (type.IsDefined(priority, false))
             {//获取类
-                currentPriority = ((PriorityAttribute)type.GetCustomAttributes(priority, false)[0]).Priorities;
+                currentPriority = ((PriorityAttribute)type.GetCustomAttributes(priority, false)[0]).priority;
             }
 
             return currentPriority;
@@ -65,7 +65,7 @@ namespace XMLib
 
             if (method.IsDefined(priority, false))
             {
-                currentPriority = ((PriorityAttribute)method.GetCustomAttributes(priority, false)[0]).Priorities;
+                currentPriority = ((PriorityAttribute)method.GetCustomAttributes(priority, false)[0]).priority;
             }
 
             return currentPriority;

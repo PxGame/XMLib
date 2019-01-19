@@ -17,7 +17,7 @@ namespace XMLib
         /// <summary>
         /// 是否是主线程
         /// </summary>
-        bool IsMainThread { get; }
+        bool isMainThread { get; }
 
         /// <summary>
         /// 终止

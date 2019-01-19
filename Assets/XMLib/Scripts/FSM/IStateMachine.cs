@@ -19,23 +19,23 @@ namespace XMLib.FSM
         /// <summary>
         /// 当前状态
         /// </summary>
-        IState<T> CurrentState { get; }
+        IState<T> currentState { get; }
 
         /// <summary>
         /// 上一个状态
         /// </summary>
-        IState<T> PreviousState { get; }
+        IState<T> previousState { get; }
 
         /// <summary>
         /// 全局状态
         /// </summary>
-        IState<T> GlobalState { get; }
+        IState<T> globalState { get; }
 
         /// <summary>
         /// 目标对象
         /// </summary>
         /// <value></value>
-        T Target { get; }
+        T target { get; }
 
         /// <summary>
         /// 初始化前一个状态

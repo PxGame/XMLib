@@ -87,7 +87,7 @@ namespace XMLib
         /// <summary>
         /// 是否是主线程
         /// </summary>
-        public bool IsMainThread { get { return _mainThreadId == Thread.CurrentThread.ManagedThreadId; } }
+        public bool isMainThread { get { return _mainThreadId == Thread.CurrentThread.ManagedThreadId; } }
 
         /// <summary>
         /// 主线程id
@@ -119,7 +119,7 @@ namespace XMLib
         /// <summary>
         /// 启动流程
         /// </summary>
-        public LaunchProcess Process
+        public LaunchProcess process
         {
             get { return _process; }
             private set { _process = value; }
@@ -128,7 +128,7 @@ namespace XMLib
         /// <summary>
         /// 是否正在注册
         /// </summary>
-        public bool IsRegistering { get { return _isRegistering; } }
+        public bool isRegistering { get { return _isRegistering; } }
 
         /// <summary>
         /// 启动流程
@@ -172,7 +172,7 @@ namespace XMLib
         public Application()
         {
             //设置全局句柄
-            App.Handler = this;
+            App.handler = this;
 
             //创建对象
             _serviceProviders = new SortList<IServiceProvider, int>();
@@ -253,7 +253,7 @@ namespace XMLib
             Flush();
 
             //销毁全局句柄
-            App.Handler = null;
+            App.handler = null;
             _process = LaunchProcess.Terminated;
             Trigger(ApplicationEvents.OnTerminated, this);
         }

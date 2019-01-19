@@ -25,7 +25,7 @@ namespace XMLib.InputService
         /// <summary>
         /// 当前输入方式
         /// </summary>
-        public ActiveInputMethod Method { get { return _method; } }
+        public ActiveInputMethod method { get { return _method; } }
 
         /// <summary>
         /// 当前输入方式

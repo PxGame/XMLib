@@ -19,7 +19,7 @@ namespace XMLib
         /// <summary>
         /// 面板Id
         /// </summary>
-        Guid Id { get; }
+        Guid id { get; }
 
         /// <summary>
         /// 层名字

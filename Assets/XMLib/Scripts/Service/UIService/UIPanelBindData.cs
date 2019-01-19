@@ -19,7 +19,7 @@ namespace XMLib.UIService
         /// <summary>
         /// 面板Id
         /// </summary>
-        public Guid Id { get; protected set; }
+        public Guid id { get; protected set; }
 
         /// <summary>
         /// 层名字
@@ -37,18 +37,30 @@ namespace XMLib.UIService
         public bool inStack { get; protected set; }
 
         /// <summary>
+        /// 服务句柄
+        /// </summary>
+        protected readonly UIService uiService;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="service">服务实例</param>
         /// <param name="layerName">层名字</param>
         /// <param name="panelName">面板名字</param>
         /// <param name="isStack">是否在堆栈中</param>
-        public UIPanelBindData(string layerName, string panelName, bool isStack)
+        public UIPanelBindData(UIService service, string layerName, string panelName, bool isStack)
         {
-            Id = Guid.NewGuid();
+            uiService = service;
+            id = Guid.NewGuid();
 
             this.layerName = layerName;
             this.panelName = panelName;
             this.inStack = inStack;
         }
+
+        /// <summary>
+        /// 资源路径
+        /// </summary>
+        public string path { get { return uiService.setting.GetPanelPath(panelName); } }
     }
 }

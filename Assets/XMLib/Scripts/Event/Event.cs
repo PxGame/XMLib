@@ -17,22 +17,22 @@ namespace XMLib
         /// <summary>
         /// 事件名
         /// </summary>
-        public string Name { get; private set; }
+        public string name { get; private set; }
 
         /// <summary>
         /// 事件分组
         /// </summary>
-        public object Group { get; private set; }
+        public object group { get; private set; }
 
         /// <summary>
         /// 目标对象
         /// </summary>
-        public object Target { get; private set; }
+        public object target { get; private set; }
 
         /// <summary>
         /// 调用函数
         /// </summary>
-        public MethodInfo MethodInfo { get; private set; }
+        public MethodInfo methodInfo { get; private set; }
 
         /// <summary>
         /// 构造函数
@@ -43,10 +43,10 @@ namespace XMLib
         /// <param name="group">分组</param>
         public Event(string eventName, object target, MethodInfo methodInfo, object group)
         {
-            Name = eventName;
-            Group = group;
-            Target = target;
-            MethodInfo = methodInfo;
+            name = eventName;
+            this.group = group;
+            this.target = target;
+            this.methodInfo = methodInfo;
         }
 
         /// <summary>
@@ -75,12 +75,12 @@ namespace XMLib
         public override string ToString()
         {
             string extra = "";
-            if (null != MethodInfo)
+            if (null != methodInfo)
             {
-                extra = string.Format("(Info:{0},DeclaringType:{1}", MethodInfo, MethodInfo.DeclaringType);
+                extra = string.Format("(Info:{0},DeclaringType:{1}", methodInfo, methodInfo.DeclaringType);
             }
 
-            string str = string.Format("[{0}](Name:{1},Group:{2},Target:{3},MethodInfo:{4})", GetType().Name, Name, Group, Target, extra);
+            string str = string.Format("[{0}](Name:{1},Group:{2},Target:{3},MethodInfo:{4})", GetType().Name, name, group, target, extra);
             return str;
         }
     }

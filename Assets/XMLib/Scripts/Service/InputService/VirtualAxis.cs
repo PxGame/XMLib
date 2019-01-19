@@ -19,17 +19,17 @@ namespace XMLib.InputService
         /// <summary>
         /// 轴名
         /// </summary>
-        public string Name { get { return _name; } }
+        public string name { get { return _name; } }
 
         /// <summary>
         /// 值
         /// </summary>
-        public float Value { get { return _value; } }
+        public float value { get { return _value; } }
 
         /// <summary>
         /// 轴名
         /// </summary>
-        private string _name;
+        private readonly string _name;
 
         /// <summary>
         /// 值

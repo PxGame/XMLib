@@ -29,7 +29,7 @@ namespace XMLib.InputService
         /// <summary>
         /// 死区
         /// </summary>
-        private float _deadZoom;
+        private readonly float _deadZoom;
 
         /// <summary>
         /// 构造函数
@@ -40,13 +40,8 @@ namespace XMLib.InputService
             _deadZoom = deadZoom;
 
             _standAlone = new StandAloneInput();
-            _mobile = new MobileInput(deadZoom);
+            _mobile = new MobileInput(_deadZoom);
         }
-
-        /// <summary>
-        /// 死区
-        /// </summary>
-        public float DeadZoom { get { return _deadZoom; } }
 
         /// <summary>
         /// 获取轴值

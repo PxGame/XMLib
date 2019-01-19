@@ -14,6 +14,7 @@ namespace XMLib.UIService
 {
     /// <summary>
     /// 面板
+    /// <para>面板被创建时，会首先匹配参数调用 OnInitialize 函数</para>
     /// </summary>
     [RequireComponent(typeof(CanvasGroup))]
     public abstract class UIPanel : MonoBehaviour

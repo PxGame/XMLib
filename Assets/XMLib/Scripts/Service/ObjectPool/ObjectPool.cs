@@ -23,49 +23,37 @@ namespace XMLib.ObjectPool
         private readonly ObjectPoolSetting _setting;
 
         /// <summary>
-        /// 根节点
+        /// 池根
         /// </summary>
-        private Transform _root;
-
-        private Dictionary<string, Dictionary<string, Stack<GameObject>>> _poolDict;
+        private PoolRoot _poolRoot;
 
         /// <summary>
-        /// 是否初始化
+        /// 根节点
         /// </summary>
-        private bool _isInit;
+        private Transform root { get { return _poolRoot.transform; } }
+
+        /// <summary>
+        /// 对象池字典
+        /// </summary>
+        private Dictionary<string, Dictionary<string, Stack<GameObject>>> _poolDict;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="setting">设置</param>
-        public ObjectPool(ObjectPoolSetting setting)
+        /// <param name="poolRoot">池根</param>
+        public ObjectPool(ObjectPoolSetting setting, PoolRoot poolRoot)
         {
             _setting = setting;
+            _poolRoot = poolRoot;
+
             _poolDict = new Dictionary<string, Dictionary<string, Stack<GameObject>>>();
-            _isInit = false;
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Init(int maxSize)
-        {
-            if (_isInit)
-            {
-                return;
-            }
-
-            GameObject obj = new GameObject("ObjectPoolRoot");
-            GameObject.DontDestroyOnLoad(obj);
-            _root = obj.transform;
-
-            _isInit = true;
         }
 
         /// <summary>
         /// 销毁对象
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">对象</param>
         private void OnDestroy(GameObject obj)
         {
             GameObject.Destroy(obj);
@@ -90,7 +78,7 @@ namespace XMLib.ObjectPool
         {
             //移动到对象池根节点下并禁用
             obj.SetActive(false);
-            obj.transform.parent = _root;
+            obj.transform.parent = root;
         }
 
         /// <summary>
@@ -379,13 +367,6 @@ namespace XMLib.ObjectPool
         {
             //删除所有对象
             Clear();
-
-            _isInit = false;
-            if (null != _root)
-            {//删除根节点
-                GameObject.Destroy(_root);
-                _root = null;
-            }
         }
     }
 }

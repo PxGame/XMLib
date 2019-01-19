@@ -50,7 +50,7 @@ namespace XMLib
         /// <summary>
         /// 应用实例
         /// </summary>
-        protected IApplication Application { get { return _application; } }
+        protected IApplication application { get { return _application; } }
 
         /// <summary>
         /// 入口引导
@@ -69,14 +69,14 @@ namespace XMLib
             App.On(ApplicationEvents.OnTerminate, OnTerminate);
             App.On(ApplicationEvents.OnTerminated, OnTerminated);
 
-            //从设置加载服务
-            LoadProviderFromSetting();
+            //处理设置
+            ProcessSettings();
         }
 
         /// <summary>
         /// 加载服务通过设置
         /// </summary>
-        private void LoadProviderFromSetting()
+        private void ProcessSettings()
         {
             foreach (IServiceSetting setting in _setting)
             {

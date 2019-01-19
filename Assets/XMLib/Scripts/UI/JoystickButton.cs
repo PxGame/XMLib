@@ -119,7 +119,7 @@ namespace XMLib.UI
 
             _self = (RectTransform)transform;
 
-            if (App.Handler != null)
+            if (App.handler != null)
             {
                 if (App.CanMake<IInputService>())
                 {

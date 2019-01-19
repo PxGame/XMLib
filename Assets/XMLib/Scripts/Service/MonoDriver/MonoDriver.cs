@@ -14,7 +14,7 @@ namespace XMLib.MonoDriver
 {
     public class MonoDriver : IMonoDriver
     {
-        private readonly MonoDriverSetting _setting;
+        //private readonly MonoDriverSetting _setting;
 
         #region Mono
 
@@ -44,7 +44,7 @@ namespace XMLib.MonoDriver
             Checker.NotNull(handler, "handler");
             Checker.NotNull(component, "component");
 
-            _setting = setting;
+            //_setting = setting;
 
             _updates = new SortList<IUpdate, int>();
             _lateUpdates = new SortList<ILateUpdate, int>();
@@ -86,7 +86,7 @@ namespace XMLib.MonoDriver
                 return;
             }
 
-            if (bindData.IsStatic)
+            if (bindData.isStatic)
             {//解决静态服务
                 Attach(instance);
             }
@@ -104,7 +104,7 @@ namespace XMLib.MonoDriver
                 return;
             }
 
-            if (bindData.IsStatic)
+            if (bindData.isStatic)
             {//解决静态服务
                 Detach(instance);
             }
@@ -175,7 +175,7 @@ namespace XMLib.MonoDriver
         {
             Checker.NotNull(action, "action");
 
-            if (_handler.IsMainThread)
+            if (_handler.isMainThread)
             {
                 StartCoroutine(action);
                 return;
@@ -198,7 +198,7 @@ namespace XMLib.MonoDriver
         {
             Checker.NotNull(action, "action");
 
-            if (_handler.IsMainThread)
+            if (_handler.isMainThread)
             {
                 action.Invoke();
                 return;
@@ -288,7 +288,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void Update()
         {
-            int count = _updates.Count;
+            int count = _updates.count;
             for (int i = 0; i < count; i++)
             {
                 _updates[i].Update();
@@ -308,7 +308,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void LateUpdate()
         {
-            int count = _lateUpdates.Count;
+            int count = _lateUpdates.count;
             for (int i = 0; i < count; i++)
             {
                 _lateUpdates[i].LateUpdate();
@@ -320,7 +320,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void FixedUpdate()
         {
-            int count = _fixedUpdates.Count;
+            int count = _fixedUpdates.count;
             for (int i = 0; i < count; i++)
             {
                 _fixedUpdates[i].FixedUpdate();
@@ -332,7 +332,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void OnGUI()
         {
-            int count = _onGUIs.Count;
+            int count = _onGUIs.count;
             for (int i = 0; i < count; i++)
             {
                 _onGUIs[i].OnGUI();
@@ -344,7 +344,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         public void OnDestroy()
         {
-            int count = _onDestroys.Count;
+            int count = _onDestroys.count;
             for (int i = 0; i < count; i++)
             {
                 _onDestroys[i].OnDestroy();

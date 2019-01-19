@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace XMLib.ObjectPool
 {
@@ -19,14 +20,14 @@ namespace XMLib.ObjectPool
         /// <summary>
         /// 服务设置
         /// </summary>
-        private ObjectPoolSetting _setting;
+        //private readonly ObjectPoolSetting _setting;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public ObjectPoolProvider()
         {
-            _setting = App.Make<ObjectPoolSetting>();
+            //_setting = App.Make<ObjectPoolSetting>();
         }
 
         /// <summary>
@@ -36,6 +37,13 @@ namespace XMLib.ObjectPool
         [Priority()]
         public void Init()
         {
+            GameObject obj = new GameObject("PoolRoot", typeof(PoolRoot));
+            PoolRoot poolRoot = obj.GetComponent<PoolRoot>();
+
+            //pool根单例
+            App.Instance<PoolRoot>(poolRoot);
+
+            //创建服务并初始化
             App.Make<IObjectPool>();
         }
 

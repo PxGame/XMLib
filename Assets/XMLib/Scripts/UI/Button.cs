@@ -78,8 +78,7 @@ namespace XMLib.UI
         protected override void Awake()
         {
             base.Awake();
-
-            if (App.Handler != null)
+            if (App.handler != null)
             {
                 if (App.CanMake<IInputService>())
                 {
