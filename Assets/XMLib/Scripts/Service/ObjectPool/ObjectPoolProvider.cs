@@ -38,6 +38,8 @@ namespace XMLib.ObjectPool
         public void Init()
         {
             GameObject obj = new GameObject("PoolRoot", typeof(PoolRoot));
+            obj.layer = LayerMask.NameToLayer("Ignore Raycast");
+            GameObject.DontDestroyOnLoad(obj);
             PoolRoot poolRoot = obj.GetComponent<PoolRoot>();
 
             //pool根单例
