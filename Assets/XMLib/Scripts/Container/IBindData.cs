@@ -48,23 +48,23 @@ namespace XMLib
         /// <summary>
         /// 解决服务时触发的回调
         /// </summary>
-        /// <param name="closure">解决事件</param>
+        /// <param name="callback">解决事件</param>
         /// <returns>服务绑定数据</returns>
-        IBindData OnResolving(Action<IBindData, object> closure);
+        IBindData OnResolving(Action<IBindData, object> callback);
 
         /// <summary>
         /// 解决服务时事件之后的回调
         /// </summary>
-        /// <param name="closure">解决事件</param>
+        /// <param name="callback">解决事件</param>
         /// <returns>服务绑定数据</returns>
-        IBindData OnAfterResolving(Action<IBindData, object> closure);
+        IBindData OnAfterResolving(Action<IBindData, object> callback);
 
         /// <summary>
         /// 当服务被释放时
         /// </summary>
-        /// <param name="closure">处理事件</param>
+        /// <param name="callback">处理事件</param>
         /// <returns>服务绑定数据</returns>
-        IBindData OnRelease(Action<IBindData, object> closure);
+        IBindData OnRelease(Action<IBindData, object> callback);
 
         /// <summary>
         /// 移除绑定

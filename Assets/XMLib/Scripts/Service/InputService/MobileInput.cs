@@ -62,7 +62,7 @@ namespace XMLib.InputService
             }
 
             float value = _axisDict[name].value;
-            return Mathf.Abs(value) >= Mathf.Abs(_deadZoom) ? Mathf.Sign(value) : 0;
+            return Mathf.Abs(value) > Mathf.Abs(_deadZoom) ? Mathf.Sign(value) : 0;
         }
 
         /// <summary>

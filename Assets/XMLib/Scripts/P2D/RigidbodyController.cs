@@ -67,6 +67,13 @@ namespace XMLib.P2D
         /// </summary>
         private Vector2 _velocity;
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            _velocity = Vector2.zero;
+        }
+
         protected void FixedUpdate()
         {
             //更新参数

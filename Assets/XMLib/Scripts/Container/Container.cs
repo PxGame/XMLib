@@ -391,15 +391,15 @@ namespace XMLib
         /// <summary>
         /// 添加事件到列表
         /// </summary>
-        /// <param name="closure">事件对象</param>
+        /// <param name="action">事件对象</param>
         /// <param name="list">事件列表</param>
-        private void AddEvent(Action<IBindData, object> closure, List<Action<IBindData, object>> list)
+        private void AddEvent(Action<IBindData, object> action, List<Action<IBindData, object>> list)
         {
-            Checker.NotNull(closure, "closure");
+            Checker.NotNull(action, "closure");
 
             lock (_syncRoot)
             {
-                list.Add(closure);
+                list.Add(action);
             }
         }
 
@@ -419,13 +419,13 @@ namespace XMLib
 
             int length = list.Count;
 
-            Action<IBindData, object> evt = null;
+            Action<IBindData, object> callback = null;
 
             for (int i = 0; i < length; i++)
             {
-                evt = list[i];
+                callback = list[i];
 
-                evt(bindData, instance);
+                callback(bindData, instance);
 
                 /*
                 if (null != evt)
@@ -1254,33 +1254,33 @@ namespace XMLib
         /// <summary>
         /// 解决服务时事件之后的回调
         /// </summary>
-        /// <param name="closure">解决事件</param>
+        /// <param name="callback">解决事件</param>
         /// <returns>服务绑定数据</returns>
-        public IContainer OnAfterResolving(Action<IBindData, object> closure)
+        public IContainer OnAfterResolving(Action<IBindData, object> callback)
         {
-            AddEvent(closure, _afterResolving);
+            AddEvent(callback, _afterResolving);
             return this;
         }
 
         /// <summary>
         /// 当静态服务被释放时
         /// </summary>
-        /// <param name="closure">处理释放时的回调</param>
+        /// <param name="callback">处理释放时的回调</param>
         /// <returns>当前容器实例</returns>
-        public IContainer OnRelease(Action<IBindData, object> closure)
+        public IContainer OnRelease(Action<IBindData, object> callback)
         {
-            AddEvent(closure, _release);
+            AddEvent(callback, _release);
             return this;
         }
 
         /// <summary>
         /// 当服务被解决时，生成的服务会经过注册的回调函数
         /// </summary>
-        /// <param name="closure">回调函数</param>
+        /// <param name="callback">回调函数</param>
         /// <returns>当前容器对象</returns>
-        public IContainer OnResolving(Action<IBindData, object> closure)
+        public IContainer OnResolving(Action<IBindData, object> callback)
         {
-            AddEvent(closure, _resolving);
+            AddEvent(callback, _resolving);
             return this;
         }
 

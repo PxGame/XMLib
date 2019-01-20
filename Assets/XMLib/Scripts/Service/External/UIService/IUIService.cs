@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using XMLib.UIService;
 
 namespace XMLib
 {
@@ -17,20 +18,22 @@ namespace XMLib
     public interface IUIService
     {
         /// <summary>
-        /// 显示
+        /// 显示面板
         /// </summary>
-        /// <param name="layerName">层名</param>
+        /// <param name="layerName">显示层</param>
         /// <param name="panelName">面板名</param>
-        /// <param name="inStack">是否放入堆栈</param>
+        /// <param name="inStack">是否在堆栈</param>
+        /// <param name="callback">回调</param>
         /// <param name="args">参数</param>
         /// <returns>绑定数据</returns>
-        IUIPanelBindData Show(string layerName, string panelName, bool inStack, params object[] args);
+        IUIPanelBindData Show(string layerName, string panelName, bool inStack, Action<UIOperationStatus, IUIPanelBindData> callback, params object[] args);
 
         /// <summary>
-        /// 隐藏指定面板
+        /// 隐藏面板
         /// </summary>
-        /// <param name="paneId"></param>
-        /// <returns></returns>
-        bool Hide(Guid paneId);
+        /// <param name="bindData">绑定数据</param>
+        /// <param name="callback">回调</param>
+        /// <returns>是否成功</returns>
+        bool Hide(IUIPanelBindData bindData, Action<UIOperationStatus, IUIPanelBindData> callback);
     }
 }

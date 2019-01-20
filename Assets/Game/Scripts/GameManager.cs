@@ -40,5 +40,32 @@ public class GameManager : Framework
             bool b = App.Make<IObjectPool>().Push("", "", obj);
             Debug.Log("Push > " + b);
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            bindData = App.Make<IUIService>().Show("Input", "InputPanel", false, (status, bindData) =>
+            {
+                Debug.LogFormat("[{1}]{0}:Frame={2}", status, bindData, Time.frameCount);
+            });
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            App.Make<IUIService>().Hide(bindData, (status, bindData) =>
+            {
+                Debug.LogFormat("[{1}]{0}:Frame={2}", status, bindData, Time.frameCount);
+            });
+        }
+    }
+
+    private IUIPanelBindData bindData;
+
+    protected override void OnStartCompleted()
+    {
+        base.OnStartCompleted();
+
+        bindData = App.Make<IUIService>().Show("Input", "InputPanel", false, (status, bindData) =>
+        {
+            Debug.LogFormat("[{1}]{0}:Frame={2}", status, bindData, Time.frameCount);
+        });
     }
 }

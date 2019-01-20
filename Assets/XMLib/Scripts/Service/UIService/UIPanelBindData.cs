@@ -37,6 +37,11 @@ namespace XMLib.UIService
         public bool inStack { get; protected set; }
 
         /// <summary>
+        /// 显示名字
+        /// </summary>
+        public string DisplayName { get { return string.Format("{0} <{1}>", panelName, id); } }
+
+        /// <summary>
         /// 服务句柄
         /// </summary>
         protected readonly UIService uiService;
@@ -62,5 +67,10 @@ namespace XMLib.UIService
         /// 资源路径
         /// </summary>
         public string path { get { return uiService.setting.GetPanelPath(panelName); } }
+
+        public override string ToString()
+        {
+            return string.Format("[{0} - {1}](inStack={2}, id={3})", layerName, panelName, inStack, id);
+        }
     }
 }

@@ -174,11 +174,11 @@ namespace XMLib
         /// <summary>
         /// 添加事件到列表
         /// </summary>
-        /// <param name="closure">事件对象</param>
+        /// <param name="action">事件对象</param>
         /// <param name="list">事件列表</param>
-        private void AddEvent(Action<IBindData, object> closure, ref List<Action<IBindData, object>> list)
+        private void AddEvent(Action<IBindData, object> action, ref List<Action<IBindData, object>> list)
         {
-            Checker.NotNull(closure, "closure");
+            Checker.NotNull(action, "closure");
 
             lock (_syncRoot)
             {
@@ -189,7 +189,7 @@ namespace XMLib
                     list = new List<Action<IBindData, object>>();
                 }
 
-                list.Add(closure);
+                list.Add(action);
             }
         }
 
