@@ -5,9 +5,9 @@
  * 创建时间: 1/18/2019 4:52:45 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 namespace XMLib.UIService
 {
@@ -52,8 +52,8 @@ namespace XMLib.UIService
         /// <param name="service">服务实例</param>
         /// <param name="layerName">层名字</param>
         /// <param name="panelName">面板名字</param>
-        /// <param name="isStack">是否在堆栈中</param>
-        public UIPanelBindData(UIService service, string layerName, string panelName, bool isStack)
+        /// <param name="inStack">是否在堆栈中</param>
+        public UIPanelBindData(UIService service, string layerName, string panelName, bool inStack)
         {
             uiService = service;
             id = Guid.NewGuid();

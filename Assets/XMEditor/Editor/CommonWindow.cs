@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace XMLib.Editor
+namespace XMEditor
 {
     /// <summary>
     /// 公共工具
@@ -29,7 +29,7 @@ namespace XMLib.Editor
         public class Settings
         {
             public string assetGUID = "";
-            internal string shaderName;
+            public string shaderName;
 
             public string prefsKey = "";
             public string prefsValue = "";
@@ -121,7 +121,7 @@ namespace XMLib.Editor
         }
 
         private void FindRefView()
-        {//Selection
+        { //Selection
             GUILayout.BeginVertical(GUI.skin.box);
 
             _setting.assetGUID = EditorGUILayout.TextField("资源GUID", _setting.assetGUID);
@@ -142,7 +142,7 @@ namespace XMLib.Editor
                 int startIndex = 0;
                 int maxIndex = guids.Length;
                 string targetShaderName = _setting.shaderName;
-                EditorApplication.update = delegate ()
+                EditorApplication.update = delegate()
                 {
                     try
                     {
@@ -152,7 +152,7 @@ namespace XMLib.Editor
                         }
 
                         string guid = guids[startIndex];
-                        bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中:" + targetShaderName, guid, (startIndex + 1) / (float)maxIndex);
+                        bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中:" + targetShaderName, guid, (startIndex + 1) / (float) maxIndex);
                         if (isCancel)
                         {
                             throw null;

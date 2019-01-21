@@ -11,7 +11,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
-namespace XMLib.Editor
+namespace XMEditor
 {
     /// <summary>
     /// 打开资源方式

@@ -136,8 +136,8 @@ namespace XMLib.UIService
         /// <returns>是否成功</returns>
         private bool HideNotStack(IUIPanelBindData bindData, Action<UIOperationStatus, IUIPanelBindData> callback)
         {
-            UIPanel uiPanel = null;
-            _panelDict.TryGetValue(bindData.id, out uiPanel);
+            //面板实例
+            UIPanel uiPanel = _panelDict[bindData.id];
 
             //移除
             _panelDict.Remove(bindData.id);
@@ -172,8 +172,8 @@ namespace XMLib.UIService
         /// <returns>是否成功</returns>
         private bool HideInStack(IUIPanelBindData bindData, Action<UIOperationStatus, IUIPanelBindData> callback)
         {
-            UIPanel uiPanel = null;
-            _panelDict.TryGetValue(bindData.id, out uiPanel);
+            //面板实例
+            UIPanel uiPanel = _panelDict[bindData.id];
 
             //获取在堆栈中的序号
             int index = _panelStack.FindIndex((t) => t == bindData.id);
@@ -185,11 +185,62 @@ namespace XMLib.UIService
             _panelStack.Remove(bindData.id);
             _panelBindDict.Remove(bindData.id);
 
-            if (isTop)
-            {//为顶层窗口
+            if (isTop && 0 < _panelStack.Count)
+            { //为顶层窗口,且堆栈中还有窗口
+                //顶层面板GUID
+                Guid topGuid = _panelStack[_panelStack.Count - 1];
+                //顶层面板实例
+                UIPanel topPanel = _panelDict[topGuid];
+                //顶层面板绑定数据
+                UIPanelBindData topBindData = _panelBindDict[topGuid];
+
+                //面板预离开
+                uiPanel.OnPreLeave();
+                if (null != callback) { callback(UIOperationStatus.PreLeave, bindData); }
+
+                //顶层面板预唤醒
+                topPanel.OnPreResume();
+                if (null != callback) { callback(UIOperationStatus.PreResume, topBindData); }
+
+                //面板离开
+                uiPanel.OnLeave(() =>
+                {
+                    if (null != callback) { callback(UIOperationStatus.Leave, bindData); }
+
+                    ///顶层面板唤醒
+                    topPanel.OnResume(() =>
+                    {
+                        if (null != callback) { callback(UIOperationStatus.Resume, topBindData); }
+
+                        //面板离开后
+                        uiPanel.OnLateLeave();
+                        if (null != callback) { callback(UIOperationStatus.LateLeave, bindData); }
+
+                        //顶层面板唤醒后
+                        topPanel.OnLateResume();
+                        if (null != callback) { callback(UIOperationStatus.LateResume, topBindData); }
+
+                        //销毁面板
+                        DestroyPanel(bindData, uiPanel);
+
+                    });
+                });
+
             }
             else
-            {
+            { //非顶层窗口,或堆栈中仅此一个面板 
+                //面板预离开
+                uiPanel.OnPreLeave();
+
+                //面板离开
+                uiPanel.OnLeave(() =>
+                {
+                    //面板离开后
+                    uiPanel.OnLateLeave();
+
+                    //销毁面板
+                    DestroyPanel(bindData, uiPanel);
+                });
             }
 
             return true;
@@ -240,7 +291,7 @@ namespace XMLib.UIService
             UIPanel uiPanel = CreatePanel(bindData, args);
 
             if (0 < _panelStack.Count)
-            {//存在顶层窗口
+            { //存在顶层窗口
                 //获取顶层窗口数据
                 Guid guid = _panelStack[_panelStack.Count - 1];
                 UIPanelBindData topBindData = _panelBindDict[guid];
@@ -281,7 +332,7 @@ namespace XMLib.UIService
                 });
             }
             else
-            {//没有顶层窗口
+            { //没有顶层窗口
                 //处理id
                 _panelBindDict.Add(bindData.id, bindData);
                 _panelDict.Add(bindData.id, uiPanel);
@@ -329,9 +380,9 @@ namespace XMLib.UIService
 
             obj.name = bindData.DisplayName;
 
-            RectTransform rectTransform = (RectTransform)obj.transform;
+            RectTransform rectTransform = (RectTransform) obj.transform;
             rectTransform.SetParent(_uiRoot.Get(bindData.layerName), false);
-            rectTransform.SetAsLastSibling();//移到末尾
+            rectTransform.SetAsLastSibling(); //移到末尾
 
             UIPanel uiPanel = obj.GetComponent<UIPanel>();
 

@@ -15,6 +15,9 @@ using Debug = UnityEngine.Debug;
 
 namespace XMLib.Test.#FOLDERNAME#Test
 {
+    /// <summary>
+    /// #SCRIPTNAME#
+    /// </summary>
     public class #SCRIPTNAME#
     {
         [Test]

@@ -10,7 +10,7 @@
 //using UnityEditor;
 //using UnityEngine;
 
-//namespace XMLib.Editor
+//namespace XMEditor
 //{
 //    [CustomEditor(typeof(FrameworkSetting))]
 //    public class FrameworkSettingEditor : UnityEditor.Editor

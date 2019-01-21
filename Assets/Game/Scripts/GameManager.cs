@@ -43,7 +43,7 @@ public class GameManager : Framework
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            bindData = App.Make<IUIService>().Show("Input", "InputPanel", false, (status, bindData) =>
+            bindData = App.Make<IUIService>().Show("Input", "InputPanel", true, (status, bindData) =>
             {
                 Debug.LogFormat("[{1}]{0}:Frame={2}", status, bindData, Time.frameCount);
             });
@@ -63,7 +63,7 @@ public class GameManager : Framework
     {
         base.OnStartCompleted();
 
-        bindData = App.Make<IUIService>().Show("Input", "InputPanel", false, (status, bindData) =>
+        bindData = App.Make<IUIService>().Show("Input", "InputPanel", true, (status, bindData) =>
         {
             Debug.LogFormat("[{1}]{0}:Frame={2}", status, bindData, Time.frameCount);
         });
