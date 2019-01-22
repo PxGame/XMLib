@@ -38,9 +38,15 @@ namespace XMLib.UIService
         private readonly Dictionary<Guid, UIPanelBindData> _panelBindDict;
 
         /// <summary>
+        /// 反向查找面板实例字典
+        /// </summary>
+        private readonly Dictionary<UIPanel, Guid> _panelRevertDict;
+
+        /// <summary>
         /// 面板实例字典
         /// </summary>
         private readonly Dictionary<Guid, UIPanel> _panelDict;
+
 
         /// <summary>
         /// 堆栈面板
@@ -63,6 +69,7 @@ namespace XMLib.UIService
 
             //初始化对象
             _panelDict = new Dictionary<Guid, UIPanel>();
+            _panelRevertDict = new Dictionary<UIPanel, Guid>();
             _panelBindDict = new Dictionary<Guid, UIPanelBindData>();
             _panelStack = new List<Guid>();
             _panelList = new List<Guid>();
@@ -124,6 +131,58 @@ namespace XMLib.UIService
             return bRet;
         }
 
+
+        /// <summary>
+        /// 获取绑定数据
+        /// </summary>
+        /// <param name="id">面板id</param>
+        /// <returns>绑定数据</returns>
+        public IUIPanelBindData GetBind(Guid id)
+        {
+            UIPanelBindData bindData = null;
+            if (!_panelBindDict.TryGetValue(id, out bindData))
+            {
+                return null;
+            }
+
+            return bindData;
+        }
+
+
+        /// <summary>
+        /// 获取面板实例
+        /// </summary>
+        /// <param name="id">面板id</param>
+        /// <returns>面板实例</returns>
+        public UIPanel GetPanel(Guid id)
+        {
+            UIPanel uiPanel = null;
+
+            if(!_panelDict.TryGetValue(id, out uiPanel))
+            {
+                return null;
+            }
+            return uiPanel;
+        }
+
+        /// <summary>
+        /// 获取面板id
+        /// <para>未找到返回  <see cref="Guid.Empty"/> </para>
+        /// </summary>
+        /// <param name="uiPanel">面板实例</param>
+        /// <returns>面板id，未找到返回 Guid.Empty </returns>
+        public Guid GetID(UIPanel uiPanel)
+        {
+            Guid guid;
+            if(!_panelRevertDict.TryGetValue(uiPanel, out guid))
+            {
+                return Guid.Empty;
+            }
+
+            return guid;
+        }
+
+
         #endregion IUIService
 
         #region Panel
@@ -141,6 +200,7 @@ namespace XMLib.UIService
 
             //移除
             _panelDict.Remove(bindData.id);
+            _panelRevertDict.Remove(uiPanel);
             _panelList.Remove(bindData.id);
             _panelBindDict.Remove(bindData.id);
 
@@ -182,6 +242,7 @@ namespace XMLib.UIService
 
             //处理id
             _panelDict.Remove(bindData.id);
+            _panelRevertDict.Remove(uiPanel);
             _panelStack.Remove(bindData.id);
             _panelBindDict.Remove(bindData.id);
 
@@ -260,6 +321,7 @@ namespace XMLib.UIService
 
             //处理id
             _panelBindDict.Add(bindData.id, bindData);
+            _panelRevertDict.Add(uiPanel, bindData.id);
             _panelDict.Add(bindData.id, uiPanel);
             _panelList.Add(bindData.id);
 
@@ -300,6 +362,7 @@ namespace XMLib.UIService
                 //处理id
                 _panelBindDict.Add(bindData.id, bindData);
                 _panelDict.Add(bindData.id, uiPanel);
+                _panelRevertDict.Add(uiPanel, bindData.id);
                 _panelStack.Add(bindData.id);
                 //
 
@@ -336,6 +399,7 @@ namespace XMLib.UIService
                 //处理id
                 _panelBindDict.Add(bindData.id, bindData);
                 _panelDict.Add(bindData.id, uiPanel);
+                _panelRevertDict.Add(uiPanel, bindData.id);
                 _panelStack.Add(bindData.id);
 
                 //预进入

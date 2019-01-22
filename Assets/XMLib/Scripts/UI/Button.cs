@@ -20,7 +20,7 @@ namespace XMLib.UI
     /// <summary>
     /// 按钮
     /// </summary>
-    [AddComponentMenu("XM Tool/UI/Button")]
+    [AddComponentMenu("XMLib/UI/Button")]
     public class Button : Selectable, IPointerClickHandler, ISubmitHandler
     {
         #region Event

@@ -20,7 +20,7 @@ namespace XMLib.UI
     /// <summary>
     /// 摇杆按钮
     /// </summary>
-    [AddComponentMenu("XM Tool/UI/Joystick Button")]
+    [AddComponentMenu("XMLib/UI/Joystick Button")]
     public class JoystickButton : Selectable, IPointerClickHandler, ISubmitHandler, IDragHandler
     {
         #region Event

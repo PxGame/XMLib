@@ -35,5 +35,26 @@ namespace XMLib
         /// <param name="callback">回调</param>
         /// <returns>是否成功</returns>
         bool Hide(IUIPanelBindData bindData, Action<UIOperationStatus, IUIPanelBindData> callback);
+
+        /// <summary>
+        /// 获取绑定数据
+        /// </summary>
+        /// <param name="id">面板id</param>
+        /// <returns>绑定数据</returns>
+        IUIPanelBindData GetBind(Guid id);
+
+        /// <summary>
+        /// 获取面板实例
+        /// </summary>
+        /// <param name="id">面板id</param>
+        /// <returns>面板实例</returns>
+        UIPanel GetPanel(Guid id);
+
+        /// <summary>
+        /// 获取面板id
+        /// </summary>
+        /// <param name="uiPanel">面板实例</param>
+        /// <returns>面板id</returns>
+        Guid GetID(UIPanel uiPanel);
     }
 }

@@ -17,7 +17,7 @@ namespace XMEditor
     /// </summary>
     public class CommonWindow : EditorWindow
     {
-        [MenuItem("XM Tool/Common Tool")]
+        [MenuItem("XMLib/公共工具")]
         public static void DisplayWindow()
         {
             var win = GetWindow<CommonWindow>();

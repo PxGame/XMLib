@@ -15,7 +15,7 @@ namespace XMLib
     /// <summary>
     /// 应用设置
     /// </summary>
-    [CreateAssetMenu(menuName = "XMLib/Framework Setting", fileName = "FrameworkSetting")]
+    [CreateAssetMenu(menuName = "XMLib/框架配置文件", fileName = "FrameworkSetting")]
     [Serializable]
     public class FrameworkSetting : ScriptableObject, IEnumerable
     {
