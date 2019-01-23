@@ -39,31 +39,32 @@ namespace XMEditor
         /// </summary>
         public string NewLayerName;
 
-        public GameObject T0;
+        public List<GameObject> T0;
 
-        public GameObject T1;
-        public GameObject T2;
-        public GameObject T3;
-        public GameObject T4;
-        public GameObject T5;
-        public GameObject T6;
-        public GameObject T7;
-        public GameObject T8;
-        public GameObject T9;
+        public List<GameObject> T1;
+        public List<GameObject> T2;
+        public List<GameObject> T3;
+        public List<GameObject> T4;
+        public List<GameObject> T5;
+        public List<GameObject> T6;
+        public List<GameObject> T7;
+        public List<GameObject> T8;
+        public List<GameObject> T9;
 
 
-        public GameObject T28;
-        public GameObject T46;
-        public GameObject T248;
-        public GameObject T268;
-        public GameObject T246;
-        public GameObject T468;
-
+        public List<GameObject> T28;
+        public List<GameObject> T46;
+        public List<GameObject> T248;
+        public List<GameObject> T268;
+        public List<GameObject> T246;
+        public List<GameObject> T468;
 
         public GameObject Get(string fieldName)
         {
             FieldInfo info = GetType().GetField(fieldName);
-            return (GameObject)info.GetValue(this);
+            List<GameObject> objs = (List<GameObject>)info.GetValue(this);
+            GameObject obj = objs[Random.Range(0, objs.Count - 1)];//随机一个
+            return obj;
         }
     }
 }

@@ -13,6 +13,12 @@ public class PlayerController : MonoBehaviour
     private IInputService _input;
 
     [SerializeField]
+    private Animator _animator;
+
+    [SerializeField]
+    private Transform _body;
+
+    [SerializeField]
     private float _speed = 3f;
 
     [SerializeField]
@@ -78,5 +84,14 @@ public class PlayerController : MonoBehaviour
         }
 
         _controller.velocity = _velocity;
+
+
+        //动画
+        _animator.SetBool("isRun", _controller.velocity.x != 0);
+        _animator.SetBool("isGround", _controller.velocity.y == 0);
+        _animator.SetBool("isJump", _controller.velocity.y > 0);
+
+        float rotateY = _controller.velocity.x >= 0 ? 1 : 180;
+        _body.transform.localRotation = Quaternion.Euler(0, rotateY, 0);
     }
 }

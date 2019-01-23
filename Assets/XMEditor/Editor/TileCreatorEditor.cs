@@ -362,68 +362,68 @@ namespace XMEditor
             switch (posType)
             {
                 case PosType.Right | PosType.Down:
-                    obj = tileRes.T1;
                     objName = "T1";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Right | PosType.Down | PosType.Left:
-                    obj = tileRes.T2;
                     objName = "T2";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Down | PosType.Left:
-                    obj = tileRes.T3;
                     objName = "T3";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Right | PosType.Down:
-                    obj = tileRes.T4;
                     objName = "T4";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Right | PosType.Down | PosType.Left:
-                    obj = tileRes.T5;
                     objName = "T5";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Down | PosType.Left:
-                    obj = tileRes.T6;
                     objName = "T6";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Right:
-                    obj = tileRes.T7;
                     objName = "T7";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Right | PosType.Left:
-                    obj = tileRes.T8;
                     objName = "T8";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Left:
-                    obj = tileRes.T9;
                     objName = "T9";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Right:
-                    obj = tileRes.T248;
                     objName = "T248";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Left:
-                    obj = tileRes.T268;
                     objName = "T268";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Right | PosType.Left:
-                    obj = tileRes.T28;
                     objName = "T28";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up | PosType.Down:
-                    obj = tileRes.T46;
                     objName = "T46";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.None:
-                    obj = tileRes.T0;
                     objName = "T0";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Down:
-                    obj = tileRes.T246;
                     objName = "T246";
+                    obj = tileRes.Get(objName);
                     break;
                 case PosType.Up:
-                    obj = tileRes.T468;
                     objName = "T468";
+                    obj = tileRes.Get(objName);
                     break;
                 default:
                     throw new Exception(string.Format("没有找到该类型的预制=>{0:X}", posType));
