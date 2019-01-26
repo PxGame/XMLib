@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _velocity;
     private bool _stJumpDown;
     private bool _stJumpUp;
+    private bool _isRight = true;
 
     private void Update()
     {
@@ -91,7 +92,18 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool("isGround", _controller.velocity.y == 0);
         _animator.SetBool("isJump", _controller.velocity.y > 0);
 
-        float rotateY = _controller.velocity.x >= 0 ? 1 : 180;
+        float rotateY = 0;
+        if((!_isRight && _controller.velocity.x == 0)
+            || _controller.velocity.x < 0)
+        {
+            rotateY = 180;
+            _isRight = false;
+        }
+        else
+        {
+            _isRight = true;
+        }
+
         _body.transform.localRotation = Quaternion.Euler(0, rotateY, 0);
     }
 }

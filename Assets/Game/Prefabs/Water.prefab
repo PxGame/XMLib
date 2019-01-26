@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4471912948057990}
   - component: {fileID: 212164392142060268}
-  - component: {fileID: 95528236331112460}
   - component: {fileID: 61869348947512256}
+  - component: {fileID: 114321876131031866}
   m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
@@ -54,7 +54,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.07745063}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -65,25 +65,39 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.84509873}
   m_EdgeRadius: 0
---- !u!95 &95528236331112460
-Animator:
-  serializedVersion: 3
+--- !u!114 &114321876131031866
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1928474078296420}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2d2a733705e8a5e46b2e1de9a19278fe, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9532099f9289094b9b0745fd9432957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 212164392142060268}
+  _sprites:
+  - {fileID: 21300000, guid: 12da70bd0d8ade047b5a4ec95da31493, type: 3}
+  - {fileID: 21300000, guid: fdfa0a93bdd23a443be5ae2f36eb64ae, type: 3}
+  - {fileID: 21300000, guid: 767d2f786b4f26242b35b25b2361b786, type: 3}
+  - {fileID: 21300000, guid: f9c733fbef183914b8bc167cd88b1dbd, type: 3}
+  - {fileID: 21300000, guid: 6fc77f2c84da92f4faaf6aa5827e0237, type: 3}
+  - {fileID: 21300000, guid: d386bd0af3b04ec4a8794ad613aecfc5, type: 3}
+  - {fileID: 21300000, guid: 3ce3aadd73b6551469d3928754ab70bb, type: 3}
+  - {fileID: 21300000, guid: 2a101ff642fdf2c45ba40f0402870735, type: 3}
+  - {fileID: 21300000, guid: d3e5f926b9255dd468f27e503995634b, type: 3}
+  - {fileID: 21300000, guid: c35d1a21db38bc3448d10ea5d2e50073, type: 3}
+  - {fileID: 21300000, guid: 48c8938669bb47b4a902854a0ddd8d02, type: 3}
+  - {fileID: 21300000, guid: 19dfe4e6e3380cf41b4d748038c80433, type: 3}
+  - {fileID: 21300000, guid: 5704d1beadc990e49a972999b8375c9b, type: 3}
+  - {fileID: 21300000, guid: 367011f2e35fde64095a1106c1219eda, type: 3}
+  - {fileID: 21300000, guid: 9db5c5c108efb6c4ca2d71292b1d3ca6, type: 3}
+  - {fileID: 21300000, guid: 5be329bc742399b4ca9a5f558a0472b5, type: 3}
+  - {fileID: 21300000, guid: 80f0e83b000ebcf4a9494412fa137ef9, type: 3}
+  _interval: 0.05
 --- !u!212 &212164392142060268
 SpriteRenderer:
   m_ObjectHideFlags: 1

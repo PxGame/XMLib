@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 95341183536815552}
   _body: {fileID: 4455462519407904}
-  _speed: 10
+  _speed: 4
   _jumpHeightRange: {x: 1, y: 3}
 --- !u!114 &114853611141208012
 MonoBehaviour:
@@ -161,7 +161,7 @@ MonoBehaviour:
       minNormalAngle: 0
       maxNormalAngle: 0
   _rigidbodySetting:
-    gravityScale: 10
+    gravityScale: 3
 --- !u!212 &212247145880549498
 SpriteRenderer:
   m_ObjectHideFlags: 1
