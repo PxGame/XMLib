@@ -74,31 +74,36 @@ namespace XMLib.P2D
             _velocity = Vector2.zero;
         }
 
-        protected void FixedUpdate()
+        private void Update()
+        {
+            UpdateRigidBody(Time.deltaTime);
+        }
+
+        protected void UpdateRigidBody(float deltaTime)
         {
             //更新参数
             UpdateRaycastParameter();
 
             //添加重力
-            _velocity.y += gravity * Time.fixedDeltaTime;
+            _velocity.y += gravity * deltaTime;
 
             //计算当前帧移动的距离
-            Vector2 frameMove = _velocity * Time.fixedDeltaTime;
+            Vector2 frameMove = _velocity * deltaTime;
 
             //检测
             _isHorizontalHitted = RaycastHorizontalNear(frameMove.x, ref _horizontalNearHit);
             _isVerticalHitted = RaycastVerticalNear(frameMove.y, ref _verticalNearHit);
 
             if (_isHorizontalHitted)
-            {//横向运动撞到物体
-                _velocity.x = 0;//速度归零
-                frameMove.x = (_horizontalNearHit.distance - _raycastSetting.skinWidth) * Mathf.Sign(frameMove.x);//校验碰撞时的移动，使之贴靠碰撞物体
+            { //横向运动撞到物体
+                _velocity.x = 0; //速度归零
+                frameMove.x = (_horizontalNearHit.distance - _raycastSetting.skinWidth) * Mathf.Sign(frameMove.x); //校验碰撞时的移动，使之贴靠碰撞物体
             }
 
             if (_isVerticalHitted)
-            {//纵向运动撞到物体
-                _velocity.y = 0;//速度归零
-                frameMove.y = (_verticalNearHit.distance - _raycastSetting.skinWidth) * Mathf.Sign(frameMove.y);//校验碰撞时的移动，使之贴靠碰撞物体
+            { //纵向运动撞到物体
+                _velocity.y = 0; //速度归零
+                frameMove.y = (_verticalNearHit.distance - _raycastSetting.skinWidth) * Mathf.Sign(frameMove.y); //校验碰撞时的移动，使之贴靠碰撞物体
             }
 
             //移动物体
@@ -108,11 +113,11 @@ namespace XMLib.P2D
         protected virtual void OnDrawGizmos()
         {
             if (_isHorizontalHitted)
-            {//绘制碰撞点
+            { //绘制碰撞点
                 GizmosUtil.DrawCircle2D(_horizontalNearHit.point, 0.1f, Color.blue);
             }
             if (_isVerticalHitted)
-            {//绘制碰撞点
+            { //绘制碰撞点
                 GizmosUtil.DrawCircle2D(_verticalNearHit.point, 0.1f, Color.red);
             }
         }

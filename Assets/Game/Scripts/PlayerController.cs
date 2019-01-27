@@ -27,8 +27,17 @@ public class PlayerController : MonoBehaviour
     private RigidbodyController _controller;
     protected Vector2 _preJumpSpeedRange;
 
+    TargetController _target;
+
+    public RigidbodyController Rigidbody
+    {
+        get { return _controller; }
+    }
+
     private void Awake()
     {
+        App.Instance<PlayerController>(this);
+
         Debug.Log("Player Awake");
         //获取组件
         _controller = GetComponent<RigidbodyController>();
@@ -40,6 +49,17 @@ public class PlayerController : MonoBehaviour
 
         //获取输入服务
         _input = App.Make<IInputService>();
+    }
+
+    private void Start()
+    {
+
+        _target = App.Make<TargetController>();
+    }
+
+    private void OnDestroy()
+    {
+        App.Release<PlayerController>();
     }
 
     private bool _isPress = false;
@@ -66,7 +86,9 @@ public class PlayerController : MonoBehaviour
     {
         _velocity = _controller.velocity;
 
-        _velocity.x = _input.GetAxisRaw("Horizontal") * _speed;
+        _velocity.x = _target.currentSpeed;
+
+        //_velocity.x = _input.GetAxisRaw("Horizontal") * _speed;
         //_velocity.y = _input.GetAxis("Vertical") * _speed;
 
         if (_stJumpDown)
@@ -86,15 +108,14 @@ public class PlayerController : MonoBehaviour
 
         _controller.velocity = _velocity;
 
-
         //动画
         _animator.SetBool("isRun", _controller.velocity.x != 0);
         _animator.SetBool("isGround", _controller.velocity.y == 0);
         _animator.SetBool("isJump", _controller.velocity.y > 0);
 
         float rotateY = 0;
-        if((!_isRight && _controller.velocity.x == 0)
-            || _controller.velocity.x < 0)
+        if ((!_isRight && _controller.velocity.x == 0) ||
+            _controller.velocity.x < 0)
         {
             rotateY = 180;
             _isRight = false;
