@@ -14,7 +14,7 @@ using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 脚本创建事件

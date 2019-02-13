@@ -7,9 +7,8 @@
 
 using UnityEditor;
 using UnityEngine;
-using XMLib;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 枚举多选

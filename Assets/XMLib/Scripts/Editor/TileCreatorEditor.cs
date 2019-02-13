@@ -13,7 +13,8 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XMEditor
+
+namespace XMLib
 {
     /// <summary>
     /// 地图编辑器
@@ -237,7 +238,7 @@ namespace XMEditor
             GUILayout.Label("快捷键", GUILayout.Width(50));
             GUILayout.Label("名字");
             GUILayout.Label("数量", GUILayout.Width(50));
-            GUILayout.Space(100);
+            GUILayout.Space(220);
             GUILayout.EndHorizontal();
 
             for (int i = 0; i < length; i++)
@@ -249,6 +250,7 @@ namespace XMEditor
                 if (_data.selectTypeName == typeName)
                 {
                     GUILayout.BeginHorizontal(GUI.skin.GetStyle("SelectionRect"));
+                    GUILayout.Space(10);
                 }
                 else
                 {
@@ -291,6 +293,12 @@ namespace XMEditor
                     --i;
                     --length;
                 }
+
+                if (GUILayout.Button("查找", GUILayout.Width(50)))
+                {
+                    Selection.activeObject = tileRes;
+                }
+
                 GUILayout.EndHorizontal();
                 GUILayout.Space(4);
             }
@@ -728,7 +736,7 @@ namespace XMEditor
         {//中文输入发可能无法触发事件
             try
             {
-                Event evt = Event.current;
+                UnityEngine.Event evt = UnityEngine.Event.current;
                 _sceneView = sceneView;
                 _mousePosition = evt.mousePosition;
                 _camera = _sceneView.camera;

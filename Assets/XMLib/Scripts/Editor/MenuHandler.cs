@@ -12,7 +12,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 按钮集合

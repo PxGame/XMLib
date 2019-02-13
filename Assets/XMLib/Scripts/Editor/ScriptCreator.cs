@@ -12,7 +12,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 脚本创建者
@@ -24,7 +24,7 @@ namespace XMEditor
         /// </summary>
         public static void CreateLib()
         {
-            CreateFile("XMLib", "XMEditor/Template/XMLib.cs.txt");
+            CreateFile("XMLib", "XMLib/Template/XMLib.cs.txt");
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace XMEditor
         /// </summary>
         public static void CreateEditor()
         {
-            CreateFile("XMEditor", "XMEditor/Template/XMEditor.cs.txt");
+            CreateFile("XMEditor", "XMLib/Template/XMEditor.cs.txt");
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace XMEditor
         /// </summary>
         public static void CreateLibTest()
         {
-            CreateFile("XMLibTest", "XMEditor/Template/XMLib.Test.cs.txt");
+            CreateFile("XMLibTest", "XMLib/Template/XMLib.Test.cs.txt");
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace XMEditor
         /// </summary>
         public static void CreateLibTestRunner()
         {
-            CreateFile("XMLibTestRunner", "XMEditor/Template/XMLib.Test.TestRunner.cs.txt");
+            CreateFile("XMLibTestRunner", "XMLib/Template/XMLib.Test.TestRunner.cs.txt");
         }
 
         /// <summary>

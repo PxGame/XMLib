@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 地图资源设置

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace XMEditor
+namespace XMLib
 {
     /// <summary>
     /// 公共工具
