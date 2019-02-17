@@ -37,14 +37,7 @@ namespace XMLib
         /// <returns>资源对象</returns>
         private Object CreateFile(string filePath, string resourceFile)
         {
-            TextAsset text = (TextAsset) EditorGUIUtility.Load(resourceFile);
-            if (null == text)
-            {
-                Debug.LogErrorFormat("未找到模板代码文件：{0}", resourceFile);
-                return null;
-            }
-
-            string scriptStr = text.text;
+            string scriptStr = resourceFile;
 
             string className = Path.GetFileNameWithoutExtension(filePath).Replace(" ", "");
 

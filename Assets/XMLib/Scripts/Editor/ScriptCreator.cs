@@ -24,7 +24,7 @@ namespace XMLib
         /// </summary>
         public static void CreateLib()
         {
-            CreateFile("XMLib", "XMLib/Template/XMLib.cs.txt");
+            CreateFile("XMLib", XMLib_cs);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace XMLib
         /// </summary>
         public static void CreateEditor()
         {
-            CreateFile("XMEditor", "XMLib/Template/XMEditor.cs.txt");
+            CreateFile("XMEditor", XMEditor_cs);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace XMLib
         /// </summary>
         public static void CreateLibTest()
         {
-            CreateFile("XMLibTest", "XMLib/Template/XMLib.Test.cs.txt");
+            CreateFile("XMLibTest", XMLib_Test_cs);
         }
 
         /// <summary>
@@ -48,21 +48,21 @@ namespace XMLib
         /// </summary>
         public static void CreateLibTestRunner()
         {
-            CreateFile("XMLibTestRunner", "XMLib/Template/XMLib.Test.TestRunner.cs.txt");
+            CreateFile("XMLibTestRunner", XMLib_Test_TestRunner_cs);
         }
 
         /// <summary>
         /// 创建文件
         /// </summary>
         /// <param name="fileName">文件名</param>
-        /// <param name="templatePath">模板资源路径</param>
-        public static void CreateFile(string fileName, string templatePath)
+        /// <param name="templateClass">类模板</param>
+        public static void CreateFile(string fileName, string templateClass)
         {
             string filePath = CreatePath(fileName);
 
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
                 ScriptableObject.CreateInstance<ScriptCreatorAction>(),
-                filePath, null, templatePath
+                filePath, null, templateClass
             );
         }
 
@@ -103,5 +103,9 @@ namespace XMLib
             return filePath;
         }
 
+        public const string XMEditor_cs = "/*\n * 作者：#AUTHOR#\n * 联系方式：#CONTACT#\n * 文档: #DOC#\n * 创建时间: #CREATEDATE#\n */\n\nusing System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEditor;\n\nnamespace XMLib\n{\n    /// <summary>\n    /// #SCRIPTNAME#\n    /// </summary>\n    public class #SCRIPTNAME#\n    {\n    }\n}";
+        public const string XMLib_cs = "/*\n * 作者：#AUTHOR#\n * 联系方式：#CONTACT#\n * 文档: #DOC#\n * 创建时间: #CREATEDATE#\n */\n\nusing System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\n\nnamespace XMLib\n{\n    /// <summary>\n    /// #SCRIPTNAME#\n    /// </summary>\n    public class #SCRIPTNAME# \n    {\n    }\n}";
+        public const string XMLib_Test_cs = "/*\n * 作者：#AUTHOR#\n * 联系方式：#CONTACT#\n * 文档: #DOC#\n * 创建时间: #CREATEDATE#\n */\n\nusing System.Collections;\nusing System.Collections.Generic;\nusing System;\n\nnamespace XMLib.Test.#FOLDERNAME#Test\n{\n    /// <summary>\n    /// #SCRIPTNAME#\n    /// </summary>\n    public class #SCRIPTNAME#\n    {\n    }\n}";
+        public const string XMLib_Test_TestRunner_cs = "/*\n * 作者：#AUTHOR#\n * 联系方式：#CONTACT#\n * 文档: #DOC#\n * 创建时间: #CREATEDATE#\n */\n\nusing System.Collections;\nusing System.Collections.Generic;\nusing System;\nusing UnityEngine.TestTools;\nusing NUnit.Framework;\nusing System.Diagnostics;\nusing Debug = UnityEngine.Debug;\n\nnamespace XMLib.Test.#FOLDERNAME#Test\n{\n    /// <summary>\n    /// #SCRIPTNAME#\n    /// </summary>\n    public class #SCRIPTNAME#\n    {\n        [Test]\n        public void Run()\n        {\n        }\n\n        [UnityTest]\n        public IEnumerator RunSync()\n        {\n            yield break;\n        }\n    }\n}";
     }
 }
