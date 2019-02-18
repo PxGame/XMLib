@@ -15,8 +15,6 @@ public class BackgroundManager : MonoBehaviour
     private float[] _offsets;
 
     PlayerController _player;
-    TargetController _target;
-
     private void Awake()
     {
         _offsets = new float[_backgrounds.Count];
@@ -25,18 +23,19 @@ public class BackgroundManager : MonoBehaviour
     private void Start()
     {
         _player = App.Make<PlayerController>();
-        _target = App.Make<TargetController>();
     }
 
     private void Update()
     {
-        Vector3 position = this.transform.position;
-        float currentSpeed = _target.currentSpeed;
-        this.transform.Translate(currentSpeed * Time.deltaTime, 0, 0);
+        float currentSpeed = _player.transform.position.x - transform.position.x;
+
+        Vector3 position = transform.position;
+        position.x = _player.transform.position.x;
+        transform.position = position;
 
         for (int i = 0; i < _backgrounds.Count; i++)
         {
-            _offsets[i] += Time.deltaTime * currentSpeed * _scale * (i + 1);
+            _offsets[i] += currentSpeed * _scale * (i + 1);
             _backgrounds[i].material.SetFloat("_xOffset", _offsets[i]);
         }
     }

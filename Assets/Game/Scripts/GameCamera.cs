@@ -5,7 +5,7 @@ using XMLib;
 
 public class GameCamera : MonoBehaviour
 {
-    TargetController _target;
+    PlayerController _target;
     private void Awake()
     {
         App.Instance<GameCamera>(this);
@@ -13,7 +13,7 @@ public class GameCamera : MonoBehaviour
 
     private void Start()
     {
-        _target = App.Make<TargetController>();
+        _target = App.Make<PlayerController>();
     }
 
     private void LateUpdate()

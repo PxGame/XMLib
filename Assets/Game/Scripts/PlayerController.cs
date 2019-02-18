@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using XMLib;
 using XMLib.InputService;
-using XMLib.P2D;
 
 /// <summary>
 /// 角色控制器
@@ -18,95 +17,41 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform _body;
 
-    [SerializeField]
-    private float _speed = 3f;
-
-    [SerializeField]
-    private Vector2 _jumpHeightRange = new Vector2(1f, 3f);
-
-    private RigidbodyController _controller;
-    protected Vector2 _preJumpSpeedRange;
-
-    TargetController _target;
-
-    public RigidbodyController Rigidbody
-    {
-        get { return _controller; }
-    }
+    private XMLib.P2D.PlayerController _controller;
 
     private void Awake()
     {
         App.Instance<PlayerController>(this);
 
-        Debug.Log("Player Awake");
         //获取组件
-        _controller = GetComponent<RigidbodyController>();
-
-        //计算跳跃速度
-        float tmp = 2.0f * Mathf.Abs(_controller.gravity);
-        _preJumpSpeedRange.x = Mathf.Sqrt(tmp * _jumpHeightRange.x);
-        _preJumpSpeedRange.y = Mathf.Sqrt(tmp * _jumpHeightRange.y);
+        _controller = GetComponent<XMLib.P2D.PlayerController>();
 
         //获取输入服务
         _input = App.Make<IInputService>();
     }
 
-    private void Start()
-    {
-
-        _target = App.Make<TargetController>();
-    }
+    private void Start() { }
 
     private void OnDestroy()
     {
         App.Release<PlayerController>();
     }
 
-    private bool _isPress = false;
-    private Vector2 _velocity;
-    private bool _stJumpDown;
-    private bool _stJumpUp;
     private bool _isRight = true;
 
     private void Update()
     {
-        if (!_isPress && _input.GetButton("Jump"))
+        //更新输入
+        if (_input.GetButtonDown("Jump"))
         {
-            _stJumpDown = true;
-            _isPress = true;
+            _controller.JumpBegin();
         }
-        else if (_isPress && !_input.GetButton("Jump"))
+        else if (_input.GetButtonUp("Jump"))
         {
-            _stJumpUp = true;
-            _isPress = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        _velocity = _controller.velocity;
-
-        _velocity.x = _target.currentSpeed;
-
-        //_velocity.x = _input.GetAxisRaw("Horizontal") * _speed;
-        //_velocity.y = _input.GetAxis("Vertical") * _speed;
-
-        if (_stJumpDown)
-        {
-            _velocity.y = _preJumpSpeedRange.y;
-            _stJumpDown = false;
+            _controller.JumpEnd();
         }
 
-        if (_stJumpUp)
-        {
-            if (_velocity.y > _preJumpSpeedRange.x)
-            {
-                _velocity.y = _preJumpSpeedRange.x;
-            }
-            _stJumpUp = false;
-        }
-
-        _controller.velocity = _velocity;
+        _controller.Move(_input.GetAxisRaw("Horizontal"));
 
         //动画
         _animator.SetBool("isRun", _controller.velocity.x != 0);

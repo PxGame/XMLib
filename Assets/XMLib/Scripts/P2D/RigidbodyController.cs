@@ -65,7 +65,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 当前速度
         /// </summary>
-        private Vector2 _velocity;
+        protected Vector2 _velocity;
 
         protected override void Awake()
         {
@@ -74,7 +74,7 @@ namespace XMLib.P2D
             _velocity = Vector2.zero;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             UpdateRigidBody(Time.deltaTime);
         }

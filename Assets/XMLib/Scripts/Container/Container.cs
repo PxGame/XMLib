@@ -133,7 +133,7 @@ namespace XMLib
         /// <param name="bindData">绑定实例</param>
         internal void UnBind(IBindable bindData)
         {
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 Release(bindData.service);
 
@@ -142,7 +142,7 @@ namespace XMLib
                 if (_aliasesReverse.TryGetValue(bindData.service, out serviceList))
                 {
                     foreach (string alias in serviceList)
-                    {//移除所有绑定的别名
+                    { //移除所有绑定的别名
                         _aliases.Remove(alias);
                     }
                     //移除反向查找列表
@@ -184,7 +184,7 @@ namespace XMLib
         protected virtual Func<IContainer, object[], object> WrapperTypeBuilder(string service, Type serviceType)
         {
             service = FormatService(service);
-            return (container, args) => ((Container)container).CreateInstance(GetBindFillable(service), serviceType, args);
+            return (container, args) => ((Container) container).CreateInstance(GetBindFillable(service), serviceType, args);
         }
 
         /// <summary>
@@ -274,20 +274,20 @@ namespace XMLib
         private object Resolve(string service, params object[] args)
         {
             Checker.NotEmptyOrNull(service, "service");
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
 
                 object instance;
 
                 if (_instances.TryGetValue(service, out instance))
-                {//返回单例对象
+                { //返回单例对象
                     return instance;
                 }
 
                 //编译堆栈，用于检查是否有循环依赖
                 if (_buildStack.Contains(service))
-                {//循环依赖
+                { //循环依赖
                     throw new RuntimeException("服务出现循环依赖");
                 }
 
@@ -329,7 +329,7 @@ namespace XMLib
         {
             if (instance is IDisposable)
             {
-                ((IDisposable)instance).Dispose();
+                ((IDisposable) instance).Dispose();
             }
         }
 
@@ -380,7 +380,7 @@ namespace XMLib
         /// <param name="service">服务名</param>
         /// <returns>服务类型</returns>
         protected virtual Type SpeculatedServiceType(string service)
-        {//可先不实现
+        { //可先不实现
             return null;
         }
 
@@ -397,7 +397,7 @@ namespace XMLib
         {
             Checker.NotNull(action, "closure");
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 list.Add(action);
             }
@@ -489,7 +489,7 @@ namespace XMLib
         /// <param name="service">发生重定义的服务</param>
         /// <param name="instance">服务实例（如果为空将会从容器请求）</param>
         private void TriggerOnRebound(string service, object instance = null)
-        {//木有看懂=。=，先放着
+        { //木有看懂=。=，先放着
         }
 
         #endregion 事件调用
@@ -513,7 +513,7 @@ namespace XMLib
 
             Exception exception = null;
             foreach (ConstructorInfo info in constructors)
-            {//遍历构造函数
+            { //遍历构造函数
                 try
                 {
                     //获取依赖
@@ -569,8 +569,8 @@ namespace XMLib
                 {
                     needService = GetParamNeedsService(info);
 
-                    if (info.ParameterType.IsClass
-                        || info.ParameterType.IsInterface)
+                    if (info.ParameterType.IsClass ||
+                        info.ParameterType.IsInterface)
                     {
                         arg = ResolveClass(bindData, needService, info);
                     }
@@ -612,7 +612,7 @@ namespace XMLib
         private object ResolvePrimitive(Bindable bindData, string service, ParameterInfo info)
         {
             if (CanMake(service))
-            {//可以创建
+            { //可以创建
                 return Make(service);
             }
 
@@ -654,12 +654,12 @@ namespace XMLib
             int length = args.Length;
 
             for (int i = 0; i < length; i++)
-            {//遍历查找可用参数
+            { //遍历查找可用参数
                 object arg = args[i];
 
                 if (ChangeType(ref arg, info.ParameterType))
-                {//转换成功
-                    ArrayUtil.RemoveAt(ref args, i);//移除可用参数列表
+                { //转换成功
+                    ArrayUtil.RemoveAt(ref args, i); //移除可用参数列表
                     return arg;
                 }
             }
@@ -689,7 +689,7 @@ namespace XMLib
                 }
             }
             catch (Exception)
-            {//忽略该异常
+            { //忽略该异常
             }
 
             return false;
@@ -711,10 +711,10 @@ namespace XMLib
             object[] result = args;
             args = null;
 
-            if (typeof(object) == info.ParameterType
-                && null != result
-                && 1 == result.Length)
-            {//返回object
+            if (typeof(object) == info.ParameterType &&
+                null != result &&
+                1 == result.Length)
+            { //返回object
                 return result[0];
             }
 
@@ -729,8 +729,8 @@ namespace XMLib
                 return false;
             }
 
-            return info.ParameterType == typeof(object[])
-                || info.ParameterType == typeof(object);
+            return info.ParameterType == typeof(object[]) ||
+                info.ParameterType == typeof(object);
         }
 
         /// <summary>
@@ -740,7 +740,7 @@ namespace XMLib
         /// <returns>服务名</returns>
         protected virtual string GetPropertyNeedsService(PropertyInfo property)
         {
-            InjectAttribute injectAttr = (InjectAttribute)property.GetCustomAttributes(typeof(InjectAttribute), false)[0];
+            InjectAttribute injectAttr = (InjectAttribute) property.GetCustomAttributes(typeof(InjectAttribute), false) [0];
             if (string.IsNullOrEmpty(injectAttr.alias))
             {
                 return Type2Service(property.PropertyType);
@@ -764,7 +764,7 @@ namespace XMLib
                 return needService;
             }
 
-            InjectAttribute injectAttr = (InjectAttribute)arg.GetCustomAttributes(typeof(InjectAttribute), false)[0];
+            InjectAttribute injectAttr = (InjectAttribute) arg.GetCustomAttributes(typeof(InjectAttribute), false) [0];
             if (!string.IsNullOrEmpty(injectAttr.alias))
             {
                 needService = injectAttr.alias;
@@ -796,7 +796,7 @@ namespace XMLib
             alias = FormatService(alias);
             service = FormatService(service);
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 if (_aliases.ContainsKey(alias))
                 {
@@ -858,7 +858,7 @@ namespace XMLib
 
             service = FormatService(service);
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 if (_binds.ContainsKey(service))
                 {
@@ -881,7 +881,7 @@ namespace XMLib
                 if (IsResolved(service))
                 {
                     if (isStatic)
-                    {//如果是单例，则直接解决
+                    { //如果是单例，则直接解决
                         Resolve(service);
                     }
                     else
@@ -953,7 +953,7 @@ namespace XMLib
             //获取函数参数
             ParameterInfo[] argInfos = methodInfo.GetParameters();
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 //获取所在类绑定数据
                 BindData bindData = GetBindFillable(target != null ? Type2Service(target.GetType()) : null);
@@ -972,7 +972,7 @@ namespace XMLib
         {
             Checker.NotEmptyOrNull(service, "service");
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
 
@@ -991,7 +991,7 @@ namespace XMLib
         /// </summary>
         public void Flush()
         {
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 try
                 {
@@ -1032,13 +1032,11 @@ namespace XMLib
         public IBindData GetBind(string service)
         {
             Checker.NotEmptyOrNull(service, "service");
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
                 BindData bindData = null;
-                if (_binds.TryGetValue(service, out bindData))
-                {
-                }
+                if (_binds.TryGetValue(service, out bindData)) { }
                 return bindData;
             }
         }
@@ -1061,7 +1059,7 @@ namespace XMLib
         public bool HasInstance(string service)
         {
             Checker.NotEmptyOrNull(service, "service");
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
                 return _instances.ContainsKey(service);
@@ -1078,7 +1076,7 @@ namespace XMLib
         {
             Checker.NotEmptyOrNull(service, "service");
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 //转换到映射名
                 service = AliasToService(service);
@@ -1099,7 +1097,7 @@ namespace XMLib
                 }
 
                 //调用解决中事件
-                instance = TriggerOnResolving((BindData)bindData, instance);
+                instance = TriggerOnResolving((BindData) bindData, instance);
 
                 if (null != instance)
                 {
@@ -1122,12 +1120,12 @@ namespace XMLib
                 _instances.Add(service, instance);
 
                 if (null != instance)
-                {//添加到单例反向查找列表
+                { //添加到单例反向查找列表
                     _instanceReverse.Add(instance, service);
                 }
 
                 if (!_instanceTiming.Contains(service))
-                {//添加实例化顺序
+                { //添加实例化顺序
                     _instanceTiming.Add(service, _instanceId++);
                 }
 
@@ -1181,13 +1179,13 @@ namespace XMLib
         {
             Checker.NotEmptyOrNull(service, "service");
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
 
                 object instance;
                 if (!_instances.TryGetValue(service, out instance))
-                {//未找到单例实例
+                { //未找到单例实例
                     return false;
                 }
 
@@ -1198,7 +1196,7 @@ namespace XMLib
                 TriggerOnRelease(bindData, instance);
 
                 if (null != instance)
-                {//释放单例
+                { //释放单例
                     DisposeInstance(instance);
 
                     //移除反向查找列表
@@ -1231,7 +1229,7 @@ namespace XMLib
             service = AliasToService(service);
             IBindData bindData = GetBind(service);
             if (null != bindData)
-            {//解绑
+            { //解绑
                 bindData.Unbind();
             }
         }
@@ -1244,7 +1242,7 @@ namespace XMLib
         public bool IsResolved(string service)
         {
             Checker.NotEmptyOrNull(service, "service");
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
                 return _resolved.Contains(service) || _instances.ContainsKey(service);
@@ -1294,7 +1292,7 @@ namespace XMLib
         {
             Checker.NotNull(callback, "callback");
 
-            lock (_syncRoot)
+            lock(_syncRoot)
             {
                 service = AliasToService(service);
 

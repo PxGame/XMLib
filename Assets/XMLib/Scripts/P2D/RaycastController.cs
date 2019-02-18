@@ -5,10 +5,10 @@
  * 创建时间: 1/4/2019 11:13:49 AM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace XMLib.P2D
 {
@@ -141,7 +141,7 @@ namespace XMLib.P2D
             _raycastOrigins.topRight.y = _boundsNoSkin.max.y;
 
             if (_lastBounds.size != _bounds.size)
-            {//包围盒大小改变时更新数据
+            { //包围盒大小改变时更新数据
                 //横纵向射线数量
                 _horizontalRayCount = Mathf.RoundToInt(_boundsNoSkin.size.y / _raycastSetting.raySpacing);
                 _verticalRayCount = Mathf.RoundToInt(_boundsNoSkin.size.x / _raycastSetting.raySpacing);
@@ -164,7 +164,7 @@ namespace XMLib.P2D
         public bool RaycastVerticalNear(float y, ref RaycastHit2D nearHit)
         {
             if (0 == y)
-            {//未移动，不用检测
+            { //未移动，不用检测
                 return false;
             }
 
@@ -172,7 +172,7 @@ namespace XMLib.P2D
             float distance = Mathf.Abs(y) + _raycastSetting.skinWidth;
             Vector2 direction = Vector2.up * directionSign;
 
-            Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.topLeft;//由左往右
+            Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.topLeft; //由左往右
 
             RaycastHit2D raycastResult;
             bool isHitted = false;
@@ -180,22 +180,22 @@ namespace XMLib.P2D
             {
                 Vector2 origin = rayOrigin + Vector2.right * (_verticalRaySpacing * i);
 
-                //Debug.DrawLine(origin, origin + direction * distance, Color.red);
+                Debug.DrawLine(origin, origin + direction * distance, Color.red);
 
                 int count = Physics2D.Raycast(origin, direction, _raycastSetting.contactFilter2D, _raycastResults, distance);
                 if (0 == count)
-                {//没有检测到碰撞
+                { //没有检测到碰撞
                     continue;
                 }
 
                 raycastResult = _raycastResults[0];
                 if (!isHitted)
-                {//第一次检测到碰撞，直接设置值
+                { //第一次检测到碰撞，直接设置值
                     nearHit = raycastResult;
                     isHitted = true;
                 }
                 else if (raycastResult.distance < nearHit.distance)
-                {//后面检测结果更近时，更新值
+                { //后面检测结果更近时，更新值
                     nearHit = raycastResult;
                 }
             }
@@ -212,7 +212,7 @@ namespace XMLib.P2D
         public bool RaycastHorizontalNear(float x, ref RaycastHit2D nearHit)
         {
             if (0 == x)
-            {//未移动，不用检测
+            { //未移动，不用检测
                 return false;
             }
 
@@ -220,7 +220,7 @@ namespace XMLib.P2D
             float distance = Mathf.Abs(x) + _raycastSetting.skinWidth;
             Vector2 direction = Vector2.right * directionSign;
 
-            Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.bottomRight;//由下往上
+            Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.bottomRight; //由下往上
 
             RaycastHit2D raycastResult;
             bool isHitted = false;
@@ -228,22 +228,22 @@ namespace XMLib.P2D
             {
                 Vector2 origin = rayOrigin + Vector2.up * (_horizontalRaySpacing * i);
 
-                //Debug.DrawLine(origin, origin + direction * distance, Color.blue);
+                Debug.DrawLine(origin, origin + direction * distance, Color.blue);
 
                 int count = Physics2D.Raycast(origin, direction, _raycastSetting.contactFilter2D, _raycastResults, distance);
                 if (0 == count)
-                {//没有检测到碰撞
+                { //没有检测到碰撞
                     continue;
                 }
 
                 raycastResult = _raycastResults[0];
                 if (!isHitted)
-                {//第一次检测到碰撞，直接设置值
+                { //第一次检测到碰撞，直接设置值
                     nearHit = raycastResult;
                     isHitted = true;
                 }
                 else if (raycastResult.distance < nearHit.distance)
-                {//后面检测结果更近时，更新值
+                { //后面检测结果更近时，更新值
                     nearHit = raycastResult;
                 }
             }

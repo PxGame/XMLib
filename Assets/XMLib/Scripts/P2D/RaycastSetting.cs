@@ -5,9 +5,9 @@
  * 创建时间: 1/4/2019 11:21:41 AM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 namespace XMLib.P2D
@@ -40,7 +40,7 @@ namespace XMLib.P2D
         /// 皮肤宽度
         /// </summary>
         [Tooltip("皮肤宽度")]
-        public float skinWidth = 0.015f;
+        public float skinWidth = 0.03f;
 
         /// <summary>
         /// 射线设置

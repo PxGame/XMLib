@@ -13,7 +13,6 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 namespace XMLib
 {
     /// <summary>
@@ -219,7 +218,7 @@ namespace XMLib
             GUILayout.Label("资源");
 
             GUILayout.BeginHorizontal();
-            _addTRMTemp = (TileResources)EditorGUILayout.ObjectField("添加资源:", _addTRMTemp, typeof(TileResources), false);
+            _addTRMTemp = (TileResources) EditorGUILayout.ObjectField("添加资源:", _addTRMTemp, typeof(TileResources), false);
             if (GUILayout.Button("添加", GUILayout.Width(50)))
             {
                 AddRes(_addTRMTemp);
@@ -311,12 +310,12 @@ namespace XMLib
         private void HelpView()
         {
             string helpText = "最好在2D模式下使用\n" +
-                        "键位说明\n" +
-                        "~:删除模式\n" +
-                        "1:执行操作\n" +
-                        "2:按住线性选择，释放执行操作\n" +
-                        "3:按住矩形选择，释放执行操作\n" +
-                        "鼠标右键:取消选择\n";
+                "键位说明\n" +
+                "~:删除模式\n" +
+                "1:执行操作\n" +
+                "2:按住线性选择，释放执行操作\n" +
+                "3:按住矩形选择，释放执行操作\n" +
+                "鼠标右键:取消选择\n";
 
             string statusText = "状态\n";
             if (_isSelectRange)
@@ -733,7 +732,7 @@ namespace XMLib
         }
 
         private void OnSceneGUI(SceneView sceneView)
-        {//中文输入发可能无法触发事件
+        { //中文输入发可能无法触发事件
             try
             {
                 UnityEngine.Event evt = UnityEngine.Event.current;
@@ -801,7 +800,7 @@ namespace XMLib
                         }
                         else if (evt.keyCode >= KeyCode.Alpha5 && evt.keyCode <= KeyCode.Alpha9)
                         {
-                            int index = (int)(evt.keyCode) - 53;
+                            int index = (int) (evt.keyCode) - 53;
 
                             if (_tileResDict.Count > index)
                             {
@@ -1108,7 +1107,7 @@ namespace XMLib
                 Vector2Int tmpPos;
                 Vector2Int distance = _endPos - _startPos;
 
-                Vector2Int sign = new Vector2Int((int)Mathf.Sign(distance.x), (int)Mathf.Sign(distance.y));
+                Vector2Int sign = new Vector2Int((int) Mathf.Sign(distance.x), (int) Mathf.Sign(distance.y));
                 Vector2Int size = new Vector2Int(Mathf.Abs(distance.x), Mathf.Abs(distance.y));
 
                 if (_isSelectLine)
@@ -1121,12 +1120,12 @@ namespace XMLib
                     {
                         maxCnt = size.x;
                         xDelta = sign.x;
-                        yDelta = distance.y == 0 ? 0 : distance.y / (float)maxCnt;
+                        yDelta = distance.y == 0 ? 0 : distance.y / (float) maxCnt;
                     }
                     else
                     {
                         maxCnt = size.y;
-                        xDelta = distance.x == 0 ? 0 : distance.x / (float)maxCnt;
+                        xDelta = distance.x == 0 ? 0 : distance.x / (float) maxCnt;
                         yDelta = sign.y;
                     }
 
@@ -1347,9 +1346,7 @@ namespace XMLib
         {
             Transform root = null;
 
-            if (_childRootDict.TryGetValue(typeName, out root))
-            {
-            }
+            if (_childRootDict.TryGetValue(typeName, out root)) { }
 
             return root;
         }
@@ -1361,7 +1358,8 @@ namespace XMLib
         private void InitRoot(Transform root)
         {
             ////
-            Transform customRoot = new GameObject("Customs").transform; customRoot.parent = root;
+            Transform customRoot = new GameObject("Customs").transform;
+            customRoot.parent = root;
 
             ////
             //Transform enemyRoot = new GameObject("Enemys").transform; enemyRoot.parent = customRoot;
@@ -1437,8 +1435,10 @@ namespace XMLib
             if (tileRes.IsCombatPhysic)
             {
                 Rigidbody2D rigid2d = childRootObj.AddComponent<Rigidbody2D>();
-                childRootObj.AddComponent<CompositeCollider2D>();
                 rigid2d.bodyType = RigidbodyType2D.Static;
+
+                CompositeCollider2D composite = childRootObj.AddComponent<CompositeCollider2D>();
+                composite.geometryType = CompositeCollider2D.GeometryType.Polygons;
             }
 
             _childRootDict.Add(typeName, childRoot);
@@ -1472,7 +1472,7 @@ namespace XMLib
                 girdObj = child.gameObject;
 
                 if (!xDict.TryGetValue(girdPos.x, out yDict))
-                {//没有则添加x
+                { //没有则添加x
                     yDict = new Dictionary<int, GameObject>();
                     xDict.Add(girdPos.x, yDict);
                 }
@@ -1482,13 +1482,13 @@ namespace XMLib
                     if (yDict[girdPos.y] != null)
                     {
                         if (_data.updateWithDeleteRepeat)
-                        {//添加到重复列表
+                        { //添加到重复列表
                             repeatObjs.Add(girdObj);
                             continue;
                         }
                         else
                         {
-                            throw new Exception(string.Format("[{1}]在 {0} 处有重叠的物体" , girdPos, SceneManager.GetActiveScene().name));
+                            throw new Exception(string.Format("[{1}]在 {0} 处有重叠的物体", girdPos, SceneManager.GetActiveScene().name));
                         }
                     }
                 }
@@ -1599,9 +1599,7 @@ namespace XMLib
         {
             Dictionary<int, Dictionary<int, GameObject>> dicts = null;
 
-            if (!_tileDicts.TryGetValue(typeName, out dicts))
-            {
-            }
+            if (!_tileDicts.TryGetValue(typeName, out dicts)) { }
 
             return dicts;
         }

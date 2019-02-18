@@ -108,7 +108,7 @@ namespace XMLib
             {
                 if (null == _dispatcher)
                 {
-                    _dispatcher = (IDispatcher)Make(Type2Service(typeof(IDispatcher)));
+                    _dispatcher = (IDispatcher) Make(Type2Service(typeof(IDispatcher)));
                 }
                 return _dispatcher;
             }
@@ -190,9 +190,14 @@ namespace XMLib
             _process = LaunchProcess.Construct;
 
             //
-            RegisterCoreAlias();//1
-            RegisterCoreService();//2
+            RegisterCoreAlias(); //1
+            RegisterCoreService(); //2
         }
+
+        // ~Application()
+        // {
+        //     App.handler = null;
+        // }
 
         /// <summary>
         /// 注册核心服务
@@ -210,11 +215,12 @@ namespace XMLib
         {
             string application = Type2Service(typeof(Application));
             Instance(application, this);
-            foreach (Type alias in new[] {
-                typeof(IApplication),
-                typeof(IContainer),
-                typeof(App)
-            })
+            foreach (Type alias in new []
+                {
+                    typeof(IApplication),
+                    typeof(IContainer),
+                    typeof(App)
+                })
             {
                 Alias(Type2Service(alias), application);
             }
@@ -253,7 +259,8 @@ namespace XMLib
             Flush();
 
             //销毁全局句柄
-            App.handler = null;
+            //屏蔽，在析构中调用，防止最先销毁时，后续调用为null
+            //App.handler = null;
             _process = LaunchProcess.Terminated;
             Trigger(ApplicationEvents.OnTerminated, this);
         }
@@ -265,12 +272,12 @@ namespace XMLib
         public virtual void Bootstrap(params IBootstrap[] bootstraps)
         {
             Debug.Log("程序引导开始");
-            using (var watcher = new TimeWatcher("引导程序计时"))
+            using(var watcher = new TimeWatcher("引导程序计时"))
             {
                 Checker.Requires<ArgumentNullException>(bootstraps != null);
 
                 if (_isBootstraped || _process != LaunchProcess.Construct)
-                {//已调用或非构造状态
+                { //已调用或非构造状态
                     throw new RuntimeException("Bootstrap() 函数不能重复调用");
                 }
 
@@ -364,7 +371,7 @@ namespace XMLib
                         continue;
                     }
 
-                    IEnumerator nextCoroutine = (IEnumerator)coroutine.Current;
+                    IEnumerator nextCoroutine = (IEnumerator) coroutine.Current;
 
                     stack.Push(coroutine);
                     coroutine = nextCoroutine;
@@ -379,7 +386,7 @@ namespace XMLib
         protected IEnumerator CoroutineInit()
         {
             Debug.Log("程序初始化开始");
-            using (var watcher = new TimeWatcher("初始化程序计时"))
+            using(var watcher = new TimeWatcher("初始化程序计时"))
             {
                 if (!_isBootstraped)
                 {
@@ -432,8 +439,8 @@ namespace XMLib
             Debug.Log("服务提供者初始化:" + serviceProvider.GetType().Name);
             serviceProvider.Init();
             if (serviceProvider is ICoroutineInit)
-            {//存在则调用
-                yield return ((ICoroutineInit)serviceProvider).CoroutineInit();
+            { //存在则调用
+                yield return ((ICoroutineInit) serviceProvider).CoroutineInit();
             }
 
             //结束事件
@@ -482,12 +489,12 @@ namespace XMLib
                 _isRegistering = false;
             }
 
-            int priority = GetPriority(serviceProvider.GetType(), "Init");//获取优先级
-            _serviceProviders.Add(serviceProvider, priority);//添加到服务列表
-            _serviceProviderTypes.Add(serviceProvider.GetType());//添加到服务类型列表
+            int priority = GetPriority(serviceProvider.GetType(), "Init"); //获取优先级
+            _serviceProviders.Add(serviceProvider, priority); //添加到服务列表
+            _serviceProviderTypes.Add(serviceProvider.GetType()); //添加到服务类型列表
 
             if (_isInited)
-            {//如果程序已初始化,则立即调用服务初始化
+            { //如果程序已初始化,则立即调用服务初始化
                 yield return InitProvider(serviceProvider);
             }
         }
