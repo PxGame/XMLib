@@ -67,18 +67,25 @@ namespace XMLib.P2D
         /// </summary>
         protected Vector2 _velocity;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _velocity = Vector2.zero;
-        }
-
         protected virtual void Update()
         {
             UpdateRigidBody(Time.deltaTime);
         }
 
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            _velocity = Vector2.zero;
+        }
+
+        /// <summary>
+        /// 更新刚体
+        /// </summary>
+        /// <param name="deltaTime">时间间隔</param>
         protected void UpdateRigidBody(float deltaTime)
         {
             //更新参数
@@ -104,10 +111,34 @@ namespace XMLib.P2D
             { //纵向运动撞到物体
                 _velocity.y = 0; //速度归零
                 frameMove.y = (_verticalNearHit.distance - _raycastSetting.skinWidth) * Mathf.Sign(frameMove.y); //校验碰撞时的移动，使之贴靠碰撞物体
+
+                ProcessMovePlatform(_verticalNearHit.collider, deltaTime, ref frameMove);
             }
 
             //移动物体
             transform.Translate(frameMove);
+        }
+
+        /// <summary>
+        /// 处理移动平台
+        /// </summary>
+        /// <param name="collider">当前移动平台</param>
+        /// <param name="deltaTime">当前帧间隔</param>
+        /// <param name="frameMove">当前帧移动距离</param>
+        protected void ProcessMovePlatform(Collider2D collider, float deltaTime, ref Vector2 frameMove)
+        {
+            if (!collider.CompareTag(_rigidbodySetting.movePlatformTag))
+            { //不是移动平台
+                return;
+            }
+
+            IMovePlatform movePlatform = collider.GetComponent<IMovePlatform>();
+            if (null == movePlatform)
+            { //未发现移动平台脚本
+                return;
+            }
+
+            frameMove += movePlatform.velocity * deltaTime;
         }
 
         protected virtual void OnDrawGizmos()

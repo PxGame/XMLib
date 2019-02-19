@@ -31,14 +31,32 @@ namespace XMLib.P2D
         [SerializeField]
         protected PlayerSetting _playerSetting;
 
+        /// <summary>
+        /// 跳跃速度
+        /// </summary>
         private Vector2 _preJumpSpeedRange;
+
+        /// <summary>
+        /// 开始跳跃
+        /// </summary>
         private bool _jumpBegin;
+
+        /// <summary>
+        /// 结束跳跃
+        /// </summary>
         private bool _jumpEnd;
+
+        /// <summary>
+        /// 移动方向
+        /// </summary>
         private float _moveX;
 
-        override protected void Awake()
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        protected override void OnInitialized()
         {
-            base.Awake();
+            base.OnInitialized();
 
             //计算跳跃速度
             float tmp = 2.0f * Mathf.Abs(gravity);
@@ -49,7 +67,7 @@ namespace XMLib.P2D
         /// <summary>
         /// 移动
         /// </summary>
-        /// <param name="x">移动</param>
+        /// <param name="x">移动方向</param>
         public void Move(float x)
         {
             _moveX = x;

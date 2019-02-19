@@ -105,15 +105,24 @@ namespace XMLib.P2D
         protected virtual void Awake()
         {
             //初始化
-            _raycastResults = new RaycastHit2D[_raycastSetting.rayBufferCount];
-
-            //获取组件
-            _boxCollider2D = GetComponent<BoxCollider2D>();
+            OnInitialized();
         }
 
         #endregion Mono
 
         #region 私有方法
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        protected virtual void OnInitialized()
+        {
+            //初始化
+            _raycastResults = new RaycastHit2D[_raycastSetting.rayBufferCount];
+
+            //获取组件
+            _boxCollider2D = GetComponent<BoxCollider2D>();
+        }
 
         /// <summary>
         /// 需要在所有检测之前调用，以更新相关参数
@@ -155,6 +164,10 @@ namespace XMLib.P2D
             _lastBounds = _bounds;
         }
 
+        #endregion 私有方法
+
+        #region 公有方法
+
         /// <summary>
         /// 检查纵向最近碰撞
         /// </summary>
@@ -174,7 +187,6 @@ namespace XMLib.P2D
 
             Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.topLeft; //由左往右
 
-            RaycastHit2D raycastResult;
             bool isHitted = false;
             for (int i = 0; i < _verticalRayCount; i++)
             {
@@ -188,15 +200,14 @@ namespace XMLib.P2D
                     continue;
                 }
 
-                raycastResult = _raycastResults[0];
                 if (!isHitted)
                 { //第一次检测到碰撞，直接设置值
-                    nearHit = raycastResult;
+                    nearHit = _raycastResults[0];
                     isHitted = true;
                 }
-                else if (raycastResult.distance < nearHit.distance)
+                else if (_raycastResults[0].distance < nearHit.distance)
                 { //后面检测结果更近时，更新值
-                    nearHit = raycastResult;
+                    nearHit = _raycastResults[0];
                 }
             }
 
@@ -222,7 +233,6 @@ namespace XMLib.P2D
 
             Vector2 rayOrigin = (directionSign == -1) ? _raycastOrigins.bottomLeft : _raycastOrigins.bottomRight; //由下往上
 
-            RaycastHit2D raycastResult;
             bool isHitted = false;
             for (int i = 0; i < _horizontalRayCount; i++)
             {
@@ -236,21 +246,20 @@ namespace XMLib.P2D
                     continue;
                 }
 
-                raycastResult = _raycastResults[0];
                 if (!isHitted)
                 { //第一次检测到碰撞，直接设置值
-                    nearHit = raycastResult;
+                    nearHit = _raycastResults[0];
                     isHitted = true;
                 }
-                else if (raycastResult.distance < nearHit.distance)
+                else if (_raycastResults[0].distance < nearHit.distance)
                 { //后面检测结果更近时，更新值
-                    nearHit = raycastResult;
+                    nearHit = _raycastResults[0];
                 }
             }
 
             return isHitted;
         }
 
-        #endregion 私有方法
+        #endregion 公有方法
     }
 }
