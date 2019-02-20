@@ -51,6 +51,11 @@ public class PlayerController : MonoBehaviour
             _controller.JumpEnd();
         }
 
+        if (_input.GetButtonDown("Fire1"))
+        {
+            _controller.Dash();
+        }
+
         _controller.Move(_input.GetAxisRaw("Horizontal"));
 
         //动画

@@ -30,5 +30,17 @@ namespace XMLib.P2D
         /// </summary>
         [Tooltip("跳跃高度")]
         public Vector2 jumpHeightRange = new Vector2(1f, 3f);
+
+        /// <summary>
+        /// 猛冲距离
+        /// </summary>
+        [Tooltip("猛冲距离")]
+        public float dashDistance = 5f;
+
+        /// <summary>
+        /// 猛冲时间
+        /// </summary>
+        [Tooltip("猛冲时间")]
+        public float dashTime = 1f;
     }
 }
