@@ -184,7 +184,7 @@ namespace XMLib.ObjectPool
                 return false;
             }
 
-            return Push(item.typeName, item.objectName, item.gameObject);
+            return Push(item.typeName, item.resName, item.gameObject);
         }
 
         /// <summary>

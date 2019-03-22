@@ -46,6 +46,9 @@ namespace XMLib.UIService
             private RectTransform _layerRoot;
         }
 
+        [SerializeField]
+        private Camera _uiCamera;
+
         /// <summary>
         /// 层元素列表
         /// </summary>
@@ -63,6 +66,11 @@ namespace XMLib.UIService
         /// <param name="layerName">节点名</param>
         /// <returns>节点</returns>
         public RectTransform this[string layerName] { get { return Get(layerName); } }
+
+        /// <summary>
+        /// ui 相机
+        /// </summary>
+        public Camera uiCamera { get { return _uiCamera; } }
 
         /// <summary>
         /// 初始化
@@ -97,5 +105,17 @@ namespace XMLib.UIService
 
             return rectTransform;
         }
+
+        ///// <summary>
+        ///// 屏幕坐标转换到本地坐标
+        ///// </summary>
+        ///// <param name="rect"></param>
+        ///// <param name="screenPoint"></param>
+        ///// <param name="localPoint"></param>
+        ///// <returns></returns>
+        //public bool ScreenPointToLocalPointInRectangle(RectTransform rect, Vector2 screenPoint, out Vector2 localPoint)
+        //{
+        //    return RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenPoint, _uiCamera, out localPoint);
+        //}
     }
 }

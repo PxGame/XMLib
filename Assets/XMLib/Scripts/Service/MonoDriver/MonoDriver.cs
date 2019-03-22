@@ -129,7 +129,7 @@ namespace XMLib.MonoDriver
         private bool ConvertAndRemove<T>(ISortList<T, int> sortList, object obj) where T : class
         {
             T target = obj as T;
-            return null == target && sortList.Remove(target);
+            return null != target && sortList.Remove(target);
         }
 
         /// <summary>

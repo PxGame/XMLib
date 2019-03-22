@@ -21,18 +21,24 @@ namespace XMLib.UI
     /// 摇杆按钮
     /// </summary>
     [AddComponentMenu("XMLib/UI/Joystick Button")]
-    public class JoystickButton : Selectable, IPointerClickHandler, ISubmitHandler, IDragHandler
+    [RequireComponent(typeof(CanvasGroup))]
+    public class JoystickButton : UIBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, IDragHandler
     {
+        /// <summary>
+        /// 状态
+        /// </summary>
+        private enum Status
+        {
+            Down,
+            Up,
+            Drag,
+            Reset
+        }
+
         #region Event
 
         [Serializable]
         public class ButtonClickedEvent : UnityEvent { }
-
-        [Serializable]
-        public class ButtonDownEvent : UnityEvent { }
-
-        [Serializable]
-        public class ButtonUpEvent : UnityEvent { }
 
         [Serializable]
         public class ButtonAxisEvent : UnityEvent<Vector2> { }
@@ -52,19 +58,12 @@ namespace XMLib.UI
         [SerializeField]
         protected RectTransform _handler;
 
-        protected RectTransform _self;
+        [SerializeField]
+        protected RectTransform _background;
 
         [FormerlySerializedAs("onClick")]
         [SerializeField]
         private ButtonClickedEvent _onClick;
-
-        [FormerlySerializedAs("onUp")]
-        [SerializeField]
-        private ButtonUpEvent _onUp;
-
-        [FormerlySerializedAs("onDown")]
-        [SerializeField]
-        private ButtonDownEvent _onDown;
 
         [SerializeField]
         private ButtonAxisEvent _onAxis;
@@ -87,37 +86,14 @@ namespace XMLib.UI
             set { _onAxis = value; }
         }
 
-        /// <summary>
-        /// 抬起
-        /// </summary>
-        public ButtonUpEvent onUp
-        {
-            get { return _onUp; }
-            set { _onUp = value; }
-        }
-
-        /// <summary>
-        /// 按下
-        /// </summary>
-        public ButtonDownEvent onDown
-        {
-            get { return _onDown; }
-            set { _onDown = value; }
-        }
-
         #endregion Event
 
         private IInputService _input;
-
-        protected JoystickButton()
-        {
-        }
+        private CanvasGroup _canvasGroup;
 
         protected override void Awake()
         {
             base.Awake();
-
-            _self = (RectTransform)transform;
 
             if (App.handler != null)
             {
@@ -127,10 +103,12 @@ namespace XMLib.UI
                 }
             }
 
-            UpdateAxis();
+            _canvasGroup = GetComponent<CanvasGroup>();
+
+            UpdateAxis(Status.Reset, Vector2.zero);
         }
 
-        public virtual void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
@@ -138,62 +116,37 @@ namespace XMLib.UI
             Press();
         }
 
-        public virtual void OnSubmit(BaseEventData eventData)
-        {
-            Press();
-
-            if (!IsActive() || !IsInteractable())
-                return;
-
-            DoStateTransition(SelectionState.Pressed, false);
-            StartCoroutine(OnFinishSubmit());
-        }
-
         private void Press()
         {
-            if (!IsActive() || !IsInteractable())
+            if (!IsActive())
                 return;
 
             OnClick();
         }
 
-        private IEnumerator OnFinishSubmit()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            var fadeTime = colors.fadeDuration;
-            var elapsedTime = 0f;
-
-            while (elapsedTime < fadeTime)
-            {
-                elapsedTime += Time.unscaledDeltaTime;
-                yield return null;
-            }
-
-            DoStateTransition(currentSelectionState, false);
-        }
-
-        public override void OnPointerDown(PointerEventData eventData)
-        {
-            base.OnPointerDown(eventData);
-
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             //
-            UpdateAxis(eventData.position);
+            Vector2 point;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)transform, eventData.position, eventData.pressEventCamera, out point);
+            UpdateAxis(Status.Down, point);
 
             //
             OnDown();
         }
 
-        public override void OnPointerUp(PointerEventData eventData)
+        public void OnPointerUp(PointerEventData eventData)
         {
-            base.OnPointerUp(eventData);
-
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             //
-            UpdateAxis();
+            Vector2 point;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)transform, eventData.position, eventData.pressEventCamera, out point);
+            UpdateAxis(Status.Up, point);
 
             //
             OnUp();
@@ -201,40 +154,54 @@ namespace XMLib.UI
 
         public virtual void OnDrag(PointerEventData eventData)
         {
-            UpdateAxis(eventData.position);
+            Vector2 point;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)transform, eventData.position, eventData.pressEventCamera, out point);
+            UpdateAxis(Status.Drag, point);
         }
+
+        private Vector2 _centerPosition;
 
         /// <summary>
         /// 更新摇杆
         /// </summary>
-        /// <param name="position"></param>
-        private void UpdateAxis(Vector2? position = null)
+        private void UpdateAxis(Status status, Vector2 position)
         {
-            Vector2 selfCenterPos = _self.GetCenterPosition();
-            Vector2 handlerCenterPos;
+            Vector2 handlerPosition;
+            if (status == Status.Drag)
+            {
+                _canvasGroup.alpha = 1f;
+                handlerPosition = position;
+            }
+            else if (status == Status.Down)
+            {
+                _canvasGroup.alpha = 1f;
+                handlerPosition = position;
 
-            if (null == position)
-            {//还原
-                handlerCenterPos = selfCenterPos;
+                _centerPosition = position;
+                _background.SetCenterLocalPosition(position);
             }
             else
-            {
-                handlerCenterPos = (Vector2)position - selfCenterPos;
+            {//Status.Reset,Status.Up
+                _canvasGroup.alpha = 0f;
+                handlerPosition = _centerPosition;
+            }
 
-                //校验
-                float length = handlerCenterPos.magnitude;
-                if (length > _radius)
-                {//限制半径
-                    length = _radius;
-                }
+            Vector2 offset = (Vector2)handlerPosition - _centerPosition;
+            Vector2 normal = offset.normalized;
+            float length = offset.magnitude;
 
-                handlerCenterPos = selfCenterPos + length * handlerCenterPos.normalized;
+            //校验
+            if (length > _radius)
+            {//限制半径
+                length = _radius;
+
+                offset = length * normal;
+                handlerPosition = _centerPosition + offset;
             }
 
             //设置坐标
-            _handler.SetCenterPosition(handlerCenterPos);
+            _handler.SetCenterLocalPosition(handlerPosition);
 
-            Vector2 offset = handlerCenterPos - selfCenterPos;
             Vector2 value = offset / _radius;
 
             //设置值
@@ -243,13 +210,7 @@ namespace XMLib.UI
                 _input.SetAxis(_horizontalName, value.x);
                 _input.SetAxis(_verticalName, value.y);
             }
-
-            _value = value;
-            _offset = offset;
         }
-
-        public Vector2 _value;
-        public Vector2 _offset;
 
         #region 事件
 
@@ -262,8 +223,6 @@ namespace XMLib.UI
                     _input.SetButtonUp(_buttonName);
                 }
             }
-
-            _onUp.Invoke();
         }
 
         private void OnDown()
@@ -275,8 +234,6 @@ namespace XMLib.UI
                     _input.SetButtonDown(_buttonName);
                 }
             }
-
-            _onDown.Invoke();
         }
 
         private void OnClick()

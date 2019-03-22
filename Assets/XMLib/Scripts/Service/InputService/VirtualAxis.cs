@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace XMLib.InputService
 {
@@ -24,7 +25,7 @@ namespace XMLib.InputService
         /// <summary>
         /// 值
         /// </summary>
-        public float value { get { return _value; } }
+        public float value { get { return Time.frameCount > _lastUpdateFrame ? _value : _lastValue; } }
 
         /// <summary>
         /// 轴名
@@ -35,6 +36,9 @@ namespace XMLib.InputService
         /// 值
         /// </summary>
         private float _value;
+
+        private float _lastValue;
+        private int _lastUpdateFrame;
 
         /// <summary>
         /// 构造函数
@@ -52,6 +56,9 @@ namespace XMLib.InputService
         /// <param name="value">值</param>
         public void SetAxis(float value)
         {
+            _lastValue = _value;
+            _lastUpdateFrame = Time.frameCount;
+
             _value = value;
         }
     }

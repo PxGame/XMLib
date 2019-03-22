@@ -108,7 +108,7 @@ namespace XMLib
             {
                 if (null == _dispatcher)
                 {
-                    _dispatcher = (IDispatcher) Make(Type2Service(typeof(IDispatcher)));
+                    _dispatcher = (IDispatcher)Make(Type2Service(typeof(IDispatcher)));
                 }
                 return _dispatcher;
             }
@@ -215,7 +215,7 @@ namespace XMLib
         {
             string application = Type2Service(typeof(Application));
             Instance(application, this);
-            foreach (Type alias in new []
+            foreach (Type alias in new[]
                 {
                     typeof(IApplication),
                     typeof(IContainer),
@@ -271,8 +271,8 @@ namespace XMLib
         /// <param name="bootstraps">引导程序</param>
         public virtual void Bootstrap(params IBootstrap[] bootstraps)
         {
-            Debug.Log("程序引导开始");
-            using(var watcher = new TimeWatcher("引导程序计时"))
+            //Debug.Log("程序引导开始");
+            using (var watcher = new TimeWatcher("引导程序计时"))
             {
                 Checker.Requires<ArgumentNullException>(bootstraps != null);
 
@@ -307,7 +307,6 @@ namespace XMLib
 
                     if (allowed && null != bootstrap)
                     {
-                        Debug.Log("执行引导程序:" + bootstrap.GetType().Name);
                         bootstrap.Bootstrap();
                     }
                     watcher.End("调用(" + bootstrap.GetType().Name + ")引导");
@@ -319,8 +318,6 @@ namespace XMLib
                 Trigger(ApplicationEvents.OnBootstraped, this);
                 watcher.End("调用OnBootstraped事件");
             }
-
-            Debug.Log("程序引导结束");
         }
 
         /// <summary>
@@ -371,7 +368,7 @@ namespace XMLib
                         continue;
                     }
 
-                    IEnumerator nextCoroutine = (IEnumerator) coroutine.Current;
+                    IEnumerator nextCoroutine = (IEnumerator)coroutine.Current;
 
                     stack.Push(coroutine);
                     coroutine = nextCoroutine;
@@ -385,8 +382,7 @@ namespace XMLib
         /// <returns></returns>
         protected IEnumerator CoroutineInit()
         {
-            Debug.Log("程序初始化开始");
-            using(var watcher = new TimeWatcher("初始化程序计时"))
+            using (var watcher = new TimeWatcher("初始化程序计时"))
             {
                 if (!_isBootstraped)
                 {
@@ -422,8 +418,6 @@ namespace XMLib
                 Trigger(ApplicationEvents.OnStartCompleted, this);
                 watcher.End("调用OnStartCompleted事件");
             }
-
-            Debug.Log("程序初始化结束");
         }
 
         /// <summary>
@@ -436,11 +430,10 @@ namespace XMLib
             //开始事件
             Trigger(ApplicationEvents.OnProviderInit, serviceProvider);
 
-            Debug.Log("服务提供者初始化:" + serviceProvider.GetType().Name);
             serviceProvider.Init();
             if (serviceProvider is ICoroutineInit)
             { //存在则调用
-                yield return ((ICoroutineInit) serviceProvider).CoroutineInit();
+                yield return ((ICoroutineInit)serviceProvider).CoroutineInit();
             }
 
             //结束事件
@@ -481,7 +474,6 @@ namespace XMLib
             try
             {
                 _isRegistering = true;
-                Debug.Log("服务提供者注册:" + serviceProvider.GetType().Name);
                 serviceProvider.Register();
             }
             finally

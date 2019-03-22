@@ -279,7 +279,7 @@ namespace XMLib
         private object Dispatch(bool half, string eventName, object[] args)
         {
             //
-            UnityEngine.Debug.Log("事件调用 :" + eventName);
+            //UnityEngine.Debug.Log("事件调用 :" + eventName);
             //
 
             Checker.NotEmptyOrNull(eventName, "eventName");

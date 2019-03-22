@@ -25,7 +25,7 @@ namespace XMLib
         /// <summary>
         /// 对象名
         /// </summary>
-        string objectName { get; }
+        string resName { get; }
 
         /// <summary>
         /// 对象

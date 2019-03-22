@@ -18,7 +18,7 @@ namespace XMLib.Log
     /// <summary>
     /// 日志管理器
     /// </summary>
-    [DefaultExecutionOrder(-10000)]
+    [DefaultExecutionOrder(-20000)]
     public class LogManager : MonoBehaviour
     {
         /// <summary>

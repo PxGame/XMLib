@@ -13,6 +13,7 @@ namespace XMLib
     /// <summary>
     /// Unity 框架
     /// </summary>
+    [DefaultExecutionOrder(-10000)]
     [DisallowMultipleComponent]
     public class Framework : MonoBehaviour, IBootstrap
     {

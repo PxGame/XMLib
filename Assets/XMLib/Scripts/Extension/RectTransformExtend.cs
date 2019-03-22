@@ -36,12 +36,30 @@ namespace XMLib
         }
 
         /// <summary>
+        /// 中心坐标
+        /// </summary>
+        /// <returns>屏幕坐标</returns>
+        public static Vector2 GetCenterLocalPosition(this RectTransform trans)
+        {
+            return (Vector2)trans.localPosition + trans.GetCenterOffset();
+        }
+
+        /// <summary>
         /// 设置中心坐标
         /// </summary>
         /// <param name="position">屏幕坐标</param>
         public static void SetCenterPosition(this RectTransform trans, Vector2 position)
         {
             trans.position = position + trans.GetCenterOffset();
+        }
+
+        /// <summary>
+        /// 设置中心坐标
+        /// </summary>
+        /// <param name="position">屏幕坐标</param>
+        public static void SetCenterLocalPosition(this RectTransform trans, Vector2 position)
+        {
+            trans.localPosition = position + trans.GetCenterOffset();
         }
     }
 }
