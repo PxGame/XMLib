@@ -79,6 +79,12 @@ namespace XMLib
         /// </summary>
         private void ProcessSettings()
         {
+            if (_setting == null)
+            {
+                Debug.LogWarning("未设置服务配置");
+                return;
+            }
+
             foreach (IServiceSetting setting in _setting)
             {
                 //注册服务设置
