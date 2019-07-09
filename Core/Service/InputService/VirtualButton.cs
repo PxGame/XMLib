@@ -5,12 +5,9 @@
  * 创建时间: 12/28/2018 10:38:31 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-namespace XMLib.InputService
+namespace XMLib
 {
     /// <summary>
     /// 虚拟按钮

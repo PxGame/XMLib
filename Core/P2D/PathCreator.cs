@@ -5,11 +5,10 @@
  * 创建时间: 2/21/2019 10:25:32 AM
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 路径创建者

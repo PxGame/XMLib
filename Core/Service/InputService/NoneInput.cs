@@ -5,11 +5,7 @@
  * 创建时间: 12/28/2018 2:23:28 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
-
-namespace XMLib.InputService
+namespace XMLib
 {
     /// <summary>
     /// 空输入

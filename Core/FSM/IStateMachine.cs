@@ -5,11 +5,7 @@
  * 创建时间: 1/9/2019 12:06:03 AM
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace XMLib.FSM
+namespace XMLib
 {
     /// <summary>
     /// 状态机接口
@@ -41,41 +37,41 @@ namespace XMLib.FSM
         /// 初始化前一个状态
         /// </summary>
         /// <param name="state">状态</param>
-        void SetPreviousState (IState<T> state);
+        void SetPreviousState(IState<T> state);
 
         /// <summary>
         /// 初始化当前状态
         /// </summary>
         /// <param name="state">状态</param>
-        void SetCurrentState (IState<T> state);
+        void SetCurrentState(IState<T> state);
 
         /// <summary>
         /// 初始化全局状态
         /// </summary>
         /// <param name="state">状态</param>
-        void SetGlobalState (IState<T> state);
+        void SetGlobalState(IState<T> state);
 
         /// <summary>
         /// 状态更新
         /// </summary>
-        void Update ();
+        void Update();
 
         /// <summary>
         /// 切换状态
         /// </summary>
         /// <param name="state">状态</param>
-        void ChangeState (IState<T> state);
+        void ChangeState(IState<T> state);
 
         /// <summary>
         /// 改变状态回前一个状态
         /// </summary>
-        void RevertToPreviousState ();
+        void RevertToPreviousState();
 
         /// <summary>
         /// 当前状态判断
         /// </summary>
         /// <param name="state">状态</param>
         /// <returns></returns>
-        bool IsInState (IState<T> state);
+        bool IsInState(IState<T> state);
     }
 }

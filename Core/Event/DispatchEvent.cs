@@ -12,7 +12,7 @@ namespace XMLib
     /// <summary>
     /// 事件对象
     /// </summary>
-    public class Event : IEvent
+    public class DispatchEvent
     {
         /// <summary>
         /// 事件名
@@ -41,7 +41,7 @@ namespace XMLib
         /// <param name="target">目标对象</param>
         /// <param name="methodInfo">目标函数</param>
         /// <param name="group">分组</param>
-        public Event(string eventName, object target, MethodInfo methodInfo, object group)
+        public DispatchEvent(string eventName, object target, MethodInfo methodInfo, object group)
         {
             name = eventName;
             this.group = group;

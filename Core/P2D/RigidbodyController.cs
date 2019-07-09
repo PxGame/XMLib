@@ -5,12 +5,9 @@
  * 创建时间: 1/13/2019 2:59:43 PM
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 刚体控制器
@@ -119,7 +116,6 @@ namespace XMLib.P2D
 
             if (_isVerticalHitted && ProcessMovePlatform(_verticalNearHit.collider, deltaTime, ref frameMove))
             { //移动中遇到障碍物时，未经行处理，移动平台移动过快时存在问题
-
             }
 
             //移动物体

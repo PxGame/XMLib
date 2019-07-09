@@ -5,15 +5,14 @@
  * 创建时间: 12/26/2018 9:53:19 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Text;
+using System.Threading;
+using UnityEngine;
 
-namespace XMLib.Log
+namespace XMLib
 {
     /// <summary>
     /// 日志管理器

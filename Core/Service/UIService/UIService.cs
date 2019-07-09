@@ -6,27 +6,16 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.UIService
+namespace XMLib
 {
     /// <summary>
     /// UI 服务
     /// </summary>
-    public class UIService : IUIService
+    public class UIService
     {
-        /// <summary>
-        /// 设置
-        /// </summary>
-        public UIServiceSetting setting { get { return _setting; } }
-
-        /// <summary>
-        /// 设置
-        /// </summary>
-        private readonly UIServiceSetting _setting;
-
         /// <summary>
         /// 根节点
         /// </summary>
@@ -47,7 +36,6 @@ namespace XMLib.UIService
         /// </summary>
         private readonly Dictionary<Guid, UIPanel> _panelDict;
 
-
         /// <summary>
         /// 堆栈面板
         /// </summary>
@@ -59,13 +47,17 @@ namespace XMLib.UIService
         private readonly List<Guid> _panelList;
 
         /// <summary>
+        /// 设置
+        /// </summary>
+        private readonly AppSetting _setting;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="setting">设置</param>
-        public UIService(UIServiceSetting setting, UIRoot uiRoot)
+        public UIService(AppSetting setting)
         {
             _setting = setting;
-            _uiRoot = uiRoot;
 
             //初始化对象
             _panelDict = new Dictionary<Guid, UIPanel>();
@@ -73,6 +65,11 @@ namespace XMLib.UIService
             _panelBindDict = new Dictionary<Guid, UIPanelBindData>();
             _panelStack = new List<Guid>();
             _panelList = new List<Guid>();
+        }
+
+        public string GetPanelPath(string panelName)
+        {
+            return null;
         }
 
         #region IUIService
@@ -131,7 +128,6 @@ namespace XMLib.UIService
             return bRet;
         }
 
-
         /// <summary>
         /// 获取绑定数据
         /// </summary>
@@ -148,7 +144,6 @@ namespace XMLib.UIService
             return bindData;
         }
 
-
         /// <summary>
         /// 获取面板实例
         /// </summary>
@@ -158,7 +153,7 @@ namespace XMLib.UIService
         {
             UIPanel uiPanel = null;
 
-            if(!_panelDict.TryGetValue(id, out uiPanel))
+            if (!_panelDict.TryGetValue(id, out uiPanel))
             {
                 return null;
             }
@@ -174,14 +169,13 @@ namespace XMLib.UIService
         public Guid GetID(UIPanel uiPanel)
         {
             Guid guid;
-            if(!_panelRevertDict.TryGetValue(uiPanel, out guid))
+            if (!_panelRevertDict.TryGetValue(uiPanel, out guid))
             {
                 return Guid.Empty;
             }
 
             return guid;
         }
-
 
         #endregion IUIService
 
@@ -283,13 +277,11 @@ namespace XMLib.UIService
 
                         //销毁面板
                         DestroyPanel(bindData, uiPanel);
-
                     });
                 });
-
             }
             else
-            { //非顶层窗口,或堆栈中仅此一个面板 
+            { //非顶层窗口,或堆栈中仅此一个面板
                 //面板预离开
                 uiPanel.OnPreLeave();
 
@@ -444,7 +436,7 @@ namespace XMLib.UIService
 
             obj.name = bindData.DisplayName;
 
-            RectTransform rectTransform = (RectTransform) obj.transform;
+            RectTransform rectTransform = (RectTransform)obj.transform;
             rectTransform.SetParent(_uiRoot.Get(bindData.layerName), false);
             rectTransform.SetAsLastSibling(); //移到末尾
 

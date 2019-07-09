@@ -179,9 +179,6 @@ namespace XMLib
         /// <param name="weight">权重</param>
         public void Add(TValue value, TWeight weight)
         {
-            Checker.Requires<ArgumentNullException>(value != null);
-            Checker.Requires<ArgumentNullException>(weight != null);
-
             //移除已存在的
             Remove(value);
 
@@ -217,8 +214,6 @@ namespace XMLib
         /// <returns>是否存在</returns>
         public bool Remove(TValue value)
         {
-            Checker.Requires<ArgumentNullException>(value != null);
-
             bool isRemoved = false;
             ValueWeightPair item;
             if (_dict.TryGetValue(value, out item))
@@ -239,9 +234,6 @@ namespace XMLib
         /// <param name="index">序号</param>
         public void RemoveIndex(int index)
         {
-            Checker.Requires<ArgumentOutOfRangeException>(index >= 0);
-            Checker.Requires<ArgumentOutOfRangeException>(index < _list.Count);
-
             //检查排序
             Sort();
 
@@ -271,8 +263,6 @@ namespace XMLib
         /// </summary>
         public void Sort()
         {
-            Checker.Requires<InvalidOperationException>(_comparerWeight != null);
-
             if (_sorted)
             {//已排序
                 return;
@@ -291,7 +281,6 @@ namespace XMLib
         /// <returns>是否包含</returns>
         public bool Contains(TValue value)
         {
-            Checker.Requires<ArgumentNullException>(value != null);
             return _dict.ContainsKey(value);
         }
 
@@ -302,7 +291,6 @@ namespace XMLib
         /// <returns>权重</returns>
         public TWeight GetWeight(TValue value)
         {
-            Checker.Requires<ArgumentNullException>(value != null);
             ValueWeightPair pair;
             if (!_dict.TryGetValue(value, out pair))
             {
@@ -318,9 +306,6 @@ namespace XMLib
         /// <returns>值</returns>
         public TValue GetValue(int index)
         {
-            Checker.Requires<ArgumentOutOfRangeException>(index >= 0);
-            Checker.Requires<ArgumentOutOfRangeException>(index < _list.Count);
-
             //检查排序
             Sort();
 
@@ -336,8 +321,6 @@ namespace XMLib
         /// <returns>从 0 开始，未找到为-1</returns>
         public int GetIndex(TValue value)
         {
-            Checker.Requires<ArgumentNullException>(value != null);
-
             //检查排序
             Sort();
 

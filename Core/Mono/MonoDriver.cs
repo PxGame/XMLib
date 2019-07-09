@@ -5,17 +5,15 @@
  * 创建时间: 12/20/2018 12:06:21 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-namespace XMLib.MonoDriver
+namespace XMLib
 {
-    public class MonoDriver : IMonoDriver
+    public class MonoDriver
     {
-        //private readonly MonoDriverSetting _setting;
-
         #region Mono
 
         private readonly SortList<IUpdate, int> _updates;
@@ -27,24 +25,15 @@ namespace XMLib.MonoDriver
         #endregion Mono
 
         private readonly HashSet<object> _loadSet;
-        private readonly IApplication _handler;
         private readonly object _syncRoot;
         private readonly Queue<Action> _mainThreadDispatcherQueue;
+        private readonly MonoBehaviour _mono;
+        private readonly Func<bool> _isMainThread;
 
-        private DriverBehaviour _behaviour;
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="setting">设置</param>
-        /// <param name="handler">应用实例</param>
-        /// <param name="component">Mono 组件</param>
-        public MonoDriver(MonoDriverSetting setting, IApplication handler, Component component)
+        public MonoDriver(MonoBehaviour mono, Func<bool> isMainThread)
         {
-            Checker.NotNull(handler, "handler");
-            Checker.NotNull(component, "component");
-
-            //_setting = setting;
+            _mono = mono;
+            _isMainThread = isMainThread;
 
             _updates = new SortList<IUpdate, int>();
             _lateUpdates = new SortList<ILateUpdate, int>();
@@ -55,23 +44,6 @@ namespace XMLib.MonoDriver
             _loadSet = new HashSet<object>();
             _syncRoot = new object();
             _mainThreadDispatcherQueue = new Queue<Action>();
-
-            _handler = handler;
-
-            InitComponent(component);
-
-            //注册事件
-            _handler.OnResolving(OnGlobalResolving);
-            _handler.OnRelease(OnGlobalRelease);
-        }
-
-        public void Dispose()
-        {
-            if (null != _behaviour)
-            {
-                GameObject.Destroy(_behaviour);
-                _behaviour = null;
-            }
         }
 
         /// <summary>
@@ -79,7 +51,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         /// <param name="bindData">绑定数据</param>
         /// <param name="instance">对象</param>
-        private void OnGlobalResolving(IBindData bindData, object instance)
+        public void OnGlobalResolving(BindData bindData, object instance)
         {
             if (null == instance)
             {
@@ -97,7 +69,7 @@ namespace XMLib.MonoDriver
         /// </summary>
         /// <param name="bindData">绑定数据</param>
         /// <param name="instance">对象</param>
-        private void OnGlobalRelease(IBindData bindData, object instance)
+        public void OnGlobalRelease(BindData bindData, object instance)
         {
             if (null == instance)
             {
@@ -108,16 +80,6 @@ namespace XMLib.MonoDriver
             {//解决静态服务
                 Detach(instance);
             }
-        }
-
-        /// <summary>
-        /// 初始化组件
-        /// </summary>
-        /// <param name="component">目标组件</param>
-        private void InitComponent(Component component)
-        {
-            _behaviour = component.gameObject.AddComponent<DriverBehaviour>();
-            _behaviour.SetDriver(this);
         }
 
         /// <summary>
@@ -165,19 +127,15 @@ namespace XMLib.MonoDriver
             yield break;
         }
 
-        #region IMonoDriver
-
         /// <summary>
         /// 在主线程中调用
         /// </summary>
         /// <param name="action">协程，执行会处于主线程</param>
         public void MainThread(IEnumerator action)
         {
-            Checker.NotNull(action, "action");
-
-            if (_handler.isMainThread)
+            if (_isMainThread())
             {
-                StartCoroutine(action);
+                _mono.StartCoroutine(action);
                 return;
             }
 
@@ -185,7 +143,7 @@ namespace XMLib.MonoDriver
             {
                 _mainThreadDispatcherQueue.Enqueue(() =>
                 {
-                    StartCoroutine(action);
+                    _mono.StartCoroutine(action);
                 });
             }
         }
@@ -196,9 +154,7 @@ namespace XMLib.MonoDriver
         /// <param name="action">回调，回调的内容会处于主线程</param>
         public void MainThread(Action action)
         {
-            Checker.NotNull(action, "action");
-
-            if (_handler.isMainThread)
+            if (_isMainThread())
             {
                 action.Invoke();
                 return;
@@ -208,35 +164,11 @@ namespace XMLib.MonoDriver
         }
 
         /// <summary>
-        /// 启动协程
-        /// </summary>
-        /// <param name="routine">协程</param>
-        /// <returns>协程</returns>
-        public Coroutine StartCoroutine(IEnumerator routine)
-        {
-            Checker.NotNull(routine, "routine");
-
-            return _behaviour.StartCoroutine(routine);
-        }
-
-        /// <summary>
-        /// 停止协程
-        /// </summary>
-        /// <param name="routine">协程</param>
-        public void StopCoroutine(IEnumerator routine)
-        {
-            Checker.NotNull(routine, "routine");
-            _behaviour.StopCoroutine(routine);
-        }
-
-        /// <summary>
         /// 卸载对象
         /// </summary>
         /// <param name="obj">对象</param>
         public void Detach(object obj)
         {
-            Checker.NotNull(obj, "obj");
-
             if (!_loadSet.Contains(obj))
             {
                 return;
@@ -260,8 +192,6 @@ namespace XMLib.MonoDriver
         /// <param name="obj">对象</param>
         public void Attach(object obj)
         {
-            Checker.NotNull(obj, "obj");
-
             if (_loadSet.Contains(obj))
             {
                 throw new RuntimeException("对象[" + obj + "]已经被加载");
@@ -278,8 +208,6 @@ namespace XMLib.MonoDriver
                 _loadSet.Add(obj);
             }
         }
-
-        #endregion IMonoDriver
 
         #region Unity Event
 

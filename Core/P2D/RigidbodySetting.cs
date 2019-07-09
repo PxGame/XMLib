@@ -6,11 +6,9 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 刚体控制器设置

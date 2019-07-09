@@ -5,21 +5,45 @@
  * 创建时间: 12/14/2018 5:17:03 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace XMLib
 {
     /// <summary>
     /// 绑定数据
     /// </summary>
-    public class BindData : Bindable, IBindData
+    public class BindData
     {
         /// <summary>
         /// 构造服务
         /// </summary>
-        private readonly Func<IContainer, object[], object> _concrete;
+        public Func<Container, object[], object> concrete { get { return _concrete; } }
+
+        /// <summary>
+        /// 是否是单例
+        /// </summary>
+        public bool isStatic { get { return _isStatic; } }
+
+        /// <summary>
+        /// 绑定的服务名
+        /// </summary>
+        public string service { get { return _service; } }
+
+        /// <summary>
+        /// 容器
+        /// </summary>
+        private readonly Container _container;
+
+        /// <summary>
+        /// 服务名
+        /// </summary>
+        private readonly string _service;
+
+        /// <summary>
+        /// 构造服务
+        /// </summary>
+        private readonly Func<Container, object[], object> _concrete;
 
         /// <summary>
         /// 是否是单例
@@ -29,32 +53,12 @@ namespace XMLib
         /// <summary>
         /// 服务构造修饰器
         /// </summary>
-        private List<Action<IBindData, object>> _resolving;
-
-        /// <summary>
-        /// 在服务构建修饰器之后的修饰器
-        /// </summary>
-        private List<Action<IBindData, object>> _afterResolving;
+        private List<Func<BindData, object, object>> _resolving;
 
         /// <summary>
         /// 服务构造修饰器
         /// </summary>
-        private List<Action<IBindData, object>> _release;
-
-        /// <summary>
-        /// 同步对象
-        /// </summary>
-        private readonly object _syncRoot;
-
-        /// <summary>
-        /// 服务实现
-        /// </summary>
-        public Func<IContainer, object[], object> concrete { get { return _concrete; } }
-
-        /// <summary>
-        /// 是否是静态服务
-        /// </summary>
-        public bool isStatic { get { return _isStatic; } }
+        private List<Action<BindData, object>> _release;
 
         /// <summary>
         /// 构造函数
@@ -63,25 +67,33 @@ namespace XMLib
         /// <param name="service">服务名</param>
         /// <param name="concrete">构造回调</param>
         /// <param name="isStatic">是否是单例</param>
-        public BindData(Container container, string service, Func<IContainer, object[], object> concrete, bool isStatic)
-            : base(container, service)
+        public BindData(Container container, string service, Func<Container, object[], object> concrete, bool isStatic)
         {
+            _resolving = new List<Func<BindData, object, object>>();
+            _release = new List<Action<BindData, object>>();
+
+            _container = container;
+            _service = service;
             _concrete = concrete;
             _isStatic = isStatic;
-
-            _syncRoot = new object();
         }
 
-        #region IBindData
+        /// <summary>
+        /// 解除绑定
+        /// </summary>
+        public void Unbind()
+        {
+            _container.Unbind(this);
+        }
 
         /// <summary>
         /// 为服务设定一个别名
         /// </summary>
         /// <typeparam name="T">别名</typeparam>
         /// <returns>服务绑定数据</returns>
-        public IBindData Alias<T>()
+        public BindData Alias<T>()
         {
-            return Alias(container.Type2Service(typeof(T)));
+            return Alias(_container.Type2Service(typeof(T)));
         }
 
         /// <summary>
@@ -89,76 +101,67 @@ namespace XMLib
         /// </summary>
         /// <param name="alias">别名</param>
         /// <returns>服务绑定数据</returns>
-        public IBindData Alias(string alias)
+        public BindData Alias(string alias)
         {
-            lock (_syncRoot)
-            {
-                CheckIsDestroy();
-                Checker.NotEmptyOrNull(alias, "alias");
-
-                container.Alias(alias, service);
-                return this;
-            }
-        }
-
-        /// <summary>
-        /// 解决服务时事件之后的回调
-        /// </summary>
-        /// <param name="closure">解决事件</param>
-        /// <returns>服务绑定数据</returns>
-        public IBindData OnAfterResolving(Action<IBindData, object> closure)
-        {
-            AddEvent(closure, ref _afterResolving);
+            _container.Alias(alias, service);
             return this;
         }
 
         /// <summary>
         /// 解决服务时触发的回调
         /// </summary>
-        /// <param name="closure">解决事件</param>
+        /// <param name="onCallback">解决事件</param>
         /// <returns>服务绑定数据</returns>
-        public IBindData OnResolving(Action<IBindData, object> closure)
+        public BindData OnResolving(Func<BindData, object, object> onCallback)
         {
-            AddEvent(closure, ref _resolving);
+            if (_resolving == null)
+            {
+                _resolving = new List<Func<BindData, object, object>>();
+            }
+            _resolving.Add(onCallback);
+
             return this;
         }
 
         /// <summary>
         /// 当静态服务被释放时
         /// </summary>
-        /// <param name="closure">处理事件</param>
+        /// <param name="onCallback">处理事件</param>
         /// <returns>服务绑定数据</returns>
-        public IBindData OnRelease(Action<IBindData, object> closure)
+        public BindData OnRelease(Action<BindData, object> onCallback)
         {
             if (!_isStatic)
             {
-                throw new RuntimeException("服务[" + service + "]不是单例,不能调用OnRelease方法");
+                throw new RuntimeException("服务不是单例,不能调用OnRelease方法 > {0}", service);
             }
 
-            AddEvent(closure, ref _release);
+            if (_release == null)
+            {
+                _release = new List<Action<BindData, object>>();
+            }
+            _release.Add(onCallback);
+
             return this;
         }
-
-        #endregion IBindData
 
         /// <summary>
         /// 执行服务修饰器
         /// </summary>
         /// <param name="instance">服务实例</param>
         /// <returns>服务实例</returns>
-        public object TriggerResolving(object instance)
+        public object TriggerOnResolving(object instance)
         {
-            return container.Trigger(this, instance, _resolving);
-        }
+            if (_resolving == null)
+            {
+                return instance;
+            }
 
-        /// <summary>
-        /// 执行服务修饰器之后的回调
-        /// </summary>
-        /// <param name="instance">服务实例</param>
-        /// <returns>服务实例</returns>
-        public object TriggerAfterResolving(object instance)
-        {
-            return container.Trigger(this, instance, _afterResolving);
+            foreach (var func in _resolving)
+            {
+                instance = func.Invoke(this, instance);
+            }
+
+            return instance;
         }
 
         /// <summary>
@@ -166,52 +169,17 @@ namespace XMLib
         /// </summary>
         /// <param name="instance">服务实例</param>
         /// <returns>服务实例</returns>
-        public object TriggerRelease(object instance)
+        public void TriggerOnRelease(object instance)
         {
-            return container.Trigger(this, instance, _release);
-        }
-
-        /// <summary>
-        /// 添加事件到列表
-        /// </summary>
-        /// <param name="action">事件对象</param>
-        /// <param name="list">事件列表</param>
-        private void AddEvent(Action<IBindData, object> action, ref List<Action<IBindData, object>> list)
-        {
-            Checker.NotNull(action, "closure");
-
-            lock (_syncRoot)
+            if (_release == null)
             {
-                CheckIsDestroy();
+                return;
+            }
 
-                if (null == list)
-                {//创建数组
-                    list = new List<Action<IBindData, object>>();
-                }
-
-                list.Add(action);
+            foreach (var func in _release)
+            {
+                func.Invoke(this, instance);
             }
         }
-
-        /// <summary>
-        /// 转换到字符串
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return string.Format("[{0}]({1},isStatic:{2})", GetType().Name, base.ToString(), _isStatic);
-        }
-
-        #region Bindable
-
-        /// <summary>
-        /// 释放绑定
-        /// </summary>
-        protected override void ReleaseBind()
-        {
-            container.UnBind(this);
-        }
-
-        #endregion Bindable
     }
 }

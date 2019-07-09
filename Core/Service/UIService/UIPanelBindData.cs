@@ -6,10 +6,8 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace XMLib.UIService
+namespace XMLib
 {
     /// <summary>
     /// 面板绑定数据
@@ -66,7 +64,7 @@ namespace XMLib.UIService
         /// <summary>
         /// 资源路径
         /// </summary>
-        public string path { get { return uiService.setting.GetPanelPath(panelName); } }
+        public string path { get { return uiService.GetPanelPath(panelName); } }
 
         public override string ToString()
         {

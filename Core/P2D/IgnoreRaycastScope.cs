@@ -5,12 +5,10 @@
  * 创建时间: 1/4/2019 1:43:52 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 忽略射线检测范围

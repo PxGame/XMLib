@@ -5,11 +5,9 @@
  * 创建时间: 2/18/2019 7:57:12 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 玩家控制器
@@ -23,7 +21,7 @@ namespace XMLib.P2D
         /// </summary>
         public PlayerSetting playerSetting { get { return _playerSetting; } }
 
-        #endregion
+        #endregion 公开参数
 
         /// <summary>
         /// 玩家设置

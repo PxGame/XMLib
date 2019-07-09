@@ -7,15 +7,13 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using XMLib.InputService;
 
-namespace XMLib.UI
+namespace XMLib
 {
     /// <summary>
     /// 按钮
@@ -69,7 +67,7 @@ namespace XMLib.UI
 
         #endregion Event
 
-        private IInputService _input;
+        private InputService _input;
 
         protected Button()
         {
@@ -78,11 +76,11 @@ namespace XMLib.UI
         protected override void Awake()
         {
             base.Awake();
-            if (App.handler != null)
+            if (AppManager.Inst != null)
             {
-                if (App.CanMake<IInputService>())
+                if (AppManager.CanMake<InputService>())
                 {
-                    _input = App.Make<IInputService>();
+                    _input = AppManager.Make<InputService>();
                 }
             }
         }

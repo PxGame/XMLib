@@ -5,12 +5,11 @@
  * 创建时间: 1/18/2019 1:05:34 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.UIService
+namespace XMLib
 {
     /// <summary>
     /// UI 根节点

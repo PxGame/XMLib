@@ -5,12 +5,10 @@
  * 创建时间: 1/11/2019 4:53:31 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 射线检测起点

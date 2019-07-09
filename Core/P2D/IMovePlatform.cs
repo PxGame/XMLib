@@ -5,8 +5,6 @@
  * 创建时间: 2/20/2019 12:33:09 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace XMLib

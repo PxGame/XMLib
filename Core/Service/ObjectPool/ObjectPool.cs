@@ -5,22 +5,22 @@
  * 创建时间: 1/15/2019 12:20:45 PM
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-namespace XMLib.ObjectPool
+namespace XMLib
 {
     /// <summary>
     /// 对象池
     /// </summary>
-    public class ObjectPool : IObjectPool
+    public class ObjectPool : IDisposable
     {
         /// <summary>
         /// 设置
         /// </summary>
-        private readonly ObjectPoolSetting _setting;
+        private readonly AppSetting _setting;
 
         /// <summary>
         /// 池根
@@ -41,13 +41,25 @@ namespace XMLib.ObjectPool
         /// 构造函数
         /// </summary>
         /// <param name="setting">设置</param>
-        /// <param name="poolRoot">池根</param>
-        public ObjectPool(ObjectPoolSetting setting, PoolRoot poolRoot)
+        public ObjectPool(AppSetting setting)
         {
             _setting = setting;
-            _poolRoot = poolRoot;
 
             _poolDict = new Dictionary<string, Dictionary<string, Stack<GameObject>>>();
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator OnInit()
+        {
+            GameObject obj = new GameObject("PoolRoot", typeof(PoolRoot));
+            obj.layer = LayerMask.NameToLayer("Ignore Raycast");
+            GameObject.DontDestroyOnLoad(obj);
+            _poolRoot = obj.GetComponent<PoolRoot>();
+
+            yield break;
         }
 
         /// <summary>
@@ -152,11 +164,11 @@ namespace XMLib.ObjectPool
             Stack<GameObject> objs = null;
             if (!pool.TryGetValue(objectName, out objs))
             {//创建对象池
-                objs = new Stack<GameObject>(_setting.maxSize / 2);
+                objs = new Stack<GameObject>(_setting.poolMaxSize / 2);
                 pool.Add(objectName, objs);
             }
 
-            if (objs.Count > _setting.maxSize)
+            if (objs.Count > _setting.poolMaxSize)
             {//超出最大限制，直接删除
                 //删除处理
                 OnDestroy(obj);

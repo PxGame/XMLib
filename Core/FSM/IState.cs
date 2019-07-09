@@ -5,11 +5,7 @@
  * 创建时间: 1/8/2019 11:18:56 PM
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace XMLib.FSM
+namespace XMLib
 {
     /// <summary>
     /// 状态接口
@@ -20,18 +16,18 @@ namespace XMLib.FSM
         /// 进入
         /// </summary>
         /// <param name="target">目标</param>
-        void Enter (T target);
+        void Enter(T target);
 
         /// <summary>
         /// 退出
         /// </summary>
         /// <param name="target">目标</param>
-        void Exit (T target);
+        void Exit(T target);
 
         /// <summary>
         /// 更新
         /// </summary>
         /// <param name="target">目标</param>
-        void Update (T target);
+        void Update(T target);
     }
 }

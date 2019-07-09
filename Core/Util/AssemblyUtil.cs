@@ -6,14 +6,15 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
 namespace XMLib
 {
-    public class AssemblyUtility
+    /// <summary>
+    /// 程序集工具
+    /// </summary>
+    public class AssemblyUtil
     {
         public static List<Type> FindAllSubclass<T>()
         {

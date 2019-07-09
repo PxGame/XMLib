@@ -23,7 +23,6 @@ namespace XMLib
         /// <returns>优先级</returns>
         public static int GetPriority(Type type, string method = null)
         {
-            Checker.Requires<ArgumentNullException>(type != null);
             Type priority = typeof(PriorityAttribute);
             int currentPriority = int.MaxValue;
 

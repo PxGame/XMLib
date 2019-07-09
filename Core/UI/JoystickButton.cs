@@ -5,17 +5,13 @@
  * 创建时间: 1/3/2019 2:50:29 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using XMLib.InputService;
+using UnityEngine.Serialization;
 
-namespace XMLib.UI
+namespace XMLib
 {
     /// <summary>
     /// 摇杆按钮
@@ -88,18 +84,18 @@ namespace XMLib.UI
 
         #endregion Event
 
-        private IInputService _input;
+        private InputService _input;
         private CanvasGroup _canvasGroup;
 
         protected override void Awake()
         {
             base.Awake();
 
-            if (App.handler != null)
+            if (AppManager.Inst != null)
             {
-                if (App.CanMake<IInputService>())
+                if (AppManager.CanMake<InputService>())
                 {
-                    _input = App.Make<IInputService>();
+                    _input = AppManager.Make<InputService>();
                 }
             }
 

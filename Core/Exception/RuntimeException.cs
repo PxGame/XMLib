@@ -14,27 +14,25 @@ namespace XMLib
     /// </summary>
     public class RuntimeException : Exception
     {
-        public RuntimeException()
+        public RuntimeException(string format, params object[] args)
+            : base(FixedMessage(format, args))
         {
         }
 
-        /// <summary>
-        /// 运行时异常
-        /// </summary>
-        /// <param name="message">异常消息</param>
-        public RuntimeException(string message)
-            : base(message)
+        public RuntimeException(Exception innerException, string format, params object[] args)
+            : base(FixedMessage(format, args), innerException)
         {
         }
 
-        /// <summary>
-        /// 运行时异常
-        /// </summary>
-        /// <param name="message">异常消息</param>
-        /// <param name="innerException">内部异常</param>
-        public RuntimeException(string message, Exception innerException)
-            : base(message, innerException)
+        protected static string FixedMessage(string format, params object[] args)
         {
+            return string.Format(
+#if UNITY_EDITOR
+            "<color=red>[XMLib]</color>"
+#else
+            "[XMLib]"
+#endif
+             + format, args);
         }
     }
 }

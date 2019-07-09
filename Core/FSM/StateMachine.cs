@@ -5,11 +5,7 @@
  * 创建时间: 1/8/2019 11:16:56 PM
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace XMLib.FSM
+namespace XMLib
 {
     /// <summary>
     /// 状态机

@@ -5,7 +5,6 @@
  * 创建时间: 12/10/2018 3:04:27 PM
  */
 
-using System;
 using UnityEngine;
 
 namespace XMLib

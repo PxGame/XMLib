@@ -22,8 +22,6 @@ namespace XMLib
         /// <returns>合并后的数组</returns>
         public static T[] Merge<T>(params T[][] sources)
         {
-            Checker.Requires<ArgumentNullException>(sources != null);
-
             int length = 0;
             foreach (var source in sources)
             {
@@ -66,8 +64,6 @@ namespace XMLib
         /// <returns>分割出来的数组</returns>
         public static T[] Splice<T>(ref T[] source, int start, int length)
         {
-            Checker.Requires<ArgumentNullException>(null != source);
-
             int maxLength = source.Length;
 
             if (length < 0)
@@ -75,8 +71,6 @@ namespace XMLib
                 length *= -1;
                 start = start - length + 1;
             }
-
-            Checker.Requires<IndexOutOfRangeException>(0 <= start && (start + length) <= maxLength);
 
             int newMaxLength = maxLength - length;
             T[] newSource = new T[newMaxLength];
@@ -119,9 +113,6 @@ namespace XMLib
         /// <returns>移除的元素</returns>
         public static T RemoveAt<T>(ref T[] source, int index)
         {
-            Checker.Requires<ArgumentNullException>(null != source);
-            Checker.Requires<IndexOutOfRangeException>(0 <= index || index < source.Length);
-
             T[] result = Splice(ref source, index, 1);
             return 0 < result.Length ? result[0] : default(T);
         }

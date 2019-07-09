@@ -5,11 +5,9 @@
  * 创建时间: 1/18/2019 2:14:59 PM
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.UIService
+namespace XMLib
 {
     /// <summary>
     /// 面板组件

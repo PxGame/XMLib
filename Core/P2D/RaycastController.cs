@@ -5,12 +5,9 @@
  * 创建时间: 1/4/2019 11:13:49 AM
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// 2D物理控制

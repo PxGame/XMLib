@@ -5,12 +5,9 @@
  * 创建时间: 1/20/2019 12:51:51 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-namespace XMLib.ObjectPool
+namespace XMLib
 {
     /// <summary>
     /// 对象池根

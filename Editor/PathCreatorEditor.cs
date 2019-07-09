@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 
-namespace XMLib.P2D
+namespace XMLib
 {
     /// <summary>
     /// PathCreatorEditor

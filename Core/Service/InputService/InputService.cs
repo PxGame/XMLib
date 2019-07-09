@@ -5,22 +5,19 @@
  * 创建时间: 12/28/2018 10:30:00 AM
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-namespace XMLib.InputService
+namespace XMLib
 {
     /// <summary>
     /// 输入服务
     /// </summary>
-    public class InputService : IInputService
+    public class InputService
     {
         /// <summary>
         /// 设置
         /// </summary>
-        private readonly InputServiceSetting _setting;
+        private readonly AppSetting _setting;
 
         /// <summary>
         /// 当前输入方式
@@ -41,7 +38,7 @@ namespace XMLib.InputService
         /// 构造函数
         /// </summary>
         /// <param name="setting">设置</param>
-        public InputService(InputServiceSetting setting)
+        public InputService(AppSetting setting)
         {
             _setting = setting;
 
@@ -50,7 +47,7 @@ namespace XMLib.InputService
             _method = ActiveInputMethod.None;
 
             //应用设置
-            SwitchInputMethod(_setting.method, _setting.deadZoom);
+            SwitchInputMethod(_setting.inputMethod, _setting.inputDeadZoom);
         }
 
         /// <summary>
@@ -80,8 +77,6 @@ namespace XMLib.InputService
                     _input = new MixedInput(deadZoom);
                     break;
             }
-
-            Checker.NotNull(_input);
 
             Debug.LogFormat("InputService输入模式切换: {0} => {1}", _method, method);
             _method = method;
